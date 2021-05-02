@@ -50,7 +50,45 @@ In order to get accessions for each key genus of bacteria
 ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
 ```
 
+Once all the information is collected and put into a simple text file (/Genome_accession_info/Genome_accessions_to_download.txt), the comman below can be ran:
+
+
 ```bash
 ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt \ 
 -p 4 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
 ```
+
+where,
+
+```
+-p 4 : downland 4 genomes at a time in parallel
+ -r 2 : retry downloading 2x before moving on
+ --flat-out: download all the files in the same place (one directory rather than each isolate having a dedicated directory)
+ -v : verbose
+ -F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, and protein fasta associtaed with the accession number
+ ```
+ Move all the download genomes in directories based on their file type/ending (i.e. genbank files in genbank folder).
+ 
+ ## Setting up database and mining for MAMPs
+ 
+ ### 1. Build the MAMP database
+ 
+ In a text file, save the following MAMP sequences (/MAMP_database/MAMP_elicitor_list.fasta):
+ ```
+ >csp22_consensus
+AVGTVKWFNAEKGFGFITPDDG
+>Elf18
+SKEKFERTKPHVNVGTIG
+>Flg22
+QRLSTGSRINSAKDDAAGLQIA
+>Nlp20
+AIMYSWWFPKDSPVTGLGHR
+```
+This fasta file can be used to build a database to use blast to find if anything in the genome shares these sequences.
+
+
+
+### 1. Build the MAMP database
+
+
+ 
