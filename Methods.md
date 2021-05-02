@@ -38,7 +38,7 @@
 
 ### 2. Download the genomes
   
-  I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. First we will need to install a package which will allow us to easily download the genomes by accession number from NCBI's refseq.
+  We can use ncbi-genome-download to find what accession we can download for each major genus and then download them on the command line. The major 6 genera include Clavibacter, Leifsonia, Curtobacterium, Streptomyces, Rathayibacter, and Rhodococcus. I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. First we will need to install a package which will allow us to easily download the genomes by accession number from NCBI's refseq.
   
     conda install ncbi-genome-download
     
@@ -84,9 +84,27 @@ QRLSTGSRINSAKDDAAGLQIA
 >Nlp20
 AIMYSWWFPKDSPVTGLGHR
 ```
-This fasta file can be used to build a database to use blast to find if anything in the genome shares these sequences.
+This fasta file can be used to build a database to use blast to find if anything in the genome shares these sequences. To build the blast database, the below command was ran. Also this should be ran in the same folder as /MAMP_database/MAMP_elicitor_list.fasta. 
 
+```
+# to make blast db
+makeblastdb -in MAMP_elicitor_list.fasta -parse_seqids -dbtype 'prot' -out MAMP_blast_db
+````
 
+We can then go through each protein fasta file and pull out the peptide from the annotation. In this case, we can use a bash loop to blast each file. 
+
+```
+for file in *.faa 
+do echo "$file" 
+blastp -task blastp-fast -query $file -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 4 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length mismatch qseq" -out $file.txt 
+done
+```
+```
+for file in *.faa
+do echo "$file"
+blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 4 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
+done
+```
 
 ### 1. Build the MAMP database
 
