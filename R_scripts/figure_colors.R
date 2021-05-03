@@ -21,7 +21,8 @@ Genera_colors <- c("#ff94af","#ffd65c","#b589d6",
                    "#73bfe6","#9e9e9e","#7bc98f",
                    "#ab234c","#e3534c","#026178",
                    "#507B00")
+
 names(Genera_colors) <- c("Leifsonia","Clavibacter","Curtobacterium",
                           "Rhodococcus","Rathayibacter","Streptomyces",
-                          "Ralstonia", "Xanthamonas","Pseudomonas",
+                          "Ralstonia", "Xanthomonas","Pseudomonas",
                           "Agrobacterium")
