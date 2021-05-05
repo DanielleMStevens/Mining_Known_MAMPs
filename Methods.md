@@ -46,27 +46,27 @@
 
 In order to get accessions for each key genus of bacteria
 
-```bash
-ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
-```
+  ```
+  ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
+  ```
 
 Once all the information is collected and put into a simple text file (/Genome_accession_info/Genome_accessions_to_download.txt), the comman below can be ran:
 
 
-```bash
-ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt \ 
--p 4 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
-```
+  ```
+  ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt \ 
+  -p 4 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
+  ```
 
 where,
 
-```
--p 4 : downland 4 genomes at a time in parallel
- -r 2 : retry downloading 2x before moving on
- --flat-out: download all the files in the same place (one directory rather than each isolate having a dedicated directory)
- -v : verbose
- -F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, and protein fasta associtaed with the accession number
- ```
+  ```
+  -p 4 : downland 4 genomes at a time in parallel
+   -r 2 : retry downloading 2x before moving on
+   --flat-out: download all the files in the same place (one directory rather than each isolate having a dedicated directory)
+   -v : verbose
+   -F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, and protein fasta associtaed with the accession number
+   ```
  Move all the download genomes in directories based on their file type/ending (i.e. genbank files in genbank folder).
  
  ## Setting up database and mining for MAMPs
@@ -74,45 +74,62 @@ where,
  ### 1. Build the MAMP database
  
  In a text file, save the following MAMP sequences (/MAMP_database/MAMP_elicitor_list.fasta):
- ```
- >csp22_consensus
-AVGTVKWFNAEKGFGFITPDDG
->Elf18
-SKEKFERTKPHVNVGTIG
->Flg22
-QRLSTGSRINSAKDDAAGLQIA
->Nlp20
-AIMYSWWFPKDSPVTGLGHR
-```
+   ```
+  >csp22_consensus
+  AVGTVKWFNAEKGFGFITPDDG
+  >elf18_consensus
+  SKEKFERTKPHVNVGTIG
+  >flg22_consensus
+  QRLSTGSRINSAKDDAAGLQIA
+  >nlp20_consensus
+  GSFYSLYFLKDQILNGVNSGHR
+  ```
 This fasta file can be used to build a database to use blast to find if anything in the genome shares these sequences. To build the blast database, the below command was ran. Also this should be ran in the same folder as /MAMP_database/MAMP_elicitor_list.fasta. 
 
-```
-# to make blast db
-makeblastdb -in MAMP_elicitor_list.fasta -parse_seqids -dbtype 'prot' -out MAMP_blast_db
-````
+  ```
+  # to make blast db
+  makeblastdb -in MAMP_elicitor_list.fasta -parse_seqids -dbtype 'prot' -out MAMP_blast_db
+  ````
 
 We can then go through each protein fasta file and pull out the peptide from the annotation. In this case, we can use a bash loop to blast each file. 
 
-```
-for file in *.faa 
-do echo "$file" 
-blastp -task blastp-fast -query $file -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 4 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length mismatch qseq" -out $file.txt 
-done
-```
-```
-for file in *.faa
-do echo "$file"
-blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 4 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
-done
-```
+  ```
+  for file in *.faa 
+  do echo "$file" 
+  blastp -task blastp-fast -query $file -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 4 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length mismatch qseq" -out $file.txt 
+  done
+  ```
+  ```
+  for file in *.faa
+  do echo "$file"
+  blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db \ ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 4 \
+  -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
+  done
+  ```
 
 ### 2. Processing MAMP database
 
 Run Process_MAMP_BLAST_results.R
 
-```
-source('Process_MAMP_BLAST_results.R)
-source
+  ```
+  source('Process_MAMP_BLAST_results.R)
+  ```
 
+3. Build Protein Trees of Full Length Sequences and their MAMPs
+
+We now can start building protein trees to understand their evolutionary history in respect to the MAMPs they encode for. We will run MAFFT to build our alignment and IQ-tree of make a maximum likelihood tree from the alignment. In each folder of which the fasta file was saved, the below commands were ran (names changed where needed).
+
+  ```
+  mafft --reorder --thread 12 --maxiterate 1000 --localpair csp22_full_length.fasta > "csp22_full_length_alignment"
+  # --localpair, slowest but most accurate method of alignment
+  # --reorder, reorder entries in fasta file to improve alignment
+  
+  iqtree -s csp22_full_length_alignment -st AA -bb 1000 -mtree -nt 12
+  # -s, input alignment file
+  # -st, file type (in this case amino acids, hence AA)
+  # -bb 1000, number of ultrafast bootstrapping ran on the tree
+  # -mtree, iterate thorugh all models to find the best one
+  # -nt 12, number of threads used to run analysis (I have max 16)
+  ```
 
  

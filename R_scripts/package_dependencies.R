@@ -38,5 +38,6 @@ library(plotly)
 library(ggpubr)
 library(rstatix)
 library(phylotools)
+library(scales)
 
 #library(Biostrings)

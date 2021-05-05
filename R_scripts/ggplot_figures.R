@@ -136,9 +136,6 @@ source("./Theme_ggplot.R")
       xlab("Genera\n") +
       ylab("\nNumber of Protein \n Coding Epitopes") +
       scale_y_continuous(breaks= pretty_breaks()) +
-      #scale_y_continuous(limits = c(0,14),
-      #                   breaks = c(0,2,4,6,8,10,12,14)) +
-      #ggtitle(name_of_MAMP) +
       theme(legend.position = "none", 
             axis.title.y = element_blank(), axis.text.y = element_blank(),
             axis.line.y = element_blank(), axis.ticks.y = element_blank(),
@@ -150,12 +147,33 @@ source("./Theme_ggplot.R")
     
   }
   
+  plot_tajmaD <- function(data_to_plot){
+    new_plot <- ggplot(data_to_plot, aes(x = factor(Genera, level = name_list), y = D.value, colour = Genera, fill = Genera)) +
+      geom_point(size = 4, shape = 21, colour = "black") +
+      scale_color_manual("Genera", values = Genera_colors) +
+      scale_fill_manual("Genera", values = Genera_colors) +
+      scale_y_continuous(breaks = pretty_breaks()) +
+      ylab("\nD-value") +
+      xlab("Genera\n") +
+      my_ggplot_theme +
+      theme(legend.position = "none", 
+            axis.title.y = element_blank(), axis.text.y = element_blank(),
+            axis.line.y = element_blank(), axis.ticks.y = element_blank(),
+            panel.grid.major.x = element_line(size = 0.5, color = "grey92")) +
+      coord_flip() 
+   
+    return(new_plot) 
+  }
+  
+  
+  
   # prepare and plot the data of similarity versus copy number for csp22 eptitopes
   Similarity_csp22 <- plot_points_Percent_Ident_of_MAMPs(subset(hold_MAMP_seqs, MAMP_Hit == 'csp22_consensus')) 
   Copy_number_csp22 <- plot_copy_number(subset(hold_copy_number, variable == "csp22_consensus"))
-    
+  csp22_combined_plots <- Similarity_csp22 + Copy_number_csp22 + plot_tajmaD(hold_taijma_D_values)
   
-  ggsave(Similarity_csp22 + Copy_number_csp22, filename = "./../Figures/Plot_MAMP_similarity_by_genera_csp22.pdf", device = cairo_pdf, width = 6.5, height = 5, units = "in")
+  ggsave(csp22_combined_plots, filename = "./../Figures/Plot_MAMP_similarity_by_genera_csp22.pdf", 
+         device = cairo_pdf, width = 6.5, height = 5, units = "in")
   
   
   # prepare and plot the data of similarity versus copy number for elf18 eptitopes
@@ -163,9 +181,9 @@ source("./Theme_ggplot.R")
   hold_elf18_copy_number_data <- subset(hold_copy_number, variable == "elf18_consensus")
   hold_elf18_copy_number_data <- hold_elf18_copy_number_data[hold_elf18_copy_number_data$value != 0, ]
   Copy_number_elf18 <- plot_copy_number(hold_elf18_copy_number_data)
+  elf18_combined_plots <- Similarity_elf18 + Copy_number_elf18 + plot_tajmaD(hold_taijma_D_values)
     
-    
-  ggsave(Similarity_elf18 + Copy_number_elf18, filename = "./../Figures/Plot_MAMP_similarity_by_genera_elf18.pdf", device = cairo_pdf, width = 6.5, height = 5, units = "in")
+  ggsave(elf18_combined_plots, filename = "./../Figures/Plot_MAMP_similarity_by_genera_elf18.pdf", device = cairo_pdf, width = 6.5, height = 5, units = "in")
   
   
   # prepare and plot the data of similarity versus copy number for elf18 eptitopes

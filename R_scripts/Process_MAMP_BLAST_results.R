@@ -59,7 +59,7 @@ load_reference_MAMPs_fasta <- dss2df(load_reference_MAMPs_fasta)
 ##############################################
 
 
-tip_data <- file.choose() #choose Mining_for_known_MAMPs_genome_accession_info.xlsx
+tip_data <- "./../Mining_for_known_MAMPs_genome_accession_info.xlsx" #choose Mining_for_known_MAMPs_genome_accession_info.xlsx
 datasettable <- readxl::read_xlsx(tip_data, col_names = T)
 datasettable <- as.data.frame(datasettable[,1:7])
 
@@ -179,35 +179,62 @@ pb <- txtProgressBar(min = 0, max = nrow(hold_MAMP_seqs), style = 3)
 
 for (i in 1:nrow(hold_MAMP_seqs)){
   if(hold_MAMP_seqs$MAMP_Hit[i] == "csp22_consensus"){
-    # put MAMP in database
-    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "MAMP_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
-                          hold_MAMP_seqs$MAMP_Sequence[i])
-    colnames(temp_df) <- colnames(csp22_protein_seq)
-    csp22_protein_seq <- rbind(csp22_protein_seq, temp_df)
-    
-    #find full length protein sequence
-    pull_protein_seq <- All_target_seqs[grepl(hold_MAMP_seqs$Protein_Name[i], All_target_seqs$names),][1,3]
-    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "Full_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
-                          pull_protein_seq)
-    colnames(temp_df) <- colnames(csp_full_length)
-    csp_full_length <- rbind(csp_full_length, temp_df)
+    protein_of_interest <- All_target_seqs[grepl(hold_MAMP_seqs$Protein_Name[i], All_target_seqs$names),][1,]
+    if(grepl("cold", protein_of_interest[,2]) == T){
+      # put MAMP in database
+      temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "MAMP_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
+                            hold_MAMP_seqs$MAMP_Sequence[i])
+      colnames(temp_df) <- colnames(csp22_protein_seq)
+      csp22_protein_seq <- rbind(csp22_protein_seq, temp_df)
+      
+      #find full length protein sequence
+      temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "Full_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
+                            protein_of_interest[,3])
+      colnames(temp_df) <- colnames(csp_full_length)
+      csp_full_length <- rbind(csp_full_length, temp_df)
+    }
   }
   if(hold_MAMP_seqs$MAMP_Hit[i] == "flg22_consensus"){
+    protein_of_interest <- All_target_seqs[grepl(hold_MAMP_seqs$Protein_Name[i], All_target_seqs$names),][1,]
+    if(grepl("flagellin", protein_of_interest[,2]) == T){
+      
+    
     # put MAMP in database
-    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "MAMP_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], sep = "|"),
+    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "MAMP_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
                           hold_MAMP_seqs$MAMP_Sequence[i])
     colnames(temp_df) <- colnames(flg22_protein_seq)
     flg22_protein_seq <- rbind(flg22_protein_seq, temp_df)
     
     #find full length protein sequence
     pull_protein_seq <- All_target_seqs[grepl(hold_MAMP_seqs$Protein_Name[i], All_target_seqs$names),][1,3]
-    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "Full_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], sep = "|"),
-                          pull_protein_seq)
+    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "Full_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
+                          protein_of_interest[,3])
     colnames(temp_df) <- colnames(filC_full_length)
     filC_full_length <- rbind(filC_full_length, temp_df)
+    }
   }
-  setTxtProgressBar(pb, i)
+  if(hold_MAMP_seqs$MAMP_Hit[i] == "elf18_consensus"){
+    protein_of_interest <- All_target_seqs[grepl(hold_MAMP_seqs$Protein_Name[i], All_target_seqs$names),][1,]
+    if(grepl("factor", protein_of_interest[,2]) == T){
+      
+      
+      # put MAMP in database
+      temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "MAMP_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
+                            hold_MAMP_seqs$MAMP_Sequence[i])
+      colnames(temp_df) <- colnames(elf18_protein_seq)
+      elf18_protein_seq <- rbind(elf18_protein_seq, temp_df)
+      
+      #find full length protein sequence
+      pull_protein_seq <- All_target_seqs[grepl(hold_MAMP_seqs$Protein_Name[i], All_target_seqs$names),][1,3]
+      temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "Full_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
+                            protein_of_interest[,3])
+      colnames(temp_df) <- colnames(EFTu_full_length)
+      EFTu_full_length <- rbind(EFTu_full_length, temp_df)
+    }
+  }
   
+  
+  setTxtProgressBar(pb, i)
 }
 
 close(pb)
@@ -230,13 +257,6 @@ writeFasta<-function(data, filename){
 }
 
 
-writeFasta(csp_full_length, "./../csp22_full_length.fasta")
-
-
-######################################################################
-# reimport fasta file as DNA bin to load in ape to calculate Taijma D
-######################################################################
-
-csp22_full_length_fasta <- adegenet::fasta2DNAbin(file = file.choose())
-
-  
+writeFasta(csp_full_length, "./../Protein_alignments_and_trees/cold_shock_protein/csp22_full_length.fasta")
+writeFasta(EFTu_full_length, "./../Protein_alignments_and_trees/EfTu/elf18_full_length.fasta")
+writeFasta(filC_full_length, "./../Protein_alignments_and_trees/Flagellin/flg22_full_length.fasta")
