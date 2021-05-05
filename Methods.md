@@ -106,7 +106,13 @@ blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file
 done
 ```
 
-### 1. Build the MAMP database
+### 2. Processing MAMP database
+
+Run Process_MAMP_BLAST_results.R
+
+```
+source('Process_MAMP_BLAST_results.R)
+source
 
 
  

@@ -27,10 +27,6 @@ setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 #make sure to set path to the same place where the figure 
 source("./package_dependencies.R")
 
-source("./figure_colors.R")
-
-source("./Theme_ggplot.R")
-
 source("./CommonFunctions.R")
 
 ######################################################################
@@ -72,12 +68,14 @@ datasettable <- as.data.frame(datasettable[,1:7])
 # function - add protein description to blast results from protein annotation at fasta file
 ######################################################################
 
-#hold_protein_seqs <- 
+All_target_seqs <- data.frame("width" = numeric(0), "names" = character(0), "seq" = character(0))
 
+hold_MAMP_seqs <- data.frame("Protein_Name" = character(0), "MAMP_Hit" = character(0), "Percent_Identity" = numeric(0),
+                             "E-value" = numeric(0), "MAMP_length" = numeric(0), "MAMP_Sequence" = character(0), "Genera" = character(0),
+                             "Strain_Name" = character(0), "File_Name" = character(0), "Gram" = character(0))
 
-hold_MAMP_seqs <- data.frame("Protein_Name" = character(0), "MAMP_Hit" = character(0), "Percent_Identity" = character(0),
-                             "E-value" = character(0), "MAMP_length" = character(0), "MAMP_Sequence" = character(0), "Genera" = character(0),
-                             "Strain_Name" = character(0), "File_Name" = character(0))
+hold_copy_number <- data.frame("Genera" = character(1007), "Strain_Name" = character(1007), 
+                               "csp22_consensus" = numeric(1007), "elf18_consensus" = numeric(1007), "flg22_consensus" = numeric(1007))
   
 pb <- txtProgressBar(min = 0, max = length(load_protein_fasta_files), style = 3)
 
@@ -92,6 +90,8 @@ for (i in 1:length(load_protein_fasta_files)){
   # filter proteins in each fasta for those with the same locus tag as the blast results
   grab_right_protein_seq_blast_results <- read_protein_fasta[grepl(paste(read_blast_results$Protein_Name, collapse = "|"), 
                                                                    read_protein_fasta$names),]
+  
+  All_target_seqs <- rbind(All_target_seqs, grab_right_protein_seq_blast_results)
 
   # fix MAMP extension error from blast results
   for (j in 1:nrow(read_blast_results)){
@@ -122,105 +122,121 @@ for (i in 1:length(load_protein_fasta_files)){
   read_blast_results <- cbind(read_blast_results, 
                               rep(get_strain_info$Genera, nrow(read_blast_results)),
                               rep(get_strain_info$Strain_Name, nrow(read_blast_results)),
-                              rep(get_strain_info$Filename, nrow(read_blast_results)))
+                              rep(get_strain_info$Filename, nrow(read_blast_results)),
+                              rep(get_strain_info$Gram, nrow(read_blast_results)))
   
   
   colnames(read_blast_results) <- c("Protein_Name","MAMP_Hit","Percent_Identity","E-value","MAMP_length",
-                                    "MAMP_Sequence", "Genera", "Strain_Name", "File_Name")
-    
+                                    "MAMP_Sequence", "Genera", "Strain_Name", "File_Name","Gram")
   
+
+  
+  # components for counting copy number  
+  hold_temp <- data.frame(rbind(table(read_blast_results$MAMP_Hit)))
+  
+  
+  # count the number of copies per strain
+  hold_copy_number[i,1] <- unique(read_blast_results$Genera)
+  hold_copy_number[i,2] <- unique(read_blast_results$Strain_Name)
+  if (any(grepl("csp22_consensus", colnames(hold_temp))) == TRUE){
+    hold_copy_number[i,3] <- hold_temp$csp22_consensus
+  }
+  if (any(grepl("elf18_consensus", colnames(hold_temp))) == TRUE){
+    hold_copy_number[i,4] <- hold_temp$elf18_consensus
+  }
+  if (any(grepl("flg22_consensus", colnames(hold_temp))) == TRUE){
+    hold_copy_number[i,5] <- hold_temp$flg22_consensus
+  }
+
+
   hold_MAMP_seqs <- rbind(hold_MAMP_seqs, read_blast_results)
+  
   setTxtProgressBar(pb, i)
 }
 
 close(pb)
 
 
+hold_copy_number <- reshape2::melt(hold_copy_number)
+rm(hold_temp)
+
+######################################################################
+# filter through blast results, filter by annotation, and put into distict fasta files
+######################################################################
 
 
-##############################################
-# Load colors - Set tip labels to match other figures
-##############################################
+# dataframe for each combo
+csp22_protein_seq <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
+csp_full_length <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
 
-plot_points_Percent_Ident_of_MAMPs <- function(MAMP_of_interest, name_of_MAMP){
-  new_plot <- ggplot(MAMP_of_interest, aes(x = Genera, y = Percent_Identity, colour = Genera, fill = Genera)) +
-    geom_violin(color = "black") +
-    #geom_boxplot(color = "black", outlier.alpha = 0) +
-    #geom_quasirandom(varwidth = TRUE, method = "pseudorandom") +
-    #geom_jitter(alpha = 0.6, width = 0.2, height = 0.1) +
-    scale_color_manual("Genera", values = Genera_colors) +
-    scale_fill_manual("Genera", values = Genera_colors) +
-    my_ggplot_theme +
-    xlab("\n Genera") +
-    ylab("Percent Identity \n") +
-    scale_y_continuous(limits = c(20,100),
-                       breaks = c(20,30,40,50,60,70,80,90,100)) +
-    ggtitle(name_of_MAMP) +
-    theme(axis.text.x = element_text(angle = 90),
-          plot.title = element_text(face = "bold", size =12),
-          legend.position = "none") 
+flg22_protein_seq <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
+filC_full_length <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
+
+elf18_protein_seq <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
+EFTu_full_length <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
+
+pb <- txtProgressBar(min = 0, max = nrow(hold_MAMP_seqs), style = 3)
+
+for (i in 1:nrow(hold_MAMP_seqs)){
+  if(hold_MAMP_seqs$MAMP_Hit[i] == "csp22_consensus"){
+    # put MAMP in database
+    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "MAMP_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
+                          hold_MAMP_seqs$MAMP_Sequence[i])
+    colnames(temp_df) <- colnames(csp22_protein_seq)
+    csp22_protein_seq <- rbind(csp22_protein_seq, temp_df)
+    
+    #find full length protein sequence
+    pull_protein_seq <- All_target_seqs[grepl(hold_MAMP_seqs$Protein_Name[i], All_target_seqs$names),][1,3]
+    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "Full_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], i, sep = "|"),
+                          pull_protein_seq)
+    colnames(temp_df) <- colnames(csp_full_length)
+    csp_full_length <- rbind(csp_full_length, temp_df)
+  }
+  if(hold_MAMP_seqs$MAMP_Hit[i] == "flg22_consensus"){
+    # put MAMP in database
+    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "MAMP_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], sep = "|"),
+                          hold_MAMP_seqs$MAMP_Sequence[i])
+    colnames(temp_df) <- colnames(flg22_protein_seq)
+    flg22_protein_seq <- rbind(flg22_protein_seq, temp_df)
+    
+    #find full length protein sequence
+    pull_protein_seq <- All_target_seqs[grepl(hold_MAMP_seqs$Protein_Name[i], All_target_seqs$names),][1,3]
+    temp_df <- data.frame(paste(paste(">",hold_MAMP_seqs$Protein_Name[i], sep=""), hold_MAMP_seqs$MAMP_Hit[i], "Full_Seq", hold_MAMP_seqs$Genera[i], hold_MAMP_seqs$File_Name[i], sep = "|"),
+                          pull_protein_seq)
+    colnames(temp_df) <- colnames(filC_full_length)
+    filC_full_length <- rbind(filC_full_length, temp_df)
+  }
+  setTxtProgressBar(pb, i)
   
-  return(new_plot)
+}
+
+close(pb)
+
+
+######################################################################
+#  function to turn dataframe (where one column is the name and one column is the sequence)
+#   into a fasta file
+######################################################################
+
+writeFasta<-function(data, filename){
+  fastaLines = c()
+  for (rowNum in 1:nrow(data)){
+    fastaLines = c(fastaLines, data[rowNum,1])
+    fastaLines = c(fastaLines,data[rowNum,2])
+  }
+  fileConn<-file(filename)
+  writeLines(fastaLines, fileConn)
+  close(fileConn)
 }
 
 
-plot_points_Percent_Ident_of_MAMPs(subset(hold_MAMP_seqs, MAMP_Hit == 'csp22_consensus'), "csp22 and csp22-like")
-plot_points_Percent_Ident_of_MAMPs(subset(hold_MAMP_seqs, MAMP_Hit == 'elf18_consensus'), "elf18 and elf18-like")
-plot_points_Percent_Ident_of_MAMPs(subset(hold_MAMP_seqs, MAMP_Hit == 'flg22_consensus'), "flg22 and flg22-like")
-
-##############################################
-# Subset to make weblogos
-##############################################
-
-# seperate each group into genera
-Clav_only <- subset(hold_MAMP_seqs, Genera == "Clavibacter")
-Strep_only <- subset(hold_MAMP_seqs, Genera == "Streptomyces")
-Leif_only <- subset(hold_MAMP_seqs, Genera == "Leifsonia")
-Pseudo_only <- subset(hold_MAMP_seqs, Genera == "Pseudomonas")
-Rals_only <- subset(hold_MAMP_seqs, Genera == "Ralstonia")
-Curto_only <- subset(hold_MAMP_seqs, Genera == "Curtobacterium")
-Xanth_only <- subset(hold_MAMP_seqs, Genera == "Xanthomonas")
-Agro_only <- subset(hold_MAMP_seqs, Genera == "Agrobacterium")
-Rhodo_only <- subset(hold_MAMP_seqs, Genera == "Rhodococcus")
-Rathayi_only <- subset(hold_MAMP_seqs, Genera == "Rathayibacter")
+writeFasta(csp_full_length, "./../csp22_full_length.fasta")
 
 
+######################################################################
+# reimport fasta file as DNA bin to load in ape to calculate Taijma D
+######################################################################
 
-make_me_a_weblogo <- function(file_in){
-  logo <- ggseqlogo::ggseqlogo(file_in, seq_type='aa', method = 'bits') +
-    theme(panel.grid = element_blank(),
-          legend.position = "none", axis.text.x = element_blank(),
-          axis.text.y.left = element_text(color = "black", size = 12),
-          axis.title.x = element_text(color = "black", size = 12, vjust = 1),
-          axis.title.y = element_text(color = "black", size = 12, vjust = 1),
-         axis.ticks.x = element_blank())
+csp22_full_length_fasta <- adegenet::fasta2DNAbin(file = file.choose())
+
   
-  return(logo)
-}
-
-
-# weblogos ofr csp22 and csp22-like peptides
-make_me_a_weblogo(Clav_only[Clav_only$MAMP_Hit %in% 'csp22_consensus',6]) /
-  make_me_a_weblogo(Strep_only[Strep_only$MAMP_Hit %in% 'csp22_consensus',6]) /
-  make_me_a_weblogo(Leif_only[Leif_only$MAMP_Hit %in% 'csp22_consensus',6]) /
-  make_me_a_weblogo(Curto_only[Curto_only$MAMP_Hit %in% 'csp22_consensus',6]) /
-  make_me_a_weblogo(Rhodo_only[Rhodo_only$MAMP_Hit %in% 'csp22_consensus',6]) /
-  make_me_a_weblogo(Rathayi_only[Rathayi_only$MAMP_Hit %in% 'csp22_consensus',6]) /
-
-  make_me_a_weblogo(Agro_only[Agro_only$MAMP_Hit %in% 'csp22_consensus',6]) /
-  make_me_a_weblogo(Pseudo_only[Pseudo_only$MAMP_Hit %in% 'csp22_consensus',6]) /
-  make_me_a_weblogo(Rals_only[Rals_only$MAMP_Hit %in% 'csp22_consensus',6]) /
-  make_me_a_weblogo(Xanth_only[Xanth_only$MAMP_Hit %in% 'csp22_consensus',6])
-  
-# weblogos for elf18 and elf18-like peptides
-make_me_a_weblogo(Clav_only[Clav_only$MAMP_Hit %in% 'elf18_consensus',6]) /
-  make_me_a_weblogo(Strep_only[Strep_only$MAMP_Hit %in% 'elf18_consensus',6]) /
-  make_me_a_weblogo(Leif_only[Leif_only$MAMP_Hit %in% 'elf18_consensus',6]) /
-  make_me_a_weblogo(Curto_only[Curto_only$MAMP_Hit %in% 'elf18_consensus',6]) /
-  make_me_a_weblogo(Rhodo_only[Rhodo_only$MAMP_Hit %in% 'elf18_consensus',6]) /
-  make_me_a_weblogo(Rathayi_only[Rathayi_only$MAMP_Hit %in% 'elf18_consensus',6]) /
-  
-  make_me_a_weblogo(Agro_only[Agro_only$MAMP_Hit %in% 'elf18_consensus',6]) /
-  make_me_a_weblogo(Pseudo_only[Pseudo_only$MAMP_Hit %in% 'elf18_consensus',6]) /
-  make_me_a_weblogo(Rals_only[Rals_only$MAMP_Hit %in% 'elf18_consensus',6]) /
-  make_me_a_weblogo(Xanth_only[Xanth_only$MAMP_Hit %in% 'elf18_consensus',6])
