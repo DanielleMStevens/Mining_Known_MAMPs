@@ -2736,3 +2736,10 @@ Estimate model parameters (epsilon = 0.100)
 BETTER TREE FOUND at iteration 139: -14462.030
 Iteration 140 / LogL: -14498.244 / Time: 0h:10m:20s (0h:7m:22s left)
 Iteration 150 / LogL: -14466.623 / Time: 0h:11m:4s (0h:6m:36s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 160: -14461.735
+Iteration 160 / LogL: -14461.735 / Time: 0h:11m:45s (0h:7m:23s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 168: -14459.945
+Iteration 170 / LogL: -14468.962 / Time: 0h:12m:32s (0h:7m:16s left)
+Iteration 180 / LogL: -14479.267 / Time: 0h:13m:17s (0h:6m:31s left)

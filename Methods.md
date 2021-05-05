@@ -61,11 +61,13 @@ Once all the information is collected and put into a simple text file (/Genome_a
 where,
 
   ```
-  -p 4 : downland 4 genomes at a time in parallel
+   -p 4 : downland 4 genomes at a time in parallel
    -r 2 : retry downloading 2x before moving on
-   --flat-out: download all the files in the same place (one directory rather than each isolate having a dedicated directory)
+   --flat-out: download all the files in the same place (one directory rather than each isolate having a 
+   dedicated directory)
    -v : verbose
-   -F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, and protein fasta associtaed with the accession number
+   -F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, and protein fasta associtaed 
+   with the accession number
    ```
  Move all the download genomes in directories based on their file type/ending (i.e. genbank files in genbank folder).
  
@@ -94,12 +96,6 @@ This fasta file can be used to build a database to use blast to find if anything
 We can then go through each protein fasta file and pull out the peptide from the annotation. In this case, we can use a bash loop to blast each file. 
 
   ```
-  for file in *.faa 
-  do echo "$file" 
-  blastp -task blastp-fast -query $file -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 4 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length mismatch qseq" -out $file.txt 
-  done
-  ```
-  ```
   for file in *.faa
   do echo "$file"
   blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db \ ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 4 \
@@ -115,7 +111,7 @@ Run Process_MAMP_BLAST_results.R
   source('Process_MAMP_BLAST_results.R)
   ```
 
-3. Build Protein Trees of Full Length Sequences and their MAMPs
+### 3. Build Protein Trees of Full Length Sequences and their MAMPs
 
 We now can start building protein trees to understand their evolutionary history in respect to the MAMPs they encode for. We will run MAFFT to build our alignment and IQ-tree of make a maximum likelihood tree from the alignment. In each folder of which the fasta file was saved, the below commands were ran (names changed where needed).
 
