@@ -54,15 +54,6 @@ load_reference_MAMPs_fasta <- Biostrings::readAAStringSet(filepath = "./../MAMP_
 load_reference_MAMPs_fasta <- dss2df(load_reference_MAMPs_fasta)
 
 
-##############################################
-# load data which allows us to change accession name to strain name and add in genus info
-##############################################
-
-
-tip_data <- "./../Mining_for_known_MAMPs_genome_accession_info.xlsx" #choose Mining_for_known_MAMPs_genome_accession_info.xlsx
-datasettable <- readxl::read_xlsx(tip_data, col_names = T)
-datasettable <- as.data.frame(datasettable[,1:7])
-
 
 ######################################################################
 # function - add protein description to blast results from protein annotation at fasta file
@@ -74,7 +65,7 @@ hold_MAMP_seqs <- data.frame("Protein_Name" = character(0), "MAMP_Hit" = charact
                              "E-value" = numeric(0), "MAMP_length" = numeric(0), "MAMP_Sequence" = character(0), "Genera" = character(0),
                              "Strain_Name" = character(0), "File_Name" = character(0), "Gram" = character(0))
 
-hold_copy_number <- data.frame("Genera" = character(1007), "Strain_Name" = character(1007), 
+hold_copy_number <- data.frame("Genera" = character(1007), "Strain_Name" = character(1007), "Gram" = character(1007),
                                "csp22_consensus" = numeric(1007), "elf18_consensus" = numeric(1007), "flg22_consensus" = numeric(1007))
   
 pb <- txtProgressBar(min = 0, max = length(load_protein_fasta_files), style = 3)
@@ -138,14 +129,15 @@ for (i in 1:length(load_protein_fasta_files)){
   # count the number of copies per strain
   hold_copy_number[i,1] <- unique(read_blast_results$Genera)
   hold_copy_number[i,2] <- unique(read_blast_results$Strain_Name)
+  hold_copy_number[i,3] <- unique(read_blast_results$Gram)
   if (any(grepl("csp22_consensus", colnames(hold_temp))) == TRUE){
-    hold_copy_number[i,3] <- hold_temp$csp22_consensus
+    hold_copy_number[i,4] <- hold_temp$csp22_consensus
   }
   if (any(grepl("elf18_consensus", colnames(hold_temp))) == TRUE){
-    hold_copy_number[i,4] <- hold_temp$elf18_consensus
+    hold_copy_number[i,5] <- hold_temp$elf18_consensus
   }
   if (any(grepl("flg22_consensus", colnames(hold_temp))) == TRUE){
-    hold_copy_number[i,5] <- hold_temp$flg22_consensus
+    hold_copy_number[i,6] <- hold_temp$flg22_consensus
   }
 
 

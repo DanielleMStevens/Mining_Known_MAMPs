@@ -16,6 +16,8 @@
 #biocLite("Biostrings")
 #BiocManager::install("Biostrings") #if this package won't compile, run the following line on the command line: sudo apt-get install libnlopt-dev
 #BiocManager::install('XVector')
+#BiocManager::install("ggtreeExtra")
+
 
 library(ggplot2)
 library(extrafont)

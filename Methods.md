@@ -120,12 +120,57 @@ We now can start building protein trees to understand their evolutionary history
   # --localpair, slowest but most accurate method of alignment
   # --reorder, reorder entries in fasta file to improve alignment
   
-  iqtree -s csp22_full_length_alignment -st AA -bb 1000 -mtree -nt 12
+  iqtree -s csp22_full_length_alignment -st AA -bb 1000 -mtree -nt 12 -keep-ident	-safe
   # -s, input alignment file
   # -st, file type (in this case amino acids, hence AA)
   # -bb 1000, number of ultrafast bootstrapping ran on the tree
   # -mtree, iterate thorugh all models to find the best one
   # -nt 12, number of threads used to run analysis (I have max 16)
+  ```
+
+  Run Tree_plotting.R to plot protein and main core gene trees. These trees will be outputed as pdf's at a preset size.
+
+# Pulling out Core genes shared between all strains, species, and genera
+
+In order to build a core gene phyloogeny as well as pull out core genes to calculate Tajima's D, we can use roary to authomate a lot of this. But, unforunately, it doesn't take gbff files (only gff3) and so we need to convert the files before running.
+
+### 1. Prep files for Core Gene analysis
+
+First, we can use a script from [Biocode](https://github.com/jorvis/biocode) which is a set of python scripts for file conversion, among other things. The gbff_to_gff3 script was copied and then the below coommands were ran to complete the install:
+  
+  ```
+  conda deactivate # deactivate conda environment before installing python backage (prevents some weird package conflicts)
+  
+  apt-get install -y python3 python3-pip zlib1g-dev libblas-dev liblapack-dev libxml2-
+  pip3 install biocode
+  ```
+
+We can then create a folder to hold the gff3 files
+
+  ```
+  for file in *.gbff
+  do
+        echo "$file"
+        python ./../../Mining_Known_MAMPs/python_scripts/convert_genbank_to_gff3.py -i ./../../Whole_Genomes/genbank/$file -o ./../gff3_files/$file.gff3
+  done
+  ```
+
+  ```
+  conda config --add channels r
+  conda config --add channels defaults
+  conda config --add channels conda-forge
+  conda config --add channels bioconda
+  conda install roary
+  ```
+
+# Assessing similarity of genomes in repsect to MAMP diversification
+
+One concern is despite trying to sample for a semi-large data set of genomes in a semi-random manner, if all the genomes are clonal in nature, it's difficult to make any claims in MAMP diveristy. To assess this, we are going to take two different appraoches which should bring us to similar conclusions. One includes building a core gene phylogency (see above) and another is running an ANI analysis. Since I've already built a script to do the same thing for another project, we are going to repurpose that script to do the same in this dataset as well as some downstream analyses. FastANI, software repo seen here, can be used to make these calculations in an automated manner. 
+
+
+  ```
+  ls > MAMP_diversification_ANI_file.txt
+  fastANI --rl /path/to/Contig_paths_for_ANI.txt --ql /path/to/Contig_paths_for_ANI.txt -o Clavibacter_ANI_comparison
   ```
 
  
