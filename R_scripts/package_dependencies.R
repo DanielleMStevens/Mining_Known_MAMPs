@@ -37,9 +37,46 @@ library(stringr)
 library(readr)
 library(rstudioapi)
 library(plotly)
-library(ggpubr)
-library(rstatix)
+#library(ggpubr)
+#library(rstatix)
 library(phylotools)
 library(scales)
+library(mat)
+library(rJava)
+library(ggnewscale)
+library(phangorn)
+library(treeio)
+library(ggtree)
+library(ggplot2)
+library(tidyr)
+library(ggfortify)
+library(dplyr)
+
+##############################################
+# Install packages if needed 
+##############################################
+
+#If the required R packages are not found, install them
+#If they are installed you can delete these three lines
+list_of_packages <- c('rJava','ggnewscale', 'phangorn','tidyverse',
+                      'xlsx','ggplot2','ggtree','treeio','tidyr',
+                      'ggfortify')
+install.packages(list_of_packages)
+
+#Note: If you have issues installing ggtree and treeio from CRAN, 
+#      try installing them using BiocManager
+
+
+#if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install(version="3.9")
+BiocManager::install("ggtree")
+BiocManager::install("treeio")
+
+##############################################
+# load the required packages
+##############################################
+
+
+
 
 #library(Biostrings)

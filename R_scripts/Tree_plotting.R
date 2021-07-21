@@ -8,56 +8,66 @@
 #-----------------------------------------------------------------------------------------------
 
 
-##############################################
-# Install packages if needed 
-##############################################
-
-#If the required R packages are not found, install them
-#If they are installed you can delete these three lines
-list_of_packages <- c('rJava','ggnewscale', 'phangorn','tidyverse',
-                      'xlsx','ggplot2','ggtree','treeio','tidyr',
-                      'ggfortify')
-install.packages(list_of_packages)
-
-#Note: If you have issues installing ggtree and treeio from CRAN, 
-#      try installing them using BiocManager
-
-
-#if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-BiocManager::install(version="3.9")
-BiocManager::install("ggtree")
-BiocManager::install("treeio")
-
-##############################################
-# load the required packages
-##############################################
-
-library(rJava)
-library(ggnewscale)
-library(phangorn)
-library(treeio)
-library(ggtree)
-library(ggplot2)
-library(tidyr)
-library(ggfortify)
-library(dplyr)
-
-
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 
 ##############################################
 # Load colors - Set tip labels to match other figures
 ##############################################
 
-#make sure to set path to the same place where the figure 
-source("./figure_colors.R")
-
 ##datasettable <- datasettable[,c(7,1:6),]
  
-if(exists("datasettable") == FALSE){
-  source("./tree_tip_data.R")
+#if(exists("datasettable") == FALSE){
+# source("./tree_tip_data.R")
+#}
+
+
+##############################################
+# ANI based phylogeny
+##############################################
+
+row_dend = hclust(dist(empty_ANI_matrix))
+
+# change out label names
+for (i in 1:length(row_dend$labels)){
+  accession_label <- paste(strsplit(row_dend$labels[[i]], "_")[[1]][1],
+                           strsplit(row_dend$labels[[i]], "_")[[1]][2],
+                           sep = "_")
+  row_dend$labels[[i]] <- datasettable[datasettable$Assembly_Accession %in% accession_label,7]
 }
+
+map_data <- datasettable[,c(7,1:6)]
+
+csp22_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "csp22_consensus")
+map_data <- cbind(map_data, "csp22_consensus" = csp22_copy_number[match(map_data[,1], csp22_copy_number[,2]),3])
+
+elf18_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "elf18_consensus")
+map_data <- cbind(map_data, "elf18_consensus" = elf18_copy_number[match(map_data[,1], elf18_copy_number[,2]),3])
+
+flg22_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "flg22_consensus")
+map_data <- cbind(map_data, "flg22_consensus" = flg22_copy_number[match(map_data[,1], flg22_copy_number[,2]),3])
+map_data[is.na(map_data$flg22_consensus),10] <- 0
+
+
+
+ggtree::ggtree(as.dendrogram(row_dend), layout = 'circular', ladderize = T, 
+               size = 0.35, linetype = 1) %<+% map_data +
+  geom_fruit(geom = geom_tile, mapping = aes(color = Genera, fill = Genera), width = 30,
+             offset = 0.02, axis.params = list(line.color = "black")) +
+  scale_color_manual("Genera", values = Genera_colors) +
+  scale_fill_manual("Genera", values = Genera_colors) +
+  ggnewscale::new_scale_fill() +
+
+  geom_fruit(geom = geom_tile, mapping = aes(fill = csp22_consensus), width = 35,
+             offset = 0.05) +
+  geom_fruit(geom = geom_tile, mapping = aes(fill = elf18_consensus), width = 35,
+             offset = 0.05) + 
+  geom_fruit(geom = geom_tile, mapping = aes(fill = flg22_consensus), width = 35,
+             offset = 0.05) +
+  scale_fill_gradient(low = "white", high = "black", breaks = c(0,2,4,6,8,10,12,14), guide = "legend")
+
+
+
+
 
 ##############################################
 # core gene phylogeny

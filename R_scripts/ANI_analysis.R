@@ -20,26 +20,10 @@ library(cluster)
 # point to folder with DNA contig files, need to all be formated by Species_Strain.fasta (ex. CC_PF008.fasta)
 #########################################################################
 
-# select one file to provide the path of the folder of interest
-#directory_of_interest <- file.choose()
-#directory_of_interest <- dirname(directory_of_interest)
+# defines a name list to consistently order genera
+name_list <- c('Clavibacter','Leifsonia','Rathayibacter','Curtobacterium','Rhodococcus','Streptomyces',
+               'Agrobacterium','Ralstonia','Xanthomonas','Pseudomonas')
 
-# in my case the files are listed in a directory 
-#directory_of_interest <- dirname("/media/danimstevens/Second_storage/Genomes/DNA_contigs/CC_PF008.fasta")
-#list_genomes <- list.files(directory_of_interest)
-
-
-#########################################################################
-# create text file that carries path for each genome
-#########################################################################
-
-
-#for (i in 1:length(list_genomes)){
-  list_genomes[[i]] <- paste(directory_of_interest, list_genomes[[i]], sep="/")
-}
-
-
-#lapply(list_genomes, write, "Contig_paths_for_ANI.txt", append = TRUE)
 
 
 
@@ -109,7 +93,7 @@ ANI_output <- filter_title(ANI_output,".fna")
 
 
 for (i in 1:nrow(ANI_output)){
-  if (ANI_output$ANI_val[i] < 80){
+  if (strsplit(ANI_output$Genome1[i], "_")[[1]][1] != strsplit(ANI_output$Genome2[i], "_")[[1]][1]){
     ANI_output$ANI_val[i] <- 0
   }
 }
@@ -134,16 +118,6 @@ empty_ANI_matrix[as.matrix(ANI_output[c(2,1)])] <- ANI_output$ANI_val
 # reorganize table for plotting
 #########################################################################
 
-
-#ANI_names$species <- paste(ANI_names$V2, ANI_names$V3, sep = " ")
-#ANI_names$V2 <- NULL
-#ANI_names$V3 <- NULL
-#colnames(ANI_names) <- c("Strain", "Species")
-
-
-#ANI_names <- ANI_names[match(rownames(ANI_output), ANI_names$Strain),]
-#rownames(ANI_names) <- ANI_names$Strain
-#ANI_names$Strain <- NULL
 
 
 #########################################################################
@@ -183,7 +157,9 @@ row_dend = as.dendrogram(hclust(dist(empty_ANI_matrix)))
 
 
 ANI_heatmap <- ComplexHeatmap::Heatmap(empty_ANI_matrix,
-                              #cluster_rows = agnes, 
+                                 #      cluster_rows = diana,
+                              #cluster_rows = agnes,
+                              #cluster_columns = agnes,
                               cluster_rows = row_dend,
                               cluster_columns = row_dend,
                               row_dend_reorder = T,
@@ -211,7 +187,7 @@ ANI_heatmap <- ComplexHeatmap::Heatmap(empty_ANI_matrix,
                               )
 )
 
-
+ANI_heatmap
 
 #########################################################################
 # subset each group by Genera and plot values
@@ -253,21 +229,24 @@ for (i in 1:nrow(copy_ANI)){
 copy_ANI <- na.omit(copy_ANI)
 
 
-ANI_plot_ggplot <-  ggplot(copy_ANI, aes(x = factor(Genera, level = name_list), y = ANI_val,
+ANI_plot_ggplot <- ggplot(copy_ANI, aes(x = factor(Genera, level = name_list), y = ANI_val,
                     fill = Genera, color = Genera)) +
   geom_violin(alpha = 0.4, scale = "width", trim = F) +
   #geom_jitter() +
   ylim(75, 100) +
-  xlab("\nGenera") +
+  xlab("Genera\n") +
   ylab("ANI Value\n") +
   scale_color_manual("Genera", values = Genera_colors) +
   scale_fill_manual("Genera", values = Genera_colors) +
   my_ggplot_theme +
   theme(axis.text.x = element_text(color ="black"),
-        legend.position = "none")
+        legend.position = "none") +
+  coord_flip()
 
 
-#########################################################################
+ANI_plot_ggplot
+
+xs#########################################################################
 # subset each group by Genera and plot values
 #########################################################################
 
