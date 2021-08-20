@@ -1,3 +1,13 @@
+#-----------------------------------------------------------------------------------------------
+# Coaker Lab - Plant Pathology Department UC Davis
+# Author: Danielle M. Stevens
+# Last Updated: 07/06/2020
+# Script Purpose: 
+# Inputs: 
+# Outputs: 
+#-----------------------------------------------------------------------------------------------
+
+
 
 ######################################################################
 # filter through blast results, filter by annotation, and put into distict fasta files
@@ -35,6 +45,9 @@ for (i in 1:nrow(hold_MAMP_seqs)){
   }
   if(hold_MAMP_seqs$MAMP_Hit[i] == "flg22_consensus"){
     protein_of_interest <- All_target_seqs[grepl(hold_MAMP_seqs$Protein_Name[i], All_target_seqs$names),][1,]
+    if(grepl("Agrobacterium", protein_of_interest[,2]) == T){
+      print(protein_of_interest)
+    }
     if(grepl("flagellin", protein_of_interest[,2]) == T){
       
       
@@ -79,23 +92,18 @@ for (i in 1:nrow(hold_MAMP_seqs)){
 close(pb)
 
 
+
 ######################################################################
-#  function to turn dataframe (where one column is the name and one column is the sequence)
-#   into a fasta file
+# filter through blast results, filter by annotation, and put into distict fasta files
 ######################################################################
 
-writeFasta<-function(data, filename){
-  fastaLines = c()
-  for (rowNum in 1:nrow(data)){
-    fastaLines = c(fastaLines, data[rowNum,1])
-    fastaLines = c(fastaLines,data[rowNum,2])
-  }
-  fileConn<-file(filename)
-  writeLines(fastaLines, fileConn)
-  close(fileConn)
-}
+
+#writeFasta(csp_full_length, "./../Protein_alignments_and_trees/cold_shock_protein/csp22_full_length.fasta")
+#writeFasta(EFTu_full_length, "./../Protein_alignments_and_trees/EfTu/elf18_full_length.fasta")
+#writeFasta(filC_full_length, "./../Protein_alignments_and_trees/Flagellin/flg22_full_length.fasta")
 
 
-writeFasta(csp_full_length, "./../Protein_alignments_and_trees/cold_shock_protein/csp22_full_length.fasta")
-writeFasta(EFTu_full_length, "./../Protein_alignments_and_trees/EfTu/elf18_full_length.fasta")
-writeFasta(filC_full_length, "./../Protein_alignments_and_trees/Flagellin/flg22_full_length.fasta")
+
+#writeFasta(csp22_protein_seq, "./../Protein_alignments_and_trees/cold_shock_protein/csp22.fasta")
+#writeFasta(elf18_protein_seq, "./../Protein_alignments_and_trees/EfTu/elf18.fasta")
+#writeFasta(flg22_protein_seq, "./../Protein_alignments_and_trees/Flagellin/flg22.fasta")

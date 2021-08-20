@@ -25,8 +25,8 @@
   #make sure to set path to the same place where the figure 
   source("./package_dependencies.R")
   
+
   source("./CommonFunctions.R")
-  
   
 
 
@@ -46,6 +46,7 @@
   # the MAMPs that we might have missed in the BLAST search (esspecially for flg22)
   source("./Find_MAMPs_by_annotation.R")
   
+
   # mamps by blast is in "hold_MAMP_seq" and mamps found by annotation are in "All_target_by_annotation"
   source("./combine_blast_and_annotation_results.R")
 
@@ -55,6 +56,12 @@
 ##############################################
 
 
+
+##############################################
+# writing MAMP hits to fasta files for protein tree building
+##############################################
+
+  source("./Write_MAMP_hits_to_fasta.R")
 
 
 ##############################################

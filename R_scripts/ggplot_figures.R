@@ -25,6 +25,8 @@
 
 #plot(two.group.unpaired)
 
+
+
 ##############################################
 # Plot the similarity of the MAMP to the consensus seperate by Gram-type, MAMP, or both
 ##############################################
@@ -37,10 +39,12 @@
   
   Gram_type <- ggplot(data = hold_MAMP_seqs, aes(x = Gram, y = Percent_Identity)) +
   my_ggplot_theme +
-  geom_violin(fill = "grey20", alpha = 0.3, scale = "width", trim = F) +
+  geom_violin(aes(fill = Gram), alpha = 0.9, scale = "width", trim = F) +
   geom_boxplot(color = "black", fill = "white", outlier.alpha = 0, width = 0.1) +
+  scale_fill_manual("Gram Type", values = Gram_colors) +
   ylab("Percent AA Similarity") +
-  theme(axis.text.x = element_text(color = "black", size = 16),
+  theme(legend.position = "none",
+        axis.text.x = element_text(color = "black", size = 16),
           axis.text.y = element_text(color = "black", size = 14),
           axis.title = element_text(color = "black", face = "bold", size = 14),
           axis.line = element_line(colour = "black", 
@@ -49,35 +53,46 @@
                        limits = c(0,110)) +
     geom_text(data = n_number, aes(x = Gram, y = 110, label = n), size = 5)
   
+  
+  
+  Gram_type + 
+    ggplot(hold_MAMP_seqs, aes(color = Gram, y = Percent_Identity)) + 
+    stat_ecdf(geom = "step", size = 1.5) +
+    my_ggplot_theme +
+    ylab("Cumulative probability") +
+    scale_color_manual("Gram Type", values = Gram_colors) +
+    theme(legend.position = "none")
+  
+  
+  
   # save plot
-  ggsave(Gram_type, filename = "./Figures/Plot_MAMP_similarity_by_Gram_type.pdf", 
-         device = cairo_pdf, width = 3, height = 3, units = "in")
+  #ggsave(Gram_type, filename = "./../Figures/Plot_MAMP_similarity_by_Gram_type.pdf", device = cairo_pdf, width = 3, height = 3, units = "in")
 
+  
 
   
 ##############################################
-# Plot the similarity of the MAMP to the consensus seperate by Gram-type, MAMP, or both
+# Plot the similarity of the MAMP to the consensus seperate by MAMP
 ##############################################
   
   # plots all MAMPs grouped by MAMP type
-  location_color <- c("csp22_consensus" = "#00AFBB", "elf18_consensus" = "#00AFBB",
-                      "flg22_consensus" = "#E7B800")
-  
+ 
   n_number <- as.data.frame(hold_MAMP_seqs %>% group_by(MAMP_Hit) %>% summarise(n=n()))
 
   
   MAMP_type <- ggplot(hold_MAMP_seqs, 
                       aes(x = MAMP_Hit, y = Percent_Identity)) +
   my_ggplot_theme +
-  geom_violin(fill = "grey20", alpha = 0.3,scale = "width", trim = F) +
+  geom_violin(aes(fill = MAMP_Hit), alpha = 0.9,scale = "width", trim = T) +
   geom_boxplot(color = "black", fill = "white", outlier.alpha = 0, width = 0.1) +
   ylab("Percent AA Similarity") +
+  scale_fill_manual("MAMP", values = MAMP_colors) +
   scale_x_discrete(name ="MAMP", 
                    labels=c("csp22_consensus" = "csp22", 
                             "elf18_consensus" = "elf18",
                             "flg22_consensus" = "flg22")) +
-  #scale_color_manual(values = location_color) +
-  theme(axis.text.x = element_text(color = "black", size = 14),
+  theme(legend.position = "none",
+        axis.text.x = element_text(color = "black", size = 14),
         axis.text.y = element_text(color = "black", size = 14),
         axis.title = element_text(color = "black", face = "bold", size = 14),
         axis.line = element_line(colour = "black", 
@@ -87,16 +102,28 @@
     geom_text(data = n_number, 
               aes(x = MAMP_Hit, y = 110, label = n), size = 5)
   
-  ggsave(MAMP_type, filename = "./Figures/Plot_MAMP_similarity_by_MAMP_type.pdf", 
-         device = cairo_pdf, width = 5, height = 4, units = "in")
+ 
+  MAMP_type <- MAMP_type + ggplot(hold_MAMP_seqs, aes(color = MAMP_Hit, x = Percent_Identity)) + 
+    #stat_qq() +
+    scale_color_manual("MAMP", values = MAMP_colors) +
+    stat_ecdf(geom = "step", size = 1.5) +
+    my_ggplot_theme +
+    scale_x_continuous(breaks = c(0,25,50,75,100)) +
+    ylab("Cumulative probability") +
+    xlab("Percent AA Similarity") +
+    theme(legend.position = "none") 
+  
+  
+  #ggsave(MAMP_type, filename = "./../Figures/Plot_MAMP_similarity_by_MAMP_type.pdf", device = cairo_pdf, width = 5, height = 4, units = "in")
   
   
   # copy number of MAMPs (not seperated by Gram type)
   MAMP_type_copy_number <- ggplot(subset(hold_copy_number, n != 0), aes(x = MAMP_Hit, y = n)) +
     my_ggplot_theme +
-    geom_violin(fill = "grey20", alpha = 0.3, scale = "width", trim = F) +
+    geom_violin(aes(fill = MAMP_Hit), alpha = 0.9, scale = "width", trim = T) +
     geom_boxplot(color = "black", fill = "white", outlier.alpha = 0, width = 0.1) +
     ylab("Number of MAMP Encoding\nProtein Sequences") +
+    scale_fill_manual("MAMP", values = MAMP_colors) +
     scale_y_continuous(limits = c(0,18),
                        breaks = c(0,2,4,6,8,10,12,14,16,18)) +
     scale_x_discrete(name ="MAMP", 
@@ -104,20 +131,41 @@
                               "elf18_consensus" = "elf18",
                               "flg22_consensus" = "flg22")) +
                               #'nlp20_consensus' = "nlp20")) +
-    theme(axis.text.x = element_text(color = "black", size = 14),
+    theme(legend.position = "none",
+          axis.text.x = element_text(color = "black", size = 14),
           axis.text.y = element_text(color = "black", size = 14),
           axis.title = element_text(color = "black", face = "bold", size = 14),
           axis.line = element_line(colour = "black", 
                                    size = 0.4, linetype = "solid")) 
     #geom_text(data = n_number, aes(x = MAMP_Hit, y = 18, label = n), size = 5)
   
+  
+    MAMP_type_copy_number <- MAMP_type_copy_number +  ggplot(subset(hold_copy_number, n != 0), aes(color = MAMP_Hit, x = n)) + 
+      #stat_qq() +
+      stat_ecdf(geom = "step", size = 1.5) +
+      my_ggplot_theme +
+      scale_color_manual("MAMP", values = MAMP_colors) +
+      ylab("Cumulative probability")  +
 
-    ggsave(MAMP_type_copy_number, filename = "./Figures/Plot_MAMP_number_by_MAMP_type.pdf", 
-           device = cairo_pdf, width = 5, height = 4, units = "in")
+      scale_x_continuous(limits = c(0,18),
+                         breaks = c(0,2,4,6,8,10,12,14,16,18)) +
+      theme(legend.position = "none")
+    
   
+
+    #ggsave(MAMP_type_copy_number, filename = "./../Figures/Plot_MAMP_number_by_MAMP_type.pdf", device = cairo_pdf, width = 5, height = 4, units = "in")
   
+    
+    ##############################################
+    # Plot the similarity of the MAMP to the consensus seperate by Gram-type and MAMP
+    ##############################################
+  
+    
   # plots all MAMPs grouped by MAMP type and further seperated by Gram type
   dodge <- position_dodge(width = 1)
+  
+  n_number <- as.data.frame(hold_MAMP_seqs %>% group_by(MAMP_Hit, Gram) %>% summarise(n=n()))
+  
   
   MAMP_vs_Gram <- ggplot(hold_MAMP_seqs, aes(x = MAMP_Hit, y = Percent_Identity, fill = Gram)) +
     theme_classic() +
@@ -134,13 +182,21 @@
           axis.title = element_text(color = "black", face = "bold", size = 14),
           axis.line = element_line(colour = "black", 
                                    size = 0.4, linetype = "solid")) +
-    ylim(0,100)
+    scale_y_continuous(breaks = c(0,25,50,75,100),
+                       limits = c(0,110)) +
+    geom_text(data = n_number, 
+              aes(group = interaction(Gram, MAMP_Hit), y = 110, label = n), position = dodge, size = 5)
   
   
-  MAMP_vs_Gram_copy_number <- ggplot(subset(hold_copy_number, value != 0), aes(x = variable, y = value, fill = Gram)) +
+  ggsave(MAMP_vs_Gram, filename = "./../Figures/Plot_MAMP_similarity_by_MAMP and Gram.pdf", device = cairo_pdf, width = 6, height = 3.5, units = "in")
+  
+  
+  
+  
+  MAMP_vs_Gram_copy_number <- ggplot(subset(hold_copy_number, n != 0), aes(x = MAMP_Hit, y = n, fill = Gram)) +
     my_ggplot_theme +
     geom_violin(position = dodge, scale = "width") +
-    geom_boxplot(aes(group = interaction(Gram, variable)), position = dodge, fill = "white", color = "black", outlier.alpha = 0, width = 0.1) +
+    geom_boxplot(aes(group = interaction(Gram, MAMP_Hit)), position = dodge, fill = "white", color = "black", outlier.alpha = 0, width = 0.1) +
     ylab("Number of MAMP Encoding\nProtein Sequences") +
     scale_y_continuous(limits = c(0,14),
                        breaks = c(0,2,4,6,8,10,12,14)) +
@@ -155,7 +211,10 @@
           axis.line = element_line(colour = "black", 
                                    size = 0.4, linetype = "solid")) 
   
-  (MAMP_type | MAMP_vs_Gram) + plot_layout(guides = 'collect')
+  ggsave(MAMP_vs_Gram_copy_number, filename = "./../Figures/Plot_MAMP_number_by_MAMP and Gram.pdf", 
+         device = cairo_pdf, width = 6, height = 3.2, units = "in")
+  
+  #(MAMP_type | MAMP_vs_Gram) + plot_layout(guides = 'collect')
   
   #/ (MAMP_type_copy_number | MAMP_vs_Gram_copy_number)
   
@@ -189,7 +248,7 @@
   
   plot_copy_number <- function(data_to_plot){
     
-    new_plot <- ggplot(data_to_plot, aes(x = factor(Genera, level = name_list), y = value, colour = Genera, fill = Genera)) +
+    new_plot <- ggplot(data_to_plot, aes(x = factor(Genera, level = name_list), y = n, colour = Genera, fill = Genera)) +
       geom_violinhalf(color = "black", trim = T, scale = "width") +
       geom_boxplot(color = "black", fill = "white", outlier.alpha = 0, width = 0.15) +
       scale_color_manual("Genera", values = Genera_colors) +
@@ -233,7 +292,7 @@
   
   # prepare and plot the data of similarity versus copy number for csp22 eptitopes
   Similarity_csp22 <- plot_points_Percent_Ident_of_MAMPs(subset(hold_MAMP_seqs, MAMP_Hit == 'csp22_consensus')) 
-  Copy_number_csp22 <- plot_copy_number(subset(hold_copy_number, variable == "csp22_consensus"))
+  Copy_number_csp22 <- plot_copy_number(subset(hold_copy_number, MAMP_Hit == "csp22_consensus"))
   csp22_combined_plots <- Similarity_csp22 + Copy_number_csp22 + plot_tajmaD(subset(hold_taijma_D_values, MAMP_Hit == "csp22_consensus"))
   
   ggsave(csp22_combined_plots, filename = "./../Figures/Plot_MAMP_similarity_by_genera_csp22.pdf", 
@@ -242,8 +301,8 @@
   
   # prepare and plot the data of similarity versus copy number for elf18 eptitopes
   Similarity_elf18 <- plot_points_Percent_Ident_of_MAMPs(subset(hold_MAMP_seqs, MAMP_Hit == 'elf18_consensus'))
-  hold_elf18_copy_number_data <- subset(hold_copy_number, variable == "elf18_consensus")
-  hold_elf18_copy_number_data <- hold_elf18_copy_number_data[hold_elf18_copy_number_data$value != 0, ]
+  hold_elf18_copy_number_data <- subset(hold_copy_number, MAMP_Hit == "elf18_consensus")
+  hold_elf18_copy_number_data <- hold_elf18_copy_number_data[hold_elf18_copy_number_data$n != 0, ]
   Copy_number_elf18 <- plot_copy_number(hold_elf18_copy_number_data)
   elf18_combined_plots <- Similarity_elf18 + Copy_number_elf18 + plot_tajmaD(subset(hold_taijma_D_values, MAMP_Hit == "elf18_consensus"))
     
@@ -253,8 +312,8 @@
   
   # prepare and plot the data of similarity versus copy number for elf18 eptitopes
   Similarity_flg22 <- plot_points_Percent_Ident_of_MAMPs(subset(hold_MAMP_seqs, MAMP_Hit == 'flg22_consensus')) 
-  hold_flg22_copy_number_data <- subset(hold_copy_number, variable == "flg22_consensus")
-  hold_flg22_copy_number_data <- hold_flg22_copy_number_data[hold_flg22_copy_number_data$value != 0, ]
+  hold_flg22_copy_number_data <- subset(hold_copy_number, MAMP_Hit == "flg22_consensus")
+  hold_flg22_copy_number_data <- hold_flg22_copy_number_data[hold_flg22_copy_number_data$n != 0, ]
   Copy_number_flg22 <- plot_copy_number(hold_flg22_copy_number_data)
     
   

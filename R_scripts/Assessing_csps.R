@@ -14,6 +14,8 @@
 # Load colors - Set tip labels to match other figures
 ##############################################
 
+
+######### csp22 peptide
 csp22_MAMP_seqs <- subset(hold_MAMP_seqs, hold_MAMP_seqs$MAMP_Hit == "csp22_consensus")
 
 # which csp22 sequences are unique
@@ -25,10 +27,57 @@ pb <- txtProgressBar(min = 0, max = length(csp22_unique), style = 3)
 csp22_sim_score <- data.frame("MAMP_v1" = character(0), "MAMP_v2" = character(0), "Percent_sim" = numeric(0))
 for (i in 1:length(csp22_unique)){
   for (j in 2:length(csp22_unique)){
-    test2 <- Biostrings::pairwiseAlignment(csp22_unique[[i]], csp22_unique[[j]], type = "global")
+    test2 <- Biostrings::pairwiseAlignment(csp22_unique[[i]], csp22_unique[[j]], type = "global", substitutionMatrix = BLOSUM62)
     hold_score <- Biostrings::pid(test2, type = "PID1")
     csp22_sim_score <- rbind(csp22_sim_score, data.frame("MAMP_v1" = csp22_unique[[i]],
                                                          "MAMP_v2" = csp22_unique[[j]],
+                                                         "Percent_sim" = hold_score))
+  }
+  setTxtProgressBar(pb, i)
+  print(i)
+} 
+
+
+######### flg22 peptide
+flg22_MAMP_seqs <- subset(hold_MAMP_seqs, hold_MAMP_seqs$MAMP_Hit == "flg22_consensus")
+
+# which csp22 sequences are unique
+flg22_unique <- unique(flg22_MAMP_seqs$MAMP_Sequence)
+
+
+# this takes a long time to complete -1.5-2 hours
+pb <- txtProgressBar(min = 0, max = length(flg22_unique), style = 3)
+flg22_sim_score <- data.frame("MAMP_v1" = character(0), "MAMP_v2" = character(0), "Percent_sim" = numeric(0))
+for (i in 1:length(flg22_unique)){
+  for (j in 2:length(flg22_unique)){
+    test2 <- Biostrings::pairwiseAlignment(flg22_unique[[i]], flg22_unique[[j]], type = "global")
+    hold_score <- Biostrings::pid(test2, type = "PID1")
+    flg22_sim_score <- rbind(flg22_sim_score, data.frame("MAMP_v1" = flg22_unique[[i]],
+                                                         "MAMP_v2" = flg22_unique[[j]],
+                                                         "Percent_sim" = hold_score))
+  }
+  setTxtProgressBar(pb, i)
+  print(i)
+} 
+
+
+
+######### elf18 peptide
+elf18_MAMP_seqs <- subset(hold_MAMP_seqs, hold_MAMP_seqs$MAMP_Hit == "elf18_consensus")
+
+# which csp22 sequences are unique
+elf18_unique <- unique(elf18_MAMP_seqs$MAMP_Sequence)
+
+
+# this takes a long time to complete -1.5-2 hours
+pb <- txtProgressBar(min = 0, max = length(elf18_unique), style = 3)
+elf18_sim_score <- data.frame("MAMP_v1" = character(0), "MAMP_v2" = character(0), "Percent_sim" = numeric(0))
+for (i in 1:length(elf18_unique)){
+  for (j in 2:length(elf18_unique)){
+    test2 <- Biostrings::pairwiseAlignment(elf18_unique[[i]], elf18_unique[[j]], type = "global")
+    hold_score <- Biostrings::pid(test2, type = "PID1")
+    elf18_sim_score <- rbind(elf18_sim_score, data.frame("MAMP_v1" = elf18_unique[[i]],
+                                                         "MAMP_v2" = elf18_unique[[j]],
                                                          "Percent_sim" = hold_score))
   }
   setTxtProgressBar(pb, i)
@@ -41,11 +90,23 @@ for (i in 1:length(csp22_unique)){
 ##############################################
 
 consensus_csp22 <- c("AVGTVKWFNAEKGFGFITPDDG")
+consensus_flg22 <- c("QRLSTGSRINSAKDDAAGLQIA")
+consensus_elf18 <- c("SKEKFERTKPHVNVGTIG")
+
+
+##############################################
+# how often does each version of the epitope occur
+##############################################
+
+csp22_occurance <- as.data.frame(csp22_MAMP_seqs %>% group_by(MAMP_Sequence) %>% summarise(n=n()))
+flg22_occurance <- as.data.frame(flg22_MAMP_seqs %>% group_by(MAMP_Sequence) %>% summarise(n=n()))
+elf18_occurance <- as.data.frame(elf18_MAMP_seqs %>% group_by(MAMP_Sequence) %>% summarise(n=n()))
+
 
 
 
 #########################################################################
-# reorganize table for plotting
+# reorganize table for plotting - csp22
 #########################################################################
 
 csp22_Names <- sort(unique(as.character(unlist(csp22_sim_score[1:2]))))
@@ -58,7 +119,6 @@ empty_csp22_matrix <- matrix(0,
 # fill in upper triangle
 empty_csp22_matrix[as.matrix(csp22_sim_score[c(1,2)])] <- csp22_sim_score$Percent_sim
 
-csp22_occurance <- as.data.frame(csp22_MAMP_seqs %>% group_by(MAMP_Sequence) %>% summarise(n=n()))
 csp22_occurance_by_genera <- as.data.frame(csp22_MAMP_seqs %>% group_by(MAMP_Sequence, Genera) %>% summarise(n=n()))
 
 csp22_occurance_by_genera <- reshape(csp22_occurance_by_genera, idvar = "MAMP_Sequence", timevar = "Genera", direction = "wide")
@@ -94,7 +154,117 @@ ComplexHeatmap::Heatmap(empty_csp22_matrix,
                         show_row_names = T,
                         show_column_names = F, 
                         row_names_gp = gpar(fontsize = 2.5),
+                        border = T,
+                        row_dend_reorder = T,
+                        column_dend_reorder = T)
+
+
+
+#########################################################################
+# reorganize table for plotting - celf18
+#########################################################################
+
+elf18_Names <- sort(unique(as.character(unlist(elf18_sim_score[1:2]))))
+
+empty_elf18_matrix <- matrix(0, 
+                             nrow = length(elf18_Names), 
+                             ncol = length(elf18_Names),
+                             dimnames = list(elf18_Names, elf18_Names))
+
+# fill in upper triangle
+empty_elf18_matrix[as.matrix(elf18_sim_score[c(1,2)])] <- elf18_sim_score$Percent_sim
+
+elf18_occurance_by_genera <- as.data.frame(elf18_MAMP_seqs %>% group_by(MAMP_Sequence, Genera) %>% summarise(n=n()))
+
+elf18_occurance_by_genera <- reshape(elf18_occurance_by_genera, idvar = "MAMP_Sequence", timevar = "Genera", direction = "wide")
+elf18_occurance_by_genera[is.na(elf18_occurance_by_genera)] <- 0
+
+
+
+ha <- rowAnnotation("MAMP \nOccurance" = anno_barplot(elf18_occurance$n, width = unit(2, "cm")),
+                    "Streptomyces" = elf18_occurance_by_genera$n.Streptomyces,
+                    "Rhodococcus" = elf18_occurance_by_genera$n.Rhodococcus,
+                    "Clavibacter" = elf18_occurance_by_genera$n.Clavibacter,
+                    "Leifsonia" = elf18_occurance_by_genera$n.Leifsonia,
+                    "Curtobacterium" = elf18_occurance_by_genera$n.Curtobacterium,
+                    "Rathayibacter" = elf18_occurance_by_genera$n.Rathayibacter,
+                    
+                    
+                    "Xanthomonas" = elf18_occurance_by_genera$n.Xanthomonas,
+                    "Agrobacterium" = elf18_occurance_by_genera$n.Agrobacterium,
+                    "Ralstonia" = elf18_occurance_by_genera$n.Ralstonia,
+                    "Pseudomonas" = elf18_occurance_by_genera$n.Pseudomonas
+)
+
+ComplexHeatmap::Heatmap(empty_elf18_matrix,
+                        #row_km = 5,
+                        #row_km_repeats = 1000,
+                        #column_km = ,
                         
+                        #column_split = 4,
+                        right_annotation = ha,
+                        
+                        show_column_dend = F,
+                        row_dend_width = unit(3,"cm"),                       
+                        show_row_names = T,
+                        show_column_names = F, 
+                        row_names_gp = gpar(fontsize = 8),
+                        border = T,
+                        row_dend_reorder = T,
+                        column_dend_reorder = T)
+
+
+
+#########################################################################
+# reorganize table for plotting - celf18
+#########################################################################
+
+flg22_Names <- sort(unique(as.character(unlist(flg22_sim_score[1:2]))))
+
+empty_flg22_matrix <- matrix(0, 
+                             nrow = length(flg22_Names), 
+                             ncol = length(flg22_Names),
+                             dimnames = list(flg22_Names, flg22_Names))
+
+# fill in upper triangle
+empty_flg22_matrix[as.matrix(flg22_sim_score[c(1,2)])] <- flg22_sim_score$Percent_sim
+
+flg22_occurance_by_genera <- as.data.frame(flg22_MAMP_seqs %>% group_by(MAMP_Sequence, Genera) %>% summarise(n=n()))
+
+flg22_occurance_by_genera <- reshape(flg22_occurance_by_genera, idvar = "MAMP_Sequence", timevar = "Genera", direction = "wide")
+flg22_occurance_by_genera[is.na(flg22_occurance_by_genera)] <- 0
+
+
+
+ha <- rowAnnotation("MAMP \nOccurance" = anno_barplot(flg22_occurance$n, width = unit(2, "cm")),
+                    "Streptomyces" = flg22_occurance_by_genera$n.Streptomyces,
+                    "Rhodococcus" = flg22_occurance_by_genera$n.Rhodococcus,
+                    "Clavibacter" = flg22_occurance_by_genera$n.Clavibacter,
+                    "Leifsonia" = flg22_occurance_by_genera$n.Leifsonia,
+                    "Curtobacterium" = flg22_occurance_by_genera$n.Curtobacterium,
+                    "Rathayibacter" = flg22_occurance_by_genera$n.Rathayibacter,
+                    
+                    
+                    "Xanthomonas" = flg22_occurance_by_genera$n.Xanthomonas,
+                    "Agrobacterium" = flg22_occurance_by_genera$n.Agrobacterium,
+                    "Ralstonia" = flg22_occurance_by_genera$n.Ralstonia,
+                    "Pseudomonas" = flg22_occurance_by_genera$n.Pseudomonas
+)
+
+ComplexHeatmap::Heatmap(empty_flg22_matrix,
+                        #row_km = 5,
+                        #row_km_repeats = 1000,
+                        #column_km = ,
+                        
+                        #column_split = 4,
+                        right_annotation = ha,
+                        
+                        show_column_dend = F,
+                        row_dend_width = unit(3,"cm"),                       
+                        show_row_names = T,
+                        show_column_names = F, 
+                        row_names_gp = gpar(fontsize = 6),
+                        border = T,
                         row_dend_reorder = T,
                         column_dend_reorder = T)
 
@@ -104,6 +274,10 @@ ComplexHeatmap::Heatmap(empty_csp22_matrix,
 # repeat on subset of data -> MAMP has had to occur at teast 10 times
 ############################################################################ 
 
+
+parising_MAMP_all_by_all_comparisons <- function(MAMP_df_in, occurance_number){
+  
+}
 
 csp22_above_10 <- subset(csp22_occurance, csp22_occurance$n > 10)
 

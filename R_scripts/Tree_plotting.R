@@ -105,7 +105,7 @@ for (i in 1:length(csp22_full_protein_tree$tip.label)){
 
 MAMP_csp22_hit_data <- subset(hold_MAMP_seqs, MAMP_Hit == "csp22_consensus")
 MAMP_csp22_hit_data["New_label"] <- paste(MAMP_csp22_hit_data$Protein_Name, MAMP_csp22_hit_data$File_Name, sep = "|")
-MAMP_csp22_hit_data <- MAMP_csp22_hit_data[,c(11,3,7)]
+MAMP_csp22_hit_data <- MAMP_csp22_hit_data[c("New_label", "Percent_Identity", "Genera")]
 MAMP_csp22_hit_data <- MAMP_csp22_hit_data[MAMP_csp22_hit_data$New_label %in% csp22_full_protein_tree$tip.label,]
 
 
@@ -170,7 +170,7 @@ for (i in 1:length(elf18_full_protein_tree$tip.label)){
 
 MAMP_elf18_hit_data <- subset(hold_MAMP_seqs, MAMP_Hit == "elf18_consensus")
 MAMP_elf18_hit_data["New_label"] <- paste(MAMP_elf18_hit_data$Protein_Name, MAMP_elf18_hit_data$File_Name, sep = "|")
-MAMP_elf18_hit_data <- MAMP_elf18_hit_data[,c(11,3,7)]
+MAMP_elf18_hit_data <- MAMP_elf18_hit_data[c("New_label", "Percent_Identity", "Genera")]
 MAMP_elf18_hit_data <- MAMP_elf18_hit_data[MAMP_elf18_hit_data$New_label %in% elf18_full_protein_tree$tip.label,]
 
 
@@ -222,18 +222,21 @@ for (i in 1:length(flg22_full_protein_tree$tip.label)){
 
 MAMP_flg22_hit_data <- subset(hold_MAMP_seqs, MAMP_Hit == "flg22_consensus")
 MAMP_flg22_hit_data["New_label"] <- paste(MAMP_flg22_hit_data$Protein_Name, MAMP_flg22_hit_data$File_Name, sep = "|")
-MAMP_flg22_hit_data <- MAMP_flg22_hit_data[,c(11,3,7)]
+MAMP_flg22_hit_data <- MAMP_flg22_hit_data[c("New_label", "Percent_Identity", "Genera")]
 MAMP_flg22_hit_data <- MAMP_flg22_hit_data[MAMP_flg22_hit_data$New_label %in% flg22_full_protein_tree$tip.label,]
 
 
-flg22_tree <- ggtree(flg22_full_protein_tree, layout="circular", ladderize = T, size = 0.35, linetype = 1) %<+% MAMP_flg22_hit_data +
-  geom_tippoint(aes(color = Genera), size = 0.5) +
+ggtree(flg22_full_protein_tree, layout="circular", ladderize = T, size = 0.35, linetype = 1) %<+% MAMP_flg22_hit_data +
+  geom_tippoint(aes(color = Genera), size = 0.8) +
   scale_color_manual("Genera", values = Genera_colors) +
   theme(legend.position = "none") +
-  geom_treescale(fontsize = 2, linesize = 0.3, x = 1.5, y = 0) +
+  geom_treescale(fontsize = 2, linesize = 0.3, x = 2, y = 0) +
   ggnewscale::new_scale_fill() +
-  geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = 0.12,
-             offset = 0.08, axis.params = list(line.color = "black")) +
+  geom_fruit(geom = geom_tile, mapping=aes(fill = Genera), width = 0.3) +
+  scale_fill_manual("Genera", values = Genera_colors) +
+  ggnewscale::new_scale_fill() +
+  geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = 0.5,
+             offset = 0.04, axis.params = list(line.color = "black")) +
   scale_fill_viridis(option="magma", name = "Percent AA Similarity\n", 
                      breaks = c(0, 20, 40, 60, 80, 100),
                      labels = c(0, 20, 40, 60, 80, 100),
@@ -252,6 +255,86 @@ ggsave(flg22_tree,
 
 
 
+#######################################################################
+# plotting tree for elf18
+#######################################################################
+
+
+elf18_tree <- read.tree("./../Protein_alignments_and_trees/EfTu/MAMP_fasta/elf18_alignment.treefile")
+elf18_tree <- phangorn::midpoint(elf18_tree, node.labels='label')
+
+
+
+for (i in 1:length(elf18_tree$tip.label)){
+  elf18_tree$tip.label[i] <- paste(strsplit(elf18_tree$tip.label[i], "|", fixed = T)[[1]][1],
+                                   strsplit(elf18_tree$tip.label[i], "|", fixed = T)[[1]][5],
+                                   sep = "|")
+}
+
+
+MAMP_elf18_hit_data <- subset(hold_MAMP_seqs, MAMP_Hit == "elf18_consensus")
+MAMP_elf18_hit_data["New_label"] <- paste(MAMP_elf18_hit_data$Protein_Name, MAMP_elf18_hit_data$File_Name, sep = "|")
+MAMP_elf18_hit_data <- MAMP_elf18_hit_data[c("New_label", "Percent_Identity", "Genera")]
+MAMP_elf18_hit_data <- MAMP_elf18_hit_data[MAMP_elf18_hit_data$New_label %in% elf18_tree$tip.label,]
+
+
+ggtree(elf18_tree, layout="circular", ladderize = T, size = 0.35, linetype = 1) %<+% MAMP_elf18_hit_data +
+  geom_tippoint(aes(color = Genera), size = 0.2) +
+  scale_color_manual("Genera", values = Genera_colors) +
+  theme(legend.position = "none") +
+  geom_treescale(fontsize = 2, linesize = 0.3, x = 1.5, y = 0) +
+  ggnewscale::new_scale_fill() +
+  geom_fruit(geom = geom_tile, mapping=aes(fill = Genera), width = 0.1) +
+  scale_fill_manual("Genera", values = Genera_colors) +
+  ggnewscale::new_scale_fill() +
+  geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = 0.2,
+             offset = 0.08, axis.params = list(line.color = "black")) +
+  scale_fill_viridis(option="magma", name = "Percent AA Similarity\n", 
+                     breaks = c(0, 20, 40, 60, 80, 100),
+                     labels = c(0, 20, 40, 60, 80, 100),
+                     limits = c(0,100)) 
+
+
+
+
+#######################################################################
+# plotting tree for flg22
+#######################################################################
+
+
+flg22_tree <- read.tree("./../Protein_alignments_and_trees/Flagellin/MAMP_fasta/flg22_alignment.treefile")
+flg22_tree <- phangorn::midpoint(flg22_tree, node.labels='label')
+
+
+
+for (i in 1:length(flg22_tree$tip.label)){
+  flg22_tree$tip.label[i] <- paste(strsplit(flg22_tree$tip.label[i], "|", fixed = T)[[1]][1],
+                                   strsplit(flg22_tree$tip.label[i], "|", fixed = T)[[1]][5],
+                                   sep = "|")
+}
+
+
+MAMP_flg22_hit_data <- subset(hold_MAMP_seqs, MAMP_Hit == "flg22_consensus")
+MAMP_flg22_hit_data["New_label"] <- paste(MAMP_flg22_hit_data$Protein_Name, MAMP_flg22_hit_data$File_Name, sep = "|")
+MAMP_flg22_hit_data <- MAMP_flg22_hit_data[c("New_label", "Percent_Identity", "Genera")]
+MAMP_flg22_hit_data <- MAMP_flg22_hit_data[MAMP_flg22_hit_data$New_label %in% flg22_tree$tip.label,]
+
+
+ggtree(flg22_tree, layout="circular", ladderize = T, size = 0.35, linetype = 1) %<+% MAMP_flg22_hit_data +
+  geom_tippoint(aes(color = Genera), size = 0.5) +
+  scale_color_manual("Genera", values = Genera_colors) +
+  theme(legend.position = "none") +
+  geom_treescale(fontsize = 2, linesize = 0.3, x = 1.5, y = 0) +
+  ggnewscale::new_scale_fill() +
+  geom_fruit(geom = geom_tile, mapping=aes(fill = Genera), width = 0.1) +
+  scale_fill_manual("Genera", values = Genera_colors) +
+  ggnewscale::new_scale_fill() +
+  geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = 0.2,
+             offset = 0.08, axis.params = list(line.color = "black")) +
+  scale_fill_viridis(option="magma", name = "Percent AA Similarity\n", 
+                     breaks = c(0, 20, 40, 60, 80, 100),
+                     labels = c(0, 20, 40, 60, 80, 100),
+                     limits = c(0,100)) 
 
 
 ############# for rectangular treee

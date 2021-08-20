@@ -20,12 +20,6 @@ library(cluster)
 # point to folder with DNA contig files, need to all be formated by Species_Strain.fasta (ex. CC_PF008.fasta)
 #########################################################################
 
-# defines a name list to consistently order genera
-name_list <- c('Clavibacter','Leifsonia','Rathayibacter','Curtobacterium','Rhodococcus','Streptomyces',
-               'Agrobacterium','Ralstonia','Xanthomonas','Pseudomonas')
-
-
-
 
 if(exists("datasettable") == FALSE){
   source("./tree_tip_data.R")
@@ -240,13 +234,14 @@ ANI_plot_ggplot <- ggplot(copy_ANI, aes(x = factor(Genera, level = name_list), y
   scale_fill_manual("Genera", values = Genera_colors) +
   my_ggplot_theme +
   theme(axis.text.x = element_text(color ="black"),
-        legend.position = "none") +
+        legend.position = "none") 
+
   coord_flip()
 
 
 ANI_plot_ggplot
 
-xs#########################################################################
+#########################################################################
 # subset each group by Genera and plot values
 #########################################################################
 

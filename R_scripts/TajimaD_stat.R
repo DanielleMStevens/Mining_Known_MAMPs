@@ -8,27 +8,6 @@
 #-----------------------------------------------------------------------------------------------
 
 
-
-######################################################################
-# set path to data
-######################################################################
-
-#setwd to where repo was cloned and maintained
-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
-#try(setwd(dirname(rstudioapi::getActiveDocumentContext()$path)))
-#getSrcDirectory(function(x) {x})
-
-
-
-##############################################
-# Load colors - Set tip labels to match other figures
-##############################################
-
-#make sure to set path to the same place where the figure 
-source("./package_dependencies.R")
-
-source("./CommonFunctions.R")
-
 ######################################################################
 # reimport fasta file as DNA bin to load in ape to calculate Taijma D
 ######################################################################

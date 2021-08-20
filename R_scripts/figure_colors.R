@@ -26,3 +26,17 @@ names(Genera_colors) <- c("Leifsonia","Clavibacter","Curtobacterium",
                           "Rhodococcus","Rathayibacter","Streptomyces",
                           "Ralstonia", "Xanthomonas","Pseudomonas",
                           "Agrobacterium")
+
+
+# defines a name list to consistently order genera
+name_list <- c('Clavibacter','Leifsonia','Rathayibacter','Curtobacterium','Rhodococcus','Streptomyces',
+               'Agrobacterium','Ralstonia','Xanthomonas','Pseudomonas')
+
+
+
+MAMP_colors <- c("#FDBE83", "#C8A3B5", "#2F4E68")
+names(MAMP_colors) <- c("csp22_consensus","elf18_consensus","flg22_consensus")
+
+
+Gram_colors <- c("#204254","#B94A3E")
+names(Gram_colors) <- c("+","-")

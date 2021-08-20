@@ -30,3 +30,26 @@ plot_adjust_size <- function(desired_dpi){
 dss2df <- function(dss){
   return(data.frame(width = dss@ranges@width, names = names(dss), seq = as.character(dss), stringsAsFactors = FALSE))
 }
+
+
+# turning AAmultiplesequence alignment into dataframe
+aa2df <- function(dss){
+  return(data.frame(names = rownames(dss), seq = as.character(dss), stringsAsFactors = FALSE))
+}
+
+
+######################################################################
+#  function to turn dataframe (where one column is the name and one column is the sequence)
+#   into a fasta file
+######################################################################
+
+writeFasta <- function(data, filename){
+  fastaLines = c()
+  for (rowNum in 1:nrow(data)){
+    fastaLines = c(fastaLines, data[rowNum,1])
+    fastaLines = c(fastaLines,data[rowNum,2])
+  }
+  fileConn<-file(filename)
+  writeLines(fastaLines, fileConn)
+  close(fileConn)
+}

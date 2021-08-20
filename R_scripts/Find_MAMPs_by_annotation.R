@@ -79,7 +79,7 @@
       pull_ref_MAMP <- subset(load_reference_MAMPs_fasta, names == 'csp22_consensus')
       Alignment_between_MAMP_and_Ref <- Biostrings::pairwiseAlignment(pull_ref_MAMP$seq, 
                                                                       All_target_by_annotation$seq[j], type = "global-local", 
-                                                                      gapOpening = 100, gapExtension = 100)
+                                                                      gapOpening = 100, gapExtension = 100, substitutionMatrix = BLOSUM62)
       correct_blast_df$Sequence[j] <- as.character(Alignment_between_MAMP_and_Ref@subject)
       correct_blast_df$Percent_Identity[j] <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
       correct_blast_df$MAMP_Hit[j] <- 'csp22_consensus'
@@ -90,7 +90,7 @@
       pull_ref_MAMP <- subset(load_reference_MAMPs_fasta, names == 'elf18_consensus')
       Alignment_between_MAMP_and_Ref <- Biostrings::pairwiseAlignment(pull_ref_MAMP$seq, 
                                                                       All_target_by_annotation$seq[j], type = "global-local", 
-                                                                      gapOpening = 100, gapExtension = 100)
+                                                                      gapOpening = 100, gapExtension = 100, substitutionMatrix = BLOSUM62)
       correct_blast_df$Sequence[j] <- as.character(Alignment_between_MAMP_and_Ref@subject)
       correct_blast_df$Percent_Identity[j] <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
       correct_blast_df$MAMP_Hit[j] <- 'elf18_consensus'
@@ -101,7 +101,7 @@
       pull_ref_MAMP <- subset(load_reference_MAMPs_fasta, names == 'flg22_consensus')
       Alignment_between_MAMP_and_Ref <- Biostrings::pairwiseAlignment(pull_ref_MAMP$seq, 
                                                                       All_target_by_annotation$seq[j], type = "global-local", 
-                                                                      gapOpening = 100, gapExtension = 100)
+                                                                      gapOpening = 100, gapExtension = 100, substitutionMatrix = BLOSUM62)
       correct_blast_df$Sequence[j] <- as.character(Alignment_between_MAMP_and_Ref@subject)
       correct_blast_df$Percent_Identity[j] <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
       correct_blast_df$MAMP_Hit[j] <- 'flg22_consensus'
