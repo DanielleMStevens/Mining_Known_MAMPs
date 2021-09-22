@@ -1,69 +1,69 @@
 ## Downloading genomes from NCBI
 
 ### 1. Download the genomes
-  
-  We can use ncbi-genome-download to find what accession we can download for each major genus and then download them on the command line. 
-  
-  The major genera include the following: 
-  | Genera | Clavibacter, Leifsonia, Curtobacterium, Streptomyces, Rathayibacter, Rhodococcus, Agrobacterium, Ralstonia, Xanthomonas, Pseudomonas, Pectobacterium, Dickeya, Erwinia |
-  
-  We will need to install a package which will allow us to easily download the genomes by accession number from NCBI's refseq.
-  
-  In order to get accessions for each key genus of bacteria
 
-    ```
-    conda install ncbi-genome-download
-    ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
-    ```
+We can use ncbi-genome-download to find what accession we can download for each major genus and then download them on the command line. 
+  
+The major genera include the following:
+  
+| Genera | Clavibacter, Leifsonia, Curtobacterium, Streptomyces, Rathayibacter, Rhodococcus, Agrobacterium, Ralstonia, Xanthomonas, Pseudomonas, Pectobacterium, Dickeya, Erwinia |
+  
+We will need to install a package which will allow us to easily download the genomes by accession number from NCBI's refseq.
+  
+In order to get accessions for each key genus of bacteria
+
+```
+conda install ncbi-genome-download
+ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
+```
 
   
-  I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. I then use the accession name (ex. Erwinia amylovora) to quick filter for accessions that are not either plant/agriculturally related. Once all the information was collected and put into a simple text file, the comman below can be ran:
+I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. I then use the accession name (ex. Erwinia amylovora) to quick filter for accessions that are not either plant/agriculturally related. Once all the information was collected and put into a simple text file, the comman below can be ran:
   
-    ``
-     ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
-    ```
+```
+ ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
+```
     
- where,
+where,
     
-    ```
-     -p 6 : downland 6 genomes at a time in parallel
-     -r 2 : retry downloading 2x before moving on
-     --flat-out: download all the files in the same place (one directory rather than each isolate having a dedicated directory)
-     -v : verbose
-     -F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, and protein fasta associtaed with the accession number
-     ```
+```
+-p 6 : downland 6 genomes at a time in parallel
+-r 2 : retry downloading 2x before moving on
+--flat-out: download all the files in the same place (one directory rather than each isolate having a dedicated directory)
+-v : verbose
+-F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, and protein fasta associtaed with the accession number
+```
 
 Move all the download genomes in directories based on their file type/ending (i.e. genbank files in genbank folder).
  
- ## Setting up database and mining for MAMPs
+## Setting up database and mining for MAMPs
  
- ### 2. Build the MAMP database
+### 2. Build the MAMP database
  
- In a text file, save the following MAMP sequences (/MAMP_database/MAMP_elicitor_list.fasta):
+In a text file, save the following MAMP sequences (/MAMP_database/MAMP_elicitor_list.fasta):
  
-    ```bash
-    >csp22_consensus
-    AVGTVKWFNAEKGFGFITPDDG
-    >elf18_consensus
-    SKEKFERTKPHVNVGTIG
-    >flg22_consensus
-    QRLSTGSRINSAKDDAAGLQIA
-    >flgII-28
-    ESTNILQRMRELAVQSRNDSNSATDREA
-    >nlp20_consensus
-    GSFYSLYFLKDQILNGVNSGHR
-    ```
+```
+>csp22_consensus
+AVGTVKWFNAEKGFGFITPDDG
+>elf18_consensus
+SKEKFERTKPHVNVGTIG
+>flg22_consensus
+QRLSTGSRINSAKDDAAGLQIA
+>flgII-28
+ESTNILQRMRELAVQSRNDSNSATDREA
+>nlp20_consensus
+GSFYSLYFLKDQILNGVNSGHR
+```
 
 This fasta file can be used to build a database to use blast to find if anything in the genome shares these sequences. To build the blast database, the below command was ran. Also this should be ran in the same folder as /MAMP_database/MAMP_elicitor_list.fasta. 
 
 
-  ```bash
-  # to make blast db
-  makeblastdb -in MAMP_elicitor_list.fasta -parse_seqids -dbtype 'prot' -out MAMP_blast_db
-  
-  ```
+```
+# to make blast db
+makeblastdb -in MAMP_elicitor_list.fasta -parse_seqids -dbtype 'prot' -out MAMP_blast_db
+```
 
- ### 3. Run all genomes against balst database
+### 3. Run all genomes against balst database
 
 
 We can then go through each protein fasta file and pull out the peptide from the annotation. In this case, we can use a bash loop to blast each file. 
