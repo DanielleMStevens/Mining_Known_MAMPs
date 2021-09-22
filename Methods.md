@@ -11,7 +11,7 @@
   
   In order to get accessions for each key genus of bacteria
 
-  ```
+  ```bash
   conda install ncbi-genome-download
   ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
   ```
