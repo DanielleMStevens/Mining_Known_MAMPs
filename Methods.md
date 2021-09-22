@@ -51,6 +51,7 @@ Move all the download genomes in directories based on their file type/ending (i.
     ESTNILQRMRELAVQSRNDSNSATDREA
     >nlp20_consensus
     GSFYSLYFLKDQILNGVNSGHR
+    
     ```
 
 This fasta file can be used to build a database to use blast to find if anything in the genome shares these sequences. To build the blast database, the below command was ran. Also this should be ran in the same folder as /MAMP_database/MAMP_elicitor_list.fasta. 
@@ -58,7 +59,8 @@ This fasta file can be used to build a database to use blast to find if anything
   ```
   # to make blast db
   makeblastdb -in MAMP_elicitor_list.fasta -parse_seqids -dbtype 'prot' -out MAMP_blast_db
-  ````
+  
+  ```
 
  ### 3. Run all genomes against balst database
 
