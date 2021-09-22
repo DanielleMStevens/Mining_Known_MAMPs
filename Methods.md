@@ -5,8 +5,11 @@
 We can use ncbi-genome-download to find what accession we can download for each major genus and then download them on the command line. 
   
 The major genera include the following:
-  
-| Genera | Clavibacter, Leifsonia, Curtobacterium, Streptomyces, Rathayibacter, Rhodococcus, Agrobacterium, Ralstonia, Xanthomonas, Pseudomonas, Pectobacterium, Dickeya, Erwinia |
+
+| Gram-type | Genera|
+| ------------- | --------------------|  
+| Gram-positive | Clavibacter, Leifsonia, Curtobacterium, Streptomyces, Rathayibacter, Rhodococcus |
+| Gram-negative | Agrobacterium, Ralstonia, Xanthomonas, Pseudomonas, Pectobacterium, Dickeya, Erwinia |
   
 We will need to install a package which will allow us to easily download the genomes by accession number from NCBI's refseq.
   
@@ -21,7 +24,8 @@ ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
 I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. I then use the accession name (ex. Erwinia amylovora) to quick filter for accessions that are not either plant/agriculturally related. Once all the information was collected and put into a simple text file, the comman below can be ran:
   
 ```
- ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
+ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt 
+-p 6 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
 ```
     
 where,
@@ -29,9 +33,11 @@ where,
 ```
 -p 6 : downland 6 genomes at a time in parallel
 -r 2 : retry downloading 2x before moving on
---flat-out: download all the files in the same place (one directory rather than each isolate having a dedicated directory)
+--flat-out: download all the files in the same place (one directory rather 
+            than each isolate having a dedicated directory)
 -v : verbose
--F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, and protein fasta associtaed with the accession number
+-F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, 
+    and protein fasta associtaed with the accession number
 ```
 
 Move all the download genomes in directories based on their file type/ending (i.e. genbank files in genbank folder).
@@ -70,8 +76,10 @@ We can then go through each protein fasta file and pull out the peptide from the
 
   ```
   for file in *.faa
-  do echo "$file"
-  blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db \ ./../../Mining_Known_MAMPs/MAMP_database/v2/MAMP_blast_db -evalue 1e-4 -num_threads 8 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
+    do echo "$file"
+    blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db \ 
+    ./../../Mining_Known_MAMPs/MAMP_database/v2/MAMP_blast_db -evalue 1e-4 -num_threads 8 
+    -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
   done
   ```
 
