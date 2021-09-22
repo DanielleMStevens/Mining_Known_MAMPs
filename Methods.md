@@ -5,27 +5,27 @@
   We can use ncbi-genome-download to find what accession we can download for each major genus and then download them on the command line. 
   
   The major genera include the following: 
-  |Genera|Clavibacter, Leifsonia, Curtobacterium, Streptomyces, Rathayibacter, Rhodococcus, Agrobacterium, Ralstonia, Xanthomonas, Pseudomonas, Pectobacterium, Dickeya, Erwinia |
+  | Genera | Clavibacter, Leifsonia, Curtobacterium, Streptomyces, Rathayibacter, Rhodococcus, Agrobacterium, Ralstonia, Xanthomonas, Pseudomonas, Pectobacterium, Dickeya, Erwinia |
   
   We will need to install a package which will allow us to easily download the genomes by accession number from NCBI's refseq.
   
   In order to get accessions for each key genus of bacteria
 
-  ```bash
-  conda install ncbi-genome-download
-  ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
-  ```
+    ```
+    conda install ncbi-genome-download
+    ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
+    ```
 
   
   I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. I then use the accession name (ex. Erwinia amylovora) to quick filter for accessions that are not either plant/agriculturally related. Once all the information was collected and put into a simple text file, the comman below can be ran:
   
-    ```bash
+    ``
      ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
     ```
     
  where,
     
-    ```bash
+    ```
      -p 6 : downland 6 genomes at a time in parallel
      -r 2 : retry downloading 2x before moving on
      --flat-out: download all the files in the same place (one directory rather than each isolate having a dedicated directory)
