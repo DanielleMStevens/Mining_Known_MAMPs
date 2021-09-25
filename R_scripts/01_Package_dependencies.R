@@ -57,8 +57,8 @@ library(see)
 
 
 data(BLOSUM62)
-data("BLOSUM45")
-data("BLOSUM80")
+data(BLOSUM45)
+data(BLOSUM80)
 
 library(ComplexHeatmap)
 library(reshape2)
