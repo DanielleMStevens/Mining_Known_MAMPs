@@ -141,6 +141,7 @@ Using Main_script.R, run though the lines below:
 
   Since we are trying to assess the sequence diversity that has naturally accumulated over time and how that has affected MAMP functionality, we need to do some filtering for clonal isolates so no one sequence is over represented. To do so, we can run all the whole genomes sequences on fastANI to calculate all-by-all ANI values. fastANI tends to inflate values, so we're going to put some strict cutoffs: to be considered clonal, two genomes need to be over 99.99 percent similar and carry the same MAMP eptitope sequnences. Those which are considered clonal by these considerations, duplicates will be removed.
 
+### 5. Prep genomes for fastANI and run fastANI
 
 First we will run an R script designed to pull all the genomes accession number for a particular genus as well as their file path and output them into a directory to run fastANI on each file.
 
@@ -171,6 +172,8 @@ First we will run an R script designed to pull all the genomes accession number 
   -o: output file name
   ```
   
+  ### 6. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure
+  
   The output files can be parsed for their ANI values and to be compared in respect to the MAMP eptitopes found using the R script below:
 
   
@@ -190,11 +193,9 @@ First we will run an R script designed to pull all the genomes accession number 
 ## Building core gene phylogeny to show MAMP adnudance in respect to species/strain relatedness
 
   
-# Pulling out Core genes shared between all strains, species, and genera
-
 In order to build a core gene phyloogeny as well as pull out core genes to calculate Tajima's D, we can use roary to authomate a lot of this. But, unforunately, it doesn't take gbff files (only gff3) and so we need to convert the files before running.
 
-### 1. Prep files for Core Gene analysis
+### 7. Prep files for Core Gene analysis
 
 First, we can use a script from [Biocode](https://github.com/jorvis/biocode) which is a set of python scripts for file conversion, among other things. The gbff_to_gff3 script was copied and then the below coommands were ran to complete the install:
   
