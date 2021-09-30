@@ -19,10 +19,6 @@
                                "E-value" = numeric(0), "MAMP_length" = numeric(0), "MAMP_Sequence" = character(0), "Genera" = character(0),
                                "Strain_Name" = character(0), "File_Name" = character(0), "Gram" = character(0))
   
-  #hold_copy_number <- data.frame("Genera" = character(length(load_protein_fasta_files)), "Strain_Name" = character(length(load_protein_fasta_files)), 
-  #                               "Gram" = character(length(load_protein_fasta_files)), "csp22_consensus" = numeric(length(load_protein_fasta_files)), 
-  #                               "elf18_consensus" = numeric(length(load_protein_fasta_files)), "flg22_consensus" = numeric(length(load_protein_fasta_files)),
-  #                               "nlp20_consensus" = numeric(length(load_protein_fasta_files)), "flgII-28" = numeric(length(load_protein_fasta_files)))
     
   pb <- txtProgressBar(min = 0, max = length(load_protein_fasta_files), style = 3)
   
