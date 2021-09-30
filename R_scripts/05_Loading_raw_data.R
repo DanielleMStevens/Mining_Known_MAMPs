@@ -39,9 +39,8 @@
   #########################################################################
   
   
-  #if(exists("datasettable") == FALSE){
-    tip_data <- "./../Mining_for_known_MAMPs_genome_accession_info.xlsx" #choose Mining_for_known_MAMPs_genome_accession_info.xlsx
-    datasettable <- readxl::read_xlsx(tip_data, col_names = T)
-    datasettable <- as.data.frame(datasettable[,1:7])
+  tip_data <- "./../Mining_for_known_MAMPs_genome_accession_info.xlsx" #choose Mining_for_known_MAMPs_genome_accession_info.xlsx
+  datasettable <- readxl::read_xlsx(tip_data, col_names = T)
+  datasettable <- as.data.frame(datasettable[,1:7])
 
-  #}
+

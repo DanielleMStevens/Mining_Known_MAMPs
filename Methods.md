@@ -24,8 +24,7 @@ ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
 I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. I then use the accession name (ex. Erwinia amylovora) to quick filter for accessions that are not either plant/agriculturally related. Once all the information was collected and put into a simple text file, the comman below can be ran:
   
 ```
-ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt 
--p 6 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
+ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
 ```
     
 where,
@@ -77,9 +76,7 @@ We can then go through each protein fasta file and pull out the peptide from the
   ```
   for file in *.faa
     do echo "$file"
-    blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db \ 
-    ./../../Mining_Known_MAMPs/MAMP_database/v2/MAMP_blast_db -evalue 1e-4 -num_threads 8 
-    -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
+    blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db ./../../Mining_Known_MAMPs/MAMP_database/v2/MAMP_blast_db -evalue 1e-4 -num_threads 12 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
   done
   ```
 
@@ -142,35 +139,57 @@ Using Main_script.R, run though the lines below:
 
  ## Assessing genome diveristy and removing redudnacy/clonality 
 
+  Since we are trying to assess the sequence diversity that has naturally accumulated over time and how that has affected MAMP functionality, we need to do some filtering for clonal isolates so no one sequence is over represented. To do so, we can run all the whole genomes sequences on fastANI to calculate all-by-all ANI values. fastANI tends to inflate values, so we're going to put some strict cutoffs: to be considered clonal, two genomes need to be over 99.99 percent similar and carry the same MAMP eptitope sequnences. Those which are considered clonal by these considerations, duplicates will be removed.
 
 
-
-
-
-
-
-
-
-
-### 3. Build Protein Trees of Full Length Sequences and their MAMPs
-
-We now can start building protein trees to understand their evolutionary history in respect to the MAMPs they encode for. We will run MAFFT to build our alignment and IQ-tree of make a maximum likelihood tree from the alignment. In each folder of which the fasta file was saved, the below commands were ran (names changed where needed).
+First we will run an R script designed to pull all the genomes accession number for a particular genus as well as their file path and output them into a directory to run fastANI on each file.
 
   ```
-  mafft --reorder --thread 12 --maxiterate 1000 --localpair csp22_full_length.fasta > "csp22_full_length_alignment"
-  # --localpair, slowest but most accurate method of alignment
-  # --reorder, reorder entries in fasta file to improve alignment
+  ##############################################
+  # comparing similarity of genomes to filter for clonality
+  ##############################################
+
+    source("./09_Parse_genomes_for_ANI_analysis.R") 
+    
+  ```
   
-  iqtree -s csp22_full_length_alignment -st AA -bb 1000 -mtree -nt 12 -keep-ident	-safe
-  # -s, input alignment file
-  # -st, file type (in this case amino acids, hence AA)
-  # -bb 1000, number of ultrafast bootstrapping ran on the tree
-  # -mtree, iterate thorugh all models to find the best one
-  # -nt 12, number of threads used to run analysis (I have max 16)
+  We can then run the bash command below. Since we have a considerable amount of genomes, this analysis should be ran on a computer that has no less than 64 Gb of RAM and at least 10 threads (unless you want to wait many days for it to complete). 
+  
+  ```bash 
+    for file in *.txt
+      do echo "$file"
+      fastANI --rl ./$file --ql ./$file -t 14 -o ${file}_ANI_comparison
+    done
   ```
+  
+  For fastANI, the following commands are:
+  
+  ```
+  --rl: path to the file which contains path inforamtion for the genomes
+  --ql: the same file and file path for --rl, this allows us to run all-by-all comparisons
+  -t 14: 14 threads to run calculations in parallel, adjust this as needed 
+  -o: output file name
+  ```
+  
+  The output files can be parsed for their ANI values and to be compared in respect to the MAMP eptitopes found using the R script below:
 
-  Run Tree_plotting.R to plot protein and main core gene trees. These trees will be outputed as pdf's at a preset size.
+  
+    ```
+    # parsing ANI values and comparing them to MAMP sequences to remove clonal genomes
+    source("./10_ANI_analysis.R")  
+    ```
+  
+  To create a figure showing the ANI values as a representative of a diverse dataset, run the below R script to creates these plots:
+  
 
+    ```
+    # ANI Figure 
+    source("./11_ANI_plots.R")
+    ```
+  
+## Building core gene phylogeny to show MAMP adnudance in respect to species/strain relatedness
+
+  
 # Pulling out Core genes shared between all strains, species, and genera
 
 In order to build a core gene phyloogeny as well as pull out core genes to calculate Tajima's D, we can use roary to authomate a lot of this. But, unforunately, it doesn't take gbff files (only gff3) and so we need to convert the files before running.
@@ -192,7 +211,7 @@ We can then create a folder to hold the gff3 files
   for file in *.gbff
   do
         echo "$file"
-        python ./../../Mining_Known_MAMPs/python_scripts/convert_genbank_to_gff3.py -i ./../../Whole_Genomes/genbank/$file -o ./../gff3_files/$file.gff3
+        python ./../../Mining_Known_MAMPs/python_scripts/convert_genbank_to_gff3.py -i ./../../Whole_Genomes_v2/genbank/$file -o ./../gff/$file.gff
   done
   ```
 
@@ -202,7 +221,38 @@ We can then create a folder to hold the gff3 files
   conda config --add channels conda-forge
   conda config --add channels bioconda
   conda install roary
+  
+  roary -e --mafft -p 8 *.gff
+
   ```
+
+  
+  
+  
+  
+  
+
+
+
+################################################################################################################
+### 3. Build Protein Trees of Full Length Sequences and their MAMPs
+
+We now can start building protein trees to understand their evolutionary history in respect to the MAMPs they encode for. We will run MAFFT to build our alignment and IQ-tree of make a maximum likelihood tree from the alignment. In each folder of which the fasta file was saved, the below commands were ran (names changed where needed).
+
+  ```
+  mafft --reorder --thread 12 --maxiterate 1000 --localpair csp22_full_length.fasta > "csp22_full_length_alignment"
+  # --localpair, slowest but most accurate method of alignment
+  # --reorder, reorder entries in fasta file to improve alignment
+  
+  iqtree -s csp22_full_length_alignment -st AA -bb 1000 -mtree -nt 12 -keep-ident	-safe
+  # -s, input alignment file
+  # -st, file type (in this case amino acids, hence AA)
+  # -bb 1000, number of ultrafast bootstrapping ran on the tree
+  # -mtree, iterate thorugh all models to find the best one
+  # -nt 12, number of threads used to run analysis (I have max 16)
+  ```
+
+  Run Tree_plotting.R to plot protein and main core gene trees. These trees will be outputed as pdf's at a preset size.
 
 # Assessing similarity of genomes in repsect to MAMP diversification
 

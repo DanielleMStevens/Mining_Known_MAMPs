@@ -74,3 +74,19 @@ formate2fasta <- function(WP_locus_names, Genera_names, File_names, sequences) {
   return(hold_sequences)
 }
 
+
+
+#########################################################################
+# create a filter function, which will help remove information (aka the path)
+# from the name of each strain such that it can be plotted with just its strain name
+#########################################################################
+
+
+filter_title <- function(which_table, which_phrase){
+  for (i in 1:nrow(which_table)){
+    which_table[i,1] <- stringr::str_replace(which_table[i,1], which_phrase, "")
+    which_table[i,2] <- stringr::str_replace(which_table[i,2], which_phrase, "")
+  }
+  return(which_table) 
+}
+

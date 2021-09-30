@@ -19,14 +19,10 @@
                                "E-value" = numeric(0), "MAMP_length" = numeric(0), "MAMP_Sequence" = character(0), "Genera" = character(0),
                                "Strain_Name" = character(0), "File_Name" = character(0), "Gram" = character(0))
   
-  hold_copy_number <- data.frame("Genera" = character(length(load_protein_fasta_files)), "Strain_Name" = character(length(load_protein_fasta_files)), 
-                                 "Gram" = character(length(load_protein_fasta_files)),
-                                 "csp22_consensus" = numeric(length(load_protein_fasta_files)), 
-                                 "elf18_consensus" = numeric(length(load_protein_fasta_files)), 
-                                 "flg22_consensus" = numeric(length(load_protein_fasta_files)),
-                                 "nlp20_consensus" = numeric(length(load_protein_fasta_files)),
-                                 "flgII-28" = numeric(length(load_protein_fasta_files))
-                                 )
+  #hold_copy_number <- data.frame("Genera" = character(length(load_protein_fasta_files)), "Strain_Name" = character(length(load_protein_fasta_files)), 
+  #                               "Gram" = character(length(load_protein_fasta_files)), "csp22_consensus" = numeric(length(load_protein_fasta_files)), 
+  #                               "elf18_consensus" = numeric(length(load_protein_fasta_files)), "flg22_consensus" = numeric(length(load_protein_fasta_files)),
+  #                               "nlp20_consensus" = numeric(length(load_protein_fasta_files)), "flgII-28" = numeric(length(load_protein_fasta_files)))
     
   pb <- txtProgressBar(min = 0, max = length(load_protein_fasta_files), style = 3)
   
@@ -70,6 +66,10 @@
                                     strsplit(get_accession_number,"_")[[1]][2], sep = "_")
     get_strain_info <- subset(datasettable, Assembly_Accession == get_accession_number)
     
+    if(get_strain_info$Filename == "Agrobacterium_tumefaciens_A6"){
+      print(get_strain_info)
+      print(read_blast_results)
+    }
     
     read_blast_results <- cbind(read_blast_results, 
                                 rep(get_strain_info$Genera, nrow(read_blast_results)),
@@ -80,32 +80,7 @@
     
     colnames(read_blast_results) <- c("Protein_Name","MAMP_Hit","Percent_Identity","E-value","MAMP_length",
                                       "MAMP_Sequence", "Genera", "Strain_Name", "File_Name","Gram")
-    
-  
-    
-    # components for counting copy number  
-    hold_temp <- data.frame(rbind(table(read_blast_results$MAMP_Hit)))
-    
-    
-    # count the number of copies per strain
-    hold_copy_number[i,1] <- unique(read_blast_results$Genera)
-    hold_copy_number[i,2] <- unique(read_blast_results$Strain_Name)
-    hold_copy_number[i,3] <- unique(read_blast_results$Gram)
-    if (any(grepl("csp22_consensus", colnames(hold_temp))) == TRUE){
-      hold_copy_number[i,4] <- hold_temp$csp22_consensus
-    }
-    if (any(grepl("elf18_consensus", colnames(hold_temp))) == TRUE){
-      hold_copy_number[i,5] <- hold_temp$elf18_consensus
-    }
-    if (any(grepl("flg22_consensus", colnames(hold_temp))) == TRUE){
-      hold_copy_number[i,6] <- hold_temp$flg22_consensus
-    }
-    if (any(grepl("nlp20_consensus", colnames(hold_temp))) == TRUE){
-      hold_copy_number[i,7] <- hold_temp$nlp20_consensus
-    }
-    if (any(grepl("flgII.28", colnames(hold_temp))) == TRUE){
-      hold_copy_number[i,8] <- hold_temp$flgII.28
-    }
+
   
   
     hold_MAMP_seqs <- rbind(hold_MAMP_seqs, read_blast_results)
@@ -113,11 +88,36 @@
     setTxtProgressBar(pb, i)
   }
   
-  close(pb)
+
   
   
-  hold_copy_number <- reshape2::melt(hold_copy_number)
-  rm(hold_temp)
+  
+  # components for counting copy number  
+  #hold_temp <- data.frame(rbind(table(read_blast_results$MAMP_Hit)))
+  
+  
+  # count the number of copies per strain
+  #hold_copy_number[i,1] <- unique(read_blast_results$Genera)
+  #hold_copy_number[i,2] <- unique(read_blast_results$Strain_Name)
+  #hold_copy_number[i,3] <- unique(read_blast_results$Gram)
+  #if (any(grepl("csp22_consensus", colnames(hold_temp))) == TRUE){
+  #  hold_copy_number[i,4] <- hold_temp$csp22_consensus
+  #}
+  #if (any(grepl("elf18_consensus", colnames(hold_temp))) == TRUE){
+  #  hold_copy_number[i,5] <- hold_temp$elf18_consensus
+  #}
+  #if (any(grepl("flg22_consensus", colnames(hold_temp))) == TRUE){
+  #  hold_copy_number[i,6] <- hold_temp$flg22_consensus
+  #}
+  #if (any(grepl("nlp20_consensus", colnames(hold_temp))) == TRUE){
+  #  hold_copy_number[i,7] <- hold_temp$nlp20_consensus
+  #}
+  #if (any(grepl("flgII.28", colnames(hold_temp))) == TRUE){
+  #  hold_copy_number[i,8] <- hold_temp$flgII.28
+  #}
+  
+  #hold_copy_number <- reshape2::melt(hold_copy_number)
+  #rm(hold_temp)
 
   
   

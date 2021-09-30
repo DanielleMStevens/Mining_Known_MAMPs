@@ -82,7 +82,7 @@
   for (j in 1:nrow(All_target_by_annotation)){
     
     # cold shock protein
-    if (grepl(paste(c("cold-shock","cold shock"), collapse = "|"),All_target_by_annotation$names[j]) == TRUE){
+    if (grepl(paste(c("cold-shock","cold shock"), collapse = "|"), All_target_by_annotation$names[j]) == TRUE){
       
       # if csp protein is less than 50 AA long, it's very likely a partial CDS and will be removed
       if (All_target_by_annotation$width[j] < 50){
@@ -227,5 +227,5 @@
   }
   
   All_target_by_annotation <- All_target_by_annotation[unlist(filter_list),]
-  
+  rm(filter_list)
 

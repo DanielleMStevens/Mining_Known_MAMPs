@@ -32,7 +32,7 @@ hold_MAMP_seqs <- rbind(hold_MAMP_seqs, filter_list)
 
 rm(filter_list)
 
-hold_MAMP_seqs <- subset(hold_MAMP_seqs, hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus")
+#hold_MAMP_seqs <- subset(hold_MAMP_seqs, hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus")
 
 
 ######################################################################
@@ -221,6 +221,7 @@ hold_MAMP_seqs <- subset(hold_MAMP_seqs, hold_MAMP_seqs$MAMP_Hit != "nlp20_conse
             filter_list_2[[i]] <- TRUE
           }
           if (hold_MAMP_seqs$Percent_Identity[i] < 30){
+            print(hold_MAMP_seqs[i,1:4])
             filter_list_2[[i]] <- FALSE
           }
         }
@@ -238,7 +239,17 @@ hold_MAMP_seqs <- subset(hold_MAMP_seqs, hold_MAMP_seqs$MAMP_Hit != "nlp20_conse
           }
         }
           
-          
+        # flagellin - nlp - NPP1
+        if (hold_MAMP_seqs$MAMP_Hit[i] == "nlp20_consensus"){
+          pull_ref_MAMP <- subset(load_reference_MAMPs_fasta, names == 'nlp20_consensus')
+          hold_MAMP_seqs$MAMP_Sequence[i] <- str_replace_all(hold_MAMP_seqs$MAMP_Sequence[i], "-", "")
+          if (hold_MAMP_seqs$Percent_Identity[i] > 30){
+            filter_list_2[[i]] <- TRUE
+          }
+          if (hold_MAMP_seqs$Percent_Identity[i] < 30){
+            filter_list_2[[i]] <- FALSE
+          }
+        }  
           
         
       }
