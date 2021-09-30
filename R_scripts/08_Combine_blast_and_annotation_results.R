@@ -82,8 +82,7 @@ rm(filter_list)
     # Pull out WP tag to filter out proteins which have already been found by blast search
     ######################################################################
     
-    
-    
+
     # split All_target_by_annotation to seperate WP tag from rest of protein name
     
     hold_WP_tag <- list()
@@ -138,12 +137,14 @@ rm(filter_list)
             filter2 <- filter1[filter1$Strain_Name %in% hold_MAMP_seqs$Strain_Name[i],]
             filter3 <- filter2[filter2$`unlist(hold_WP_tag)` %in% hold_MAMP_seqs$Protein_Name[i],]
 
+
             
             if (nrow(filter3) == 0){
               filter_list_2[[i]] <- FALSE
             }
             
             if (nrow(filter3) != 0){
+              
               Alignment_between_MAMP_and_Ref <- Biostrings::pairwiseAlignment(pull_ref_MAMP$seq, 
                                                                               filter3$seq[1], type = "global-local", 
                                                                               gapOpening = 300, substitutionMatrix = BLOSUM45)
@@ -196,8 +197,6 @@ rm(filter_list)
               
               percent_identity_realignment <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
               
-              print(hold_MAMP_seqs[i,])
-              print(paste(hold_MAMP_seqs$Percent_Identity[i], percent_identity_realignment, sep = "_"))
               
               if (hold_MAMP_seqs$Percent_Identity[i] >= percent_identity_realignment){
                 filter_list_2[[i]] <- TRUE
@@ -221,7 +220,7 @@ rm(filter_list)
             filter_list_2[[i]] <- TRUE
           }
           if (hold_MAMP_seqs$Percent_Identity[i] < 30){
-            print(hold_MAMP_seqs[i,1:4])
+            #print(hold_MAMP_seqs[i,1:4])
             filter_list_2[[i]] <- FALSE
           }
         }
@@ -243,6 +242,32 @@ rm(filter_list)
         if (hold_MAMP_seqs$MAMP_Hit[i] == "nlp20_consensus"){
           pull_ref_MAMP <- subset(load_reference_MAMPs_fasta, names == 'nlp20_consensus')
           hold_MAMP_seqs$MAMP_Sequence[i] <- str_replace_all(hold_MAMP_seqs$MAMP_Sequence[i], "-", "")
+          
+          if (length(hold_MAMP_seqs$MAMP_Sequence[i]) < 20){
+            filter1 <- All_target_by_annotation[All_target_by_annotation$Genera %in% hold_MAMP_seqs$Genera[i],]
+            filter2 <- filter1[filter1$Strain_Name %in% hold_MAMP_seqs$Strain_Name[i],]
+            filter3 <- filter2[filter2$`unlist(hold_WP_tag)` %in% hold_MAMP_seqs$Protein_Name[i],]
+            
+            
+            if (nrow(filter3) == 0){
+              filter_list_2[[i]] <- FALSE
+            }
+            
+            if (nrow(filter3) != 0){
+              Alignment_between_MAMP_and_Ref <- Biostrings::pairwiseAlignment(pull_ref_MAMP$seq, 
+                                                                              filter3$seq[1], type = "global-local", 
+                                                                              gapOpening = 300, substitutionMatrix = BLOSUM45)
+              
+              percent_identity_realignment <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
+              
+              
+
+              hold_MAMP_seqs$MAMP_Sequence[i] <- as.character(Alignment_between_MAMP_and_Ref@subject)
+              hold_MAMP_seqs$Percent_Identity[i] <- percent_identity_realignment
+              filter_list_2[[i]] <- TRUE
+            }
+          }
+          
           if (hold_MAMP_seqs$Percent_Identity[i] > 30){
             filter_list_2[[i]] <- TRUE
           }
@@ -257,17 +282,12 @@ rm(filter_list)
       
     
     hold_MAMP_seqs <- hold_MAMP_seqs[unlist(filter_list_2),]
+    
+    #remove old variables
+    rm(filter_list_2)
+    rm(filter1)
+    rm(filter2)
+    rm(filter3)
 
-
-
-
-
-
-
-
-
-# temp until I figure out what to do with nlp data
-
-hold_copy_number <- as.data.frame(hold_MAMP_seqs %>% group_by(MAMP_Hit, File_Name, Gram, Genera) %>% summarise(n=n()))
 
 

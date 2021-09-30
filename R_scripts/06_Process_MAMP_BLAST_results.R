@@ -66,10 +66,6 @@
                                     strsplit(get_accession_number,"_")[[1]][2], sep = "_")
     get_strain_info <- subset(datasettable, Assembly_Accession == get_accession_number)
     
-    if(get_strain_info$Filename == "Agrobacterium_tumefaciens_A6"){
-      print(get_strain_info)
-      print(read_blast_results)
-    }
     
     read_blast_results <- cbind(read_blast_results, 
                                 rep(get_strain_info$Genera, nrow(read_blast_results)),
@@ -89,36 +85,5 @@
   }
   
 
-  
-  
-  
-  # components for counting copy number  
-  #hold_temp <- data.frame(rbind(table(read_blast_results$MAMP_Hit)))
-  
-  
-  # count the number of copies per strain
-  #hold_copy_number[i,1] <- unique(read_blast_results$Genera)
-  #hold_copy_number[i,2] <- unique(read_blast_results$Strain_Name)
-  #hold_copy_number[i,3] <- unique(read_blast_results$Gram)
-  #if (any(grepl("csp22_consensus", colnames(hold_temp))) == TRUE){
-  #  hold_copy_number[i,4] <- hold_temp$csp22_consensus
-  #}
-  #if (any(grepl("elf18_consensus", colnames(hold_temp))) == TRUE){
-  #  hold_copy_number[i,5] <- hold_temp$elf18_consensus
-  #}
-  #if (any(grepl("flg22_consensus", colnames(hold_temp))) == TRUE){
-  #  hold_copy_number[i,6] <- hold_temp$flg22_consensus
-  #}
-  #if (any(grepl("nlp20_consensus", colnames(hold_temp))) == TRUE){
-  #  hold_copy_number[i,7] <- hold_temp$nlp20_consensus
-  #}
-  #if (any(grepl("flgII.28", colnames(hold_temp))) == TRUE){
-  #  hold_copy_number[i,8] <- hold_temp$flgII.28
-  #}
-  
-  #hold_copy_number <- reshape2::melt(hold_copy_number)
-  #rm(hold_temp)
-
-  
   
   
