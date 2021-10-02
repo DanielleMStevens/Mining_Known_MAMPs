@@ -52,7 +52,7 @@
       ANI_output$Genome2[j] <- datasettable[datasettable$Assembly_Accession %in% hold_genome2,6]
     }
     
-    ANIs_above_99 <- subset(ANI_output, ANI_output$ANI_val > 99.99)
+    ANIs_above_99 <- subset(ANI_output, ANI_output$ANI_val > 99.999)
     Genomes_to_check <- rbind(Genomes_to_check, ANIs_above_99)
     setTxtProgressBar(pb, i)
     
@@ -72,11 +72,33 @@
     }
   }
   Genomes_to_check <- Genomes_to_check[unlist(filter_genomes),]
+  rm(filter_genomes)
   
   #########################################################################
   # Remove genome matches which are matches to itself
   #########################################################################
   
+  Do_MAMPs_match <- list()
+  for (i in 1:nrow(Genomes_to_check)){
+    Genome1_MAMPs <- hold_MAMP_seqs[hold_MAMP_seqs$File_Name %in% Genomes_to_check$Genome1[i],]
+    Genome2_MAMPs <- hold_MAMP_seqs[hold_MAMP_seqs$File_Name %in% Genomes_to_check$Genome2[i],]
+    
+    if (all(Genome1_MAMPs$MAMP_Sequence %in% Genome2_MAMPs$MAMP_Sequence) == TRUE){
+      Do_MAMPs_match[[i]] <- TRUE
+    }
+    
+    if (all(Genome1_MAMPs$MAMP_Sequence %in% Genome2_MAMPs$MAMP_Sequence) == FALSE){
+      Do_MAMPs_match[[i]] <- FALSE
+    }
+  }
+  
+  Genomes_to_check <- Genomes_to_check[unlist(Do_MAMPs_match),]
+  rm(Genome1_MAMPs)
+  rm(Genome2_MAMPs)
+
+  # remove reciprocal comparison
+  Genomes_to_check <- Genomes_to_check[!duplicated(cbind(pmin(Genomes_to_check[,1], Genomes_to_check[,2]), pmax(Genomes_to_check[,1], Genomes_to_check[,2]))),]
   
   
+  # we can use this to remove all of column 1 but keep column 2, hence remove duplicates 
 

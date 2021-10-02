@@ -125,7 +125,8 @@ Using Main_script.R, run though the lines below:
   source("./06_Process_MAMP_BLAST_results.R")
   
   
-  # to be through in our search for microbial MAMPs, we will go back through the annotated genes and pull out the MAMPs that we might have missed in the BLAST search (esspecially for flg22)
+  # to be through in our search for microbial MAMPs, we will go back through the annotated genes and pull out the 
+  # MAMPs that we might have missed in the BLAST search (esspecially for flg22)
   source("./07_Find_MAMPs_by_annotation.R")
   
 
@@ -225,7 +226,7 @@ We can then create a folder to hold the gff3 files
   conda config --add channels bioconda
   conda install roary
   
-  roary -e --mafft -p 8 *.gff
+  roary -e --mafft -p 14 -z -r *.gff
 
   ```
 

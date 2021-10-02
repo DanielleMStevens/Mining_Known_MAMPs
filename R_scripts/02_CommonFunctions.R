@@ -38,10 +38,31 @@ aa2df <- function(dss){
 }
 
 
+
+######################################################################
+#  function to turn dataframe (where one column is the name and one column is the sequence)
+#   into a fasta file - version 2
+######################################################################
+
+
+formate2fasta <- function(WP_locus_names, sequence_type, Genera_names, File_names, sequences) {
+  hold_sequences <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
+  for (i in 1:length(WP_locus_names)){
+    #find full length protein sequence
+    temp_df <- data.frame(paste(paste(">",WP_locus_names[[i]], sep=""), sequence_type, Genera_names[[i]], File_names[[i]], sep = "|"),
+                          sequences[[i]])
+    colnames(temp_df) <- colnames(hold_sequences)
+    hold_sequences <- rbind(hold_sequences, temp_df)
+  }
+  return(hold_sequences)
+}
+
+
 ######################################################################
 #  function to turn dataframe (where one column is the name and one column is the sequence)
 #   into a fasta file
 ######################################################################
+
 
 writeFasta <- function(data, filename){
   fastaLines = c()
@@ -52,26 +73,6 @@ writeFasta <- function(data, filename){
   fileConn<-file(filename)
   writeLines(fastaLines, fileConn)
   close(fileConn)
-}
-
-
-
-######################################################################
-#  function to turn dataframe (where one column is the name and one column is the sequence)
-#   into a fasta file - version 2
-######################################################################
-
-
-formate2fasta <- function(WP_locus_names, Genera_names, File_names, sequences) {
-  hold_sequences <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-  for (i in 1:length(WP_locus_names)){
-    #find full length protein sequence
-    temp_df <- data.frame(paste(paste(">",WP_locus_names[[i]], sep=""), Genera_names[[i]], File_names[[i]], sep = "|"),
-                          sequences[[i]])
-    colnames(temp_df) <- colnames(hold_sequences)
-    hold_sequences <- rbind(hold_sequences, temp_df)
-  }
-  return(hold_sequences)
 }
 
 
