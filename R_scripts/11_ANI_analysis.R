@@ -51,14 +51,16 @@
   # swap out accession number for the file name so we can map on genera metasdata on it
   #########################################################################
   
-  pb <- txtProgressBar(min = 0, max = nrow(ANI_values_df), style = 3)
-  for (j in 1:nrow(ANI_values_df)){
-    ANI_values_df$Genome1[j] <- datasettable[which(datasettable$Assembly_Accession == ANI_values_df$Genome1[j]),6]
-    ANI_values_df$Genome2[j] <- datasettable[which(datasettable$Assembly_Accession == ANI_values_df$Genome2[j]),6]
-    setTxtProgressBar(pb, j)
-  }
-  close(pb)
-
+  
+  
+  dt_datasettable <- data.table(datasettable)
+  setkey(dt_datasettable, "Assembly_Accession")
+  
+  
+  ANI_values_df$Genome1 <- dt_datasettable[.(ANI_values_df$Genome1),6]
+  ANI_values_df$Genome2 <- dt_datasettable[.(ANI_values_df$Genome2),6]
+  
+  
   Genomes_to_check <- subset(ANI_values_df, ANI_values_df$ANI_val > 99.999)
 
   
@@ -76,7 +78,6 @@
     }
   }
   Genomes_to_check <- Genomes_to_check[unlist(filter_genomes),]
-  print("Remove comparisons against itself")
   rm(filter_genomes)
   gc()
   
@@ -101,8 +102,7 @@
   Genomes_to_check <- Genomes_to_check[unlist(Do_MAMPs_match),]
   rm(Genome1_MAMPs)
   rm(Genome2_MAMPs)
-  print("Updated list based on wheather MAMP hits match")
-  
+
   
   # remove reciprocal comparison
   Genomes_to_check <- Genomes_to_check[!duplicated(cbind(pmin(Genomes_to_check[,1], Genomes_to_check[,2]), pmax(Genomes_to_check[,1], Genomes_to_check[,2]))),]
