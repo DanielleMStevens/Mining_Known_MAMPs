@@ -21,10 +21,10 @@
 # update table variables
 #########################################################################
 
-  Genomes_to_check <- data.frame("Genome1" = character(0), "Genome2" = character(0), "ANI_val" = numeric(0))
-  pb <- txtProgressBar(min = 0, max = length(load_ANI_results), style = 3)
-  
+
+  ANI_values_df <- data.frame("Genome1" = character(0), "Genome2" = character(0), "ANI_val" = numeric(0))
   for (i in 1:length(load_ANI_results)){
+    pb <- txtProgressBar(min = 0, max = length(load_ANI_results), style = 3)
     ANI_output <- read.table(file = paste("./../ANI_analysis/",load_ANI_results[[i]], sep = "")) 
     colnames(ANI_output) <- c("Genome1","Genome2","ANI_val","val2","val3")
     ANI_output$Genome1 <- as.character(ANI_output$Genome1)
@@ -33,31 +33,35 @@
     ANI_output$val3 <- NULL
     
     
-    
-    ANI_output <- filter_title(ANI_output,"/home/danimstevens/Documents/Mining_MAMPs/Whole_Genomes_v2/whole_genomes/")
-    
-    #########################################################################
-    # swap out accession number for the file name so we can map on genera metasdata on it
-    #########################################################################
+    ANI_output <- ANI_output %>% mutate(Genome1 = str_replace(Genome1, "/home/danimstevens/Documents/Mining_MAMPs/Whole_Genomes_v2/whole_genomes/", ""))
+    ANI_output <- ANI_output %>% mutate(Genome2 = str_replace(Genome2, "/home/danimstevens/Documents/Mining_MAMPs/Whole_Genomes_v2/whole_genomes/", ""))
     
     
-    for (j in 1:nrow(ANI_output)){
-      hold_genome1 <- paste(strsplit(ANI_output$Genome1[j], "_")[[1]][1],
-                            strsplit(ANI_output$Genome1[j], "_")[[1]][2],
-                            sep = "_")
-      hold_genome2 <- paste(strsplit(ANI_output$Genome2[j], "_")[[1]][1],
-                            strsplit(ANI_output$Genome2[j], "_")[[1]][2],
-                            sep = "_")
-      ANI_output$Genome1[j] <- datasettable[datasettable$Assembly_Accession %in% hold_genome1,6]
-      ANI_output$Genome2[j] <- datasettable[datasettable$Assembly_Accession %in% hold_genome2,6]
-    }
+    ANI_output$Genome1 <- paste(vapply(strsplit(ANI_output$Genome1,"_"), `[`, 1, FUN.VALUE=character(1)), vapply(strsplit(ANI_output$Genome1,"_"), `[`, 2, FUN.VALUE=character(1)), sep="_")
+    ANI_output$Genome2 <- paste(vapply(strsplit(ANI_output$Genome2,"_"), `[`, 1, FUN.VALUE=character(1)), vapply(strsplit(ANI_output$Genome2,"_"), `[`, 2, FUN.VALUE=character(1)), sep="_")
     
-    ANIs_above_99 <- subset(ANI_output, ANI_output$ANI_val > 99.999)
-    Genomes_to_check <- rbind(Genomes_to_check, ANIs_above_99)
+    
+    ANI_values_df <- rbind(ANI_values_df, ANI_output)
     setTxtProgressBar(pb, i)
-    
+    rm(ANI_output)
   }
+  close(pb)
+  
+  #########################################################################
+  # swap out accession number for the file name so we can map on genera metasdata on it
+  #########################################################################
+  
+  pb <- txtProgressBar(min = 0, max = nrow(ANI_values_df), style = 3)
+  for (j in 1:nrow(ANI_values_df)){
+    ANI_values_df$Genome1[j] <- datasettable[which(datasettable$Assembly_Accession == ANI_values_df$Genome1[j]),6]
+    ANI_values_df$Genome2[j] <- datasettable[which(datasettable$Assembly_Accession == ANI_values_df$Genome2[j]),6]
+    setTxtProgressBar(pb, j)
+  }
+  close(pb)
 
+  Genomes_to_check <- subset(ANI_values_df, ANI_values_df$ANI_val > 99.999)
+
+  
   #########################################################################
   # Remove genome matches which are matches to itself
   #########################################################################
@@ -72,7 +76,9 @@
     }
   }
   Genomes_to_check <- Genomes_to_check[unlist(filter_genomes),]
+  print("Remove comparisons against itself")
   rm(filter_genomes)
+  gc()
   
   #########################################################################
   # Remove genome matches which are matches to itself
@@ -95,7 +101,9 @@
   Genomes_to_check <- Genomes_to_check[unlist(Do_MAMPs_match),]
   rm(Genome1_MAMPs)
   rm(Genome2_MAMPs)
-
+  print("Updated list based on wheather MAMP hits match")
+  
+  
   # remove reciprocal comparison
   Genomes_to_check <- Genomes_to_check[!duplicated(cbind(pmin(Genomes_to_check[,1], Genomes_to_check[,2]), pmax(Genomes_to_check[,1], Genomes_to_check[,2]))),]
   

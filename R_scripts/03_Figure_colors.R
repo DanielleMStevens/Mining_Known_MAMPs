@@ -43,3 +43,20 @@ names(Gram_colors) <- c("+","-")
 # color code for class of interest
 class_colors <- c('#a8e6cf','#dcedc1','#ffd3b6','#ffaaa5')
 names(class_colors) <- c('Actinobacteria','Gammaproteobacteria','Betaproteobacteria','Alphaproteobacteria')
+
+
+# set colors for ANI plots using complex heatmap
+color_species <- c("Leifsonia" = "#ff94af",
+                   "Clavibacter" = "#ffd65c",
+                   "Curtobacterium" = "#b589d6",
+                   "Rhodococcus" = "#73bfe6",
+                   "Rathayibacter" = "#9e9e9e",
+                   "Streptomyces" = "#7bc98f",
+                   "Ralstonia" = "#ab234c",
+                   "Xanthomonas" =  "#e3534c",
+                   "Pseudomonas" = "#026178",
+                   "Agrobacterium" = "#507B00",
+                   "Pectobacterium" = "#68217a",
+                   "Dickeya" = "#bad90a",
+                   "Erwinia" = "#00bcf2"
+)

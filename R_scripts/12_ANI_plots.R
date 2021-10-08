@@ -7,100 +7,49 @@
 # Outputs: plots all by all comparison of genomes, organizes by clustering of ANI values, and labels based on species 
 #-----------------------------------------------------------------------------------------------
 
+# moved values to new variable such that orginal dataframe is not altered just in case
 
-#########################################################################
-# update table variables
-#########################################################################
-
-pb <- txtProgressBar(min = 0, max = length(load_ANI_results), style = 3)
-All_ANI_output <- data.frame("Genome1" = character(0), "Genome2" = character(0), "ANI_val" = numeric(0))
-for (i in 1:length(load_ANI_results)){
-  ANI_output <- read.table(file = paste("./../ANI_analysis/",load_ANI_results[[i]], sep = "")) 
-  colnames(ANI_output) <- c("Genome1","Genome2","ANI_val","val2","val3")
-  ANI_output$Genome1 <- as.character(ANI_output$Genome1)
-  ANI_output$Genome2 <- as.character(ANI_output$Genome2)
-  ANI_output$val2 <- NULL
-  ANI_output$val3 <- NULL
-  
-  
-  
-  ANI_output <- filter_title(ANI_output,"/home/danimstevens/Documents/Mining_MAMPs/Whole_Genomes_v2/whole_genomes/")
-  
-  #########################################################################
-  # swap out accession number for the file name so we can map on genera metasdata on it
-  #########################################################################
-  
-  
-  for (j in 1:nrow(ANI_output)){
-    hold_genome1 <- paste(strsplit(ANI_output$Genome1[j], "_")[[1]][1],
-                          strsplit(ANI_output$Genome1[j], "_")[[1]][2],
-                          sep = "_")
-    hold_genome2 <- paste(strsplit(ANI_output$Genome2[j], "_")[[1]][1],
-                          strsplit(ANI_output$Genome2[j], "_")[[1]][2],
-                          sep = "_")
-    ANI_output$Genome1[j] <- datasettable[datasettable$Assembly_Accession %in% hold_genome1,6]
-    ANI_output$Genome2[j] <- datasettable[datasettable$Assembly_Accession %in% hold_genome2,6]
-  }
-  
-  All_ANI_output <- rbind(All_ANI_output, ANIs_above_99)
-  setTxtProgressBar(pb, i)
-  
-}
+hold_ANI_values <- ANI_values_df
 
 
 #########################################################################
-# anything below 80 is equal to 0
+# remove genomes from genomes_to_check that are clonal
 #########################################################################
 
+test <- hold_ANI_values[!hold_ANI_values$Genome1 %in% Genomes_to_check$Genome1,]
+test <- test[!test$Genome2 %in% Genomes_to_check$Genome1,]
 
-for (i in 1:nrow(ANI_output)){
-  if (strsplit(ANI_output$Genome1[i], "_")[[1]][1] != strsplit(ANI_output$Genome2[i], "_")[[1]][1]){
-    ANI_output$ANI_val[i] <- 0
-  }
-}
 
 
 #########################################################################
 # reorganize table for plotting
 #########################################################################
 
-myNames <- sort(unique(as.character(unlist(ANI_output[1:2]))))
+myNames <- sort(unique(as.character(unlist(test[1:2]))))
 
-empty_ANI_matrix <- matrix(0, nrow = length(unique(ANI_output$Genome1)), 
-                           ncol = length(unique(ANI_output$Genome2)),
+empty_ANI_matrix <- matrix(0, nrow = length(unique(test$Genome1)), 
+                           ncol = length(unique(test$Genome2)),
                            dimnames = list(myNames, myNames))
 
 # fill in upper triangle
-empty_ANI_matrix[as.matrix(ANI_output[c(1,2)])] <- ANI_output$ANI_val
+empty_ANI_matrix[as.matrix(test[c(1,2)])] <- test$ANI_val
 # fill in the lower triangle
-empty_ANI_matrix[as.matrix(ANI_output[c(2,1)])] <- ANI_output$ANI_val
+empty_ANI_matrix[as.matrix(test[c(2,1)])] <- test$ANI_val
 
-#########################################################################
-# reorganize table for plotting
-#########################################################################
-
-
+#
 
 #########################################################################
 # define colors + plot heatmap of ANI values using complexHeatmap package
 #########################################################################
 
 
-color_species <- c("Leifsonia" = "#ff94af",
-                   "Clavibacter" = "#ffd65c",
-                   "Curtobacterium" = "#b589d6",
-                   "Rhodococcus" = "#73bfe6",
-                   "Rathayibacter" = "#9e9e9e",
-                   "Streptomyces" = "#7bc98f",
-                   "Ralstonia" = "#ab234c",
-                   "Xanthomonas" =  "#e3534c",
-                   "Pseudomonas" = "#026178",
-                   "Agrobacterium" = "#507B00"
-)
-
-set_colors_df <- datasettable[datasettable$Filename %in% unique(ANI_output$Genome1),c(7,1)]
+set_colors_df <- datasettable[datasettable$Filename %in% unique(test$Genome1),c(6,1)]
 set_colors_df <- set_colors_df[!duplicated(set_colors_df$Filename),]
 set_colors_df <- set_colors_df[match(rownames(empty_ANI_matrix), set_colors_df$Filename),]
+
+########################################################################
+# reorganize table for plotting
+#########################################################################
 
 
 ha <- rowAnnotation(Genera = set_colors_df$Genera,
@@ -117,6 +66,8 @@ column_ha <- HeatmapAnnotation(Genera2 = set_colors_df$Genera,
 row_dend = as.dendrogram(hclust(dist(empty_ANI_matrix)))
 
 
+
+
 ANI_heatmap <- ComplexHeatmap::Heatmap(empty_ANI_matrix,
 
                                        cluster_rows = row_dend,
@@ -130,14 +81,14 @@ ANI_heatmap <- ComplexHeatmap::Heatmap(empty_ANI_matrix,
                                        row_dend_width = unit(4.5,"cm"),
                                        show_column_dend = F,
                                        show_column_names = F, 
-                                       show_row_names = T,
-                                       row_names_gp = gpar(fontsize = 2.5),
+                                       show_row_names = F,
+                                       #row_names_gp = gpar(fontsize = 2.5),
                                        
                                        width = unit(20, "cm"),
                                        height = unit(20, "cm"),
                                        
-                                       # left_annotation = ha,
-                                       #  top_annotation = column_ha,
+                                       left_annotation = ha,
+                                       top_annotation = column_ha,
                                        
                                        heatmap_legend_param = list(
                                          title = "ANI Value",
@@ -155,20 +106,19 @@ ANI_heatmap
 #########################################################################
 
 
-copy_ANI <- ANI_output
-for (i in nrow(copy_ANI):1){
-  if (strsplit(copy_ANI$Genome1[i],"_")[[1]][1] == strsplit(copy_ANI$Genome2[i],"_")[[1]][1]){
-    next
-  }
-  if (strsplit(copy_ANI$Genome1[i],"_")[[1]][1] != strsplit(copy_ANI$Genome2[i],"_")[[1]][1]){
-    copy_ANI[i,] <- NA
-  }
-}
+#for (i in nrow(copy_ANI):1){
+#  if (strsplit(copy_ANI$Genome1[i],"_")[[1]][1] == strsplit(copy_ANI$Genome2[i],"_")[[1]][1]){
+#    next
+#  }
+# if (strsplit(copy_ANI$Genome1[i],"_")[[1]][1] != strsplit(copy_ANI$Genome2[i],"_")[[1]][1]){
+#    copy_ANI[i,] <- NA
+#  }
+#}
 
 
-copy_ANI <- na.omit(copy_ANI)
+#copy_ANI <- na.omit(copy_ANI)
 
-
+copy_ANI <- test
 hold_genera_name <- list()
 for (i in 1:nrow(copy_ANI)){
   hold_genera_name[[i]] <- strsplit(copy_ANI$Genome1[i],"_")[[1]][1]
@@ -189,6 +139,7 @@ for (i in 1:nrow(copy_ANI)){
 
 copy_ANI <- na.omit(copy_ANI)
 
+n_number <- as.data.frame(copy_ANI %>% group_by(Genera) %>% summarise(n=n()))
 
 ANI_plot_ggplot <- ggplot(copy_ANI, aes(x = factor(Genera, level = name_list), y = ANI_val,
                                         fill = Genera, color = Genera)) +
@@ -208,12 +159,3 @@ coord_flip()
 
 ANI_plot_ggplot
 
-#########################################################################
-# subset each group by Genera and plot values
-#########################################################################
-
-library(cowplot)
-cowplot::plot_grid(ANI_heatmap, ANI_plot_ggplot, ncol = 1, align = "v")
-
-
-cowplot::plot_grid()

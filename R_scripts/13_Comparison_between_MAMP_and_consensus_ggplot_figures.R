@@ -8,6 +8,10 @@
 #-----------------------------------------------------------------------------------------------
 
 
+
+filtered_hold_MAMP_seqs <- hold_MAMP_seqs[!hold_MAMP_seqs$File_Name %in% Genomes_to_check$Genome1,]
+
+
 ##############################################
 # Plot the similarity of the MAMP to the consensus seperate by Gram-type, MAMP, or both
 ##############################################
@@ -15,15 +19,16 @@
 ## NOTE! Nlp20 data is removed for now (at least for )
 
   # plots all MAMPs grouped by whether it's a gram-positive or gram-negative bacteria
-  n_number <- as.data.frame(hold_MAMP_seqs %>% group_by(Gram) %>% summarise(n=n()))
+  n_number <- as.data.frame(filtered_hold_MAMP_seqs %>% group_by(Gram) %>% summarise(n=n()))
 
   
-  Gram_type <- ggplot(data = hold_MAMP_seqs, aes(x = Gram, y = Percent_Identity)) +
+  Gram_type <- ggplot(data = filtered_hold_MAMP_seqs, aes(x = Gram, y = Percent_Identity)) +
   my_ggplot_theme +
   geom_violin(aes(fill = Gram), alpha = 0.9, scale = "width", trim = F) +
   geom_boxplot(color = "black", fill = "white", outlier.alpha = 0, width = 0.1) +
   scale_fill_manual("Gram Type", values = Gram_colors) +
   ylab("Percent AA Similarity") +
+  xlab("Gram-type") +
   theme(legend.position = "none",
         axis.text.x = element_text(color = "black", size = 16),
           axis.text.y = element_text(color = "black", size = 14),
@@ -36,18 +41,19 @@
   
   
   
-  Gram_type + 
-    ggplot(hold_MAMP_seqs, aes(color = Gram, x = Percent_Identity)) + 
+  Gram_type <- Gram_type + 
+    ggplot(filtered_hold_MAMP_seqs, aes(color = Gram, x = Percent_Identity)) + 
     stat_ecdf(geom = "step", size = 1.5) +
     my_ggplot_theme +
     ylab("Cumulative probability") +
+    xlab("Percent AA Similarity") +
     scale_color_manual("Gram Type", values = Gram_colors) +
     theme(legend.position = "none")
   
   
   
   # save plot
-  #ggsave(Gram_type, filename = "./../Figures/Plot_MAMP_similarity_by_Gram_type.pdf", device = cairo_pdf, width = 3, height = 3, units = "in")
+  ggsave(Gram_type, filename = "./../Figures/Plot_MAMP_similarity_by_Gram_type.pdf", device = cairo_pdf, width = 5, height = 2.5, units = "in")
 
   
 
@@ -58,10 +64,10 @@
   
   # plots all MAMPs grouped by MAMP type
  
-  n_number <- as.data.frame(hold_MAMP_seqs %>% group_by(MAMP_Hit) %>% summarise(n=n()))
+  n_number <- as.data.frame(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus") %>% group_by(MAMP_Hit) %>% summarise(n=n()))
 
   
-  MAMP_type <- ggplot(hold_MAMP_seqs, 
+  MAMP_type <- ggplot(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus"), 
                       aes(x = MAMP_Hit, y = Percent_Identity)) +
   my_ggplot_theme +
   geom_violin(aes(fill = MAMP_Hit), alpha = 0.9,scale = "width", trim = T) +
@@ -72,21 +78,21 @@
                    labels=c("csp22_consensus" = "csp22", 
                             "elf18_consensus" = "elf18",
                             "flg22_consensus" = "flg22",
-                            "flgII-28" = "flgII-28",
-                            "nlp20_consensus" = "nlp20")) +
+                            "flgII-28" = "flgII-28")) +
   theme(legend.position = "none",
         axis.text.x = element_text(color = "black", size = 14),
         axis.text.y = element_text(color = "black", size = 14),
         axis.title = element_text(color = "black", face = "bold", size = 14),
         axis.line = element_line(colour = "black", 
                                  size = 0.4, linetype = "solid")) +
-    scale_y_continuous(breaks = c(0,25,50,75,100),
-                       limits = c(0,110)) +
+    #scale_y_continuous(breaks = c(0,25,50,75,100), limits = c(0,110)) +
+    scale_y_continuous(breaks = c(0,20,40,60,80,100), limits = c(0,110)) +
     geom_text(data = n_number, 
               aes(x = MAMP_Hit, y = 110, label = n), size = 5)
   
  
-  MAMP_type <- MAMP_type + ggplot(hold_MAMP_seqs, aes(color = MAMP_Hit, x = Percent_Identity)) + 
+  MAMP_type <- MAMP_type + ggplot(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus"), 
+                                  aes(color = MAMP_Hit, x = Percent_Identity)) + 
     #stat_qq() +
     scale_color_manual("MAMP", values = MAMP_colors) +
     stat_ecdf(geom = "step", size = 1.25) +
@@ -101,14 +107,15 @@
   
   
   # copy number of MAMPs (not seperated by Gram type)
-  MAMP_type_copy_number <- ggplot(subset(hold_copy_number, n != 0), aes(x = MAMP_Hit, y = n)) +
+  MAMP_type_copy_number <- ggplot(subset(hold_copy_number, hold_copy_number$MAMP_Hit != "nlp20_consensus"), 
+                                  aes(x = MAMP_Hit, y = n)) +
     my_ggplot_theme +
     geom_violin(aes(fill = MAMP_Hit), alpha = 0.9, scale = "width", trim = T) +
     geom_boxplot(color = "black", fill = "white", outlier.alpha = 0, width = 0.1) +
     ylab("Number of MAMP Encoding\nProtein Sequences") +
     scale_fill_manual("MAMP", values = MAMP_colors) +
-    scale_y_continuous(limits = c(0,18),
-                       breaks = c(0,2,4,6,8,10,12,14,16,18)) +
+    scale_y_continuous(limits = c(0,16),
+                       breaks = c(0,2,4,6,8,10,12,14,16)) +
     scale_x_discrete(name ="MAMP", 
                      labels=c("csp22_consensus" = "csp22", 
                               "elf18_consensus" = "elf18",

@@ -70,7 +70,7 @@
   # go back to methods.md to run ANI analysis
   #*******************************************
 
-  # parsing ANI values and comparing them to MAMP sequences to remove clonal genomes
+  # parsing ANI values and comparing them to MAMP sequences to remove clonal genomes - takes many hours (working on logic to speed up)
   source("./11_ANI_analysis.R")  
 
   
