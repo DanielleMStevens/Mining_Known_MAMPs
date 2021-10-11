@@ -70,7 +70,7 @@
   # go back to methods.md to run ANI analysis
   #*******************************************
 
-  # parsing ANI values and comparing them to MAMP sequences to remove clonal genomes - takes many hours (working on logic to speed up)
+  # parsing ANI values and comparing them to MAMP sequences to remove clonal genomes
   source("./11_ANI_analysis.R")  
 
   
@@ -85,6 +85,7 @@
   # ggplot figures such as violin plots
   source("./13_Comparison_between_MAMP_and_consensus_ggplot_figures.R")
 
+  source("./14_nlp20_plots.R")
 
 
 

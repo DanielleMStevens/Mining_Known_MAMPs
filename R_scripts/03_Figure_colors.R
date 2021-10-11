@@ -31,8 +31,8 @@ names(Genera_colors) <- c("Leifsonia","Clavibacter","Curtobacterium","Rhodococcu
 
 
 # color code for MAMP of interest
-MAMP_colors <- c("#FDBE83", "#d6a5bd", "#2F4E68", "#6b8c82")
-names(MAMP_colors) <- c("csp22_consensus","elf18_consensus","flg22_consensus","flgII-28")
+MAMP_colors <- c("#FDBE83", "#d6a5bd", "#2F4E68", "#6b8c82", "#982e26")
+names(MAMP_colors) <- c("csp22_consensus","elf18_consensus","flg22_consensus","flgII-28","nlp20_consensus")
 
 
 # color code for gram-type of interest

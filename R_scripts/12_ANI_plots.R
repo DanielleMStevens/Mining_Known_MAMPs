@@ -9,43 +9,43 @@
 
 # moved values to new variable such that orginal dataframe is not altered just in case
 
-hold_ANI_values <- ANI_values_df
+hold_ANI_values <- as.data.frame(ANI_values_df)
+hold_ANI_values <- data.frame(lapply(hold_ANI_values, unlist))
+rownames(hold_ANI_values) <- NULL
 
 
 #########################################################################
 # remove genomes from genomes_to_check that are clonal
 #########################################################################
 
-test <- hold_ANI_values[!hold_ANI_values$Genome1 %in% Genomes_to_check$Genome1,]
-test <- test[!test$Genome2 %in% Genomes_to_check$Genome1,]
-
+hold_ANI_values <- hold_ANI_values[!hold_ANI_values$Genome1 %in% Genomes_to_check$Genome1,]
+hold_ANI_values <- hold_ANI_values[!hold_ANI_values$Genome2 %in% Genomes_to_check$Genome1,]
 
 
 #########################################################################
 # reorganize table for plotting
 #########################################################################
 
-myNames <- sort(unique(as.character(unlist(test[1:2]))))
+myNames <- sort(unique(as.character(unlist(hold_ANI_values[1:2]))))
 
-empty_ANI_matrix <- matrix(0, nrow = length(unique(test$Genome1)), 
-                           ncol = length(unique(test$Genome2)),
+empty_ANI_matrix <- matrix(0, 
+                           nrow = length(unique(hold_ANI_values$Genome1)), 
+                           ncol = length(unique(hold_ANI_values$Genome2)),
                            dimnames = list(myNames, myNames))
 
 # fill in upper triangle
-empty_ANI_matrix[as.matrix(test[c(1,2)])] <- test$ANI_val
-# fill in the lower triangle
-empty_ANI_matrix[as.matrix(test[c(2,1)])] <- test$ANI_val
+empty_ANI_matrix[as.matrix(hold_ANI_values[c(1,2)])] <- hold_ANI_values$ANI_val
 
-#
 
 #########################################################################
 # define colors + plot heatmap of ANI values using complexHeatmap package
 #########################################################################
 
 
-set_colors_df <- datasettable[datasettable$Filename %in% unique(test$Genome1),c(6,1)]
+set_colors_df <- datasettable[datasettable$Filename %in% unique(hold_ANI_values$Genome1),c(6,1)]
 set_colors_df <- set_colors_df[!duplicated(set_colors_df$Filename),]
 set_colors_df <- set_colors_df[match(rownames(empty_ANI_matrix), set_colors_df$Filename),]
+
 
 ########################################################################
 # reorganize table for plotting
@@ -90,6 +90,8 @@ ANI_heatmap <- ComplexHeatmap::Heatmap(empty_ANI_matrix,
                                        left_annotation = ha,
                                        top_annotation = column_ha,
                                        
+                                       use_raster = TRUE, raster_quality = 5,
+                                       
                                        heatmap_legend_param = list(
                                          title = "ANI Value",
                                          legend_height = unit(3, "cm"),
@@ -99,26 +101,19 @@ ANI_heatmap <- ComplexHeatmap::Heatmap(empty_ANI_matrix,
                                        )
 )
 
+
+pdf("./../Figures/Supplemental_Figure_3/ANI_heatmap.pdf", width = 12, height = 12)
 ANI_heatmap
+dev.off()
+
+
 
 #########################################################################
 # subset each group by Genera and plot values
 #########################################################################
 
 
-#for (i in nrow(copy_ANI):1){
-#  if (strsplit(copy_ANI$Genome1[i],"_")[[1]][1] == strsplit(copy_ANI$Genome2[i],"_")[[1]][1]){
-#    next
-#  }
-# if (strsplit(copy_ANI$Genome1[i],"_")[[1]][1] != strsplit(copy_ANI$Genome2[i],"_")[[1]][1]){
-#    copy_ANI[i,] <- NA
-#  }
-#}
-
-
-#copy_ANI <- na.omit(copy_ANI)
-
-copy_ANI <- test
+copy_ANI <- hold_ANI_values
 hold_genera_name <- list()
 for (i in 1:nrow(copy_ANI)){
   hold_genera_name[[i]] <- strsplit(copy_ANI$Genome1[i],"_")[[1]][1]
@@ -139,23 +134,32 @@ for (i in 1:nrow(copy_ANI)){
 
 copy_ANI <- na.omit(copy_ANI)
 
-n_number <- as.data.frame(copy_ANI %>% group_by(Genera) %>% summarise(n=n()))
+# number of strains left in study
+n_number <- as.data.frame(set_colors_df %>% group_by(Genera) %>% summarise(n=n()))
 
-ANI_plot_ggplot <- ggplot(copy_ANI, aes(x = factor(Genera, level = name_list), y = ANI_val,
-                                        fill = Genera, color = Genera)) +
-  geom_violin(alpha = 0.4, scale = "width", trim = F) +
-  #geom_jitter() +
-  ylim(75, 100) +
+#order of ggplot to match ANI heatmap
+level_order <- c('Xanthomonas', 'Pseudomonas', 'Agrobacterium', 'Ralstonia', 'Pectobacterium', 'Erwinia', 
+                 'Curtobacterium', 'Dickeya', 'Streptomyces', 'Rhodococcus', 'Clavibacter', 'Leifsonia', 'Rathayibacter')
+
+
+ANI_plot_ggplot <- ggplot(copy_ANI, 
+                          aes(x = factor(Genera, level = level_order), 
+                              y = ANI_val,fill = Genera, color = Genera)) +
+  geom_violin(alpha = 0.4, scale = "width", trim = T) +
+  geom_boxplot(color = "black", fill = "white", outlier.alpha = 0, width = 0.05) +
+  scale_y_continuous(breaks = c(75,80,85,90,95,100), limits = c(75,110)) +
   xlab("Genera\n") +
-  ylab("ANI Value\n") +
+  ylab("ANI Value") +
   scale_color_manual("Genera", values = Genera_colors) +
   scale_fill_manual("Genera", values = Genera_colors) +
   my_ggplot_theme +
-  theme(axis.text.x = element_text(color ="black"),
-        legend.position = "none") 
+  theme(axis.text.x = element_text(color ="black", angle = 45, hjust = 1),
+        legend.position = "none") +
+  geom_text(data = n_number, 
+            aes(x = Genera, y = 105, label = n), color = "black", size = 4) 
 
-coord_flip()
 
 
-ANI_plot_ggplot
+ggsave(ANI_plot_ggplot, filename = "./../Figures/Supplemental_Figure_3/ANI_ggplot.pdf", device = cairo_pdf, width = 7.5, height = 3, units = "in")
+
 
