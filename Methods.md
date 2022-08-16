@@ -21,7 +21,7 @@ ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
 ```
 
   
-I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. I then use the accession name (ex. Erwinia amylovora) to quick filter for accessions that are not either plant/agriculturally related. Once all the information was collected and put into a simple text file, the comman below can be ran:
+I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. I then use the accession name (ex. Erwinia amylovora) to quick filter for accessions that are not either plant/agriculturally related. Once all the information was collected and put into a simple text file, the command below can be ran:
   
 ```
 ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
@@ -79,8 +79,11 @@ We can then go through each protein fasta file and pull out the peptide from the
     blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 12 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
   done
   ```
+  
 
-### 4. Processing MAMP database
+### 4. Processing Data to Form the MAMP database
+
+With the intial serach for MAMPs complete, we will now A) clean up the data by removing any partial hits, B) cross referense the hits by annotation per genome and fill in any missing hits by using local-alignment to the protein with the MAMP of interest to pull out the variant sequenee. We will also set up all the packages we need for downstream analyses. 
 
 Using Main_script.R, run though the lines below:
 
@@ -193,8 +196,16 @@ First we will run an R script designed to pull all the genomes accession number 
     source("./11_ANI_plots.R")
     ```
   
-## Building core gene phylogeny to show MAMP adnudance in respect to species/strain relatedness
+## Building phylogenimic tree to show MAMP adnudance in respect to species/genera relatedness
 
+  
+  ```
+  ❯ conda create -y -n gtotree -c conda-forge -c bioconda -c defaults -c astrobiomike gtotree
+  ❯ conda activate gtotree
+  ❯ printf '%s\n' "$PWD"/* >filenames.txt
+  #mannually remove files from the path list (based on this file)
+  ❯ GToTree -g filenames.txt -H Bacteria -n 4 -j 6 -k -T IQ-TREE
+  ```
   
 In order to build a core gene phyloogeny as well as pull out core genes to calculate Tajima's D, we can use roary to authomate a lot of this. But, unforunately, it doesn't take gbff files (only gff3) and so we need to convert the files before running.
 
@@ -209,7 +220,7 @@ First, we can use a script from [Biocode](https://github.com/jorvis/biocode) whi
   pip3 install biocode
   ```
 
-We can then create a folder to hold the gff3 files
+We can then create a folder to hold the gff files.
 
   ```
   for file in *.gbff
@@ -218,20 +229,39 @@ We can then create a folder to hold the gff3 files
         python ./../../Mining_Known_MAMPs/python_scripts/convert_genbank_to_gff3.py -i ./../../Whole_Genomes_v2/genbank/$file -o ./../gff/$file.gff
   done
   ```
+  
+But there are subtile variatoins in gff files
 
   ```
-  conda config --add channels r
-  conda config --add channels defaults
-  conda config --add channels conda-forge
-  conda config --add channels bioconda
-  conda install roary
+  conda install -c bioconda agat
+  for file in *.gff
+  do
+        echo "$file"
+        agat_convert_sp_gxf2gxf.pl -g $file -o ${file}_fixed.gff -gff_version_output 3  
+  done
+
+
+  # move the files into a new folder
+  mkdir gff_for_pirate
+  mv *.gff_fixed.gff ./../gff_for_pirate
   
-  roary -e --mafft -p 14 -z -r *.gff
+  # PIRATE package
+  conda install pirate 
+
+  # optional dependencies for plotting figures in R
+  conda install r==3.5.1 r-ggplot2==3.1.0 r-dplyr==0.7.6 bioconductor-ggtree==1.14.4 r-phangorn==2.4.0 r-gridextra
+  conda install -c bioconda diamond
+  
+  # run pirate locally in new gff folder
+  PIRATE -i ~/Documents/Mining_MAMPs/Whole_Genomes_v2/gff_for_pirate/ -s "70,90" -k "--cd-step 2 --cd-low 90" -a -r -t 14 
+  ```
+  
+  We then use datasettable and genomes_to_check in the R-console to view the dataframe and remove gff files manually which are considered clonal by previous analyses. Once we 
 
   ```
+  # run the below with the name of the environment, run once
+  #conda create --name roary_analysis
 
-  
-  
   
   
   
@@ -244,6 +274,10 @@ We can then create a folder to hold the gff3 files
 We now can start building protein trees to understand their evolutionary history in respect to the MAMPs they encode for. We will run MAFFT to build our alignment and IQ-tree of make a maximum likelihood tree from the alignment. In each folder of which the fasta file was saved, the below commands were ran (names changed where needed).
 
   ```
+  # for MAMP sequnece trees:
+  ❯ mafft --reorder --thread 12 --maxiterate 1000 csp22.fasta > "csp22_alignment"
+  
+  # for full length proteins, 
   mafft --reorder --thread 12 --maxiterate 1000 --localpair csp22_full_length.fasta > "csp22_full_length_alignment"
   # --localpair, slowest but most accurate method of alignment
   # --reorder, reorder entries in fasta file to improve alignment
@@ -254,6 +288,11 @@ We now can start building protein trees to understand their evolutionary history
   # -bb 1000, number of ultrafast bootstrapping ran on the tree
   # -mtree, iterate thorugh all models to find the best one
   # -nt 12, number of threads used to run analysis (I have max 16)
+  
+  
+  # MAMP trees 
+  ❯ mafft --reorder --thread 12 --maxiterate 1000 --localpair --op 3 csp22_for_tree.fasta > "csp22_MAMP_alignment"
+  iqtree -s csp22_MAMP_alignemnt -bb 1000 -T AUTO -v -m TEST
   ```
 
   Run Tree_plotting.R to plot protein and main core gene trees. These trees will be outputed as pdf's at a preset size.
