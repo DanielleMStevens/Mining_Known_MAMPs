@@ -1,3 +1,10 @@
+# Table of Contents
+- [Downloading genomes from NCBI](#downloading-genomes-from-ncbi)
+  - [1. Download the genomes](#1.-download-the-genomes)
+- [Setting up database and mining for MAMPs](#setting-up-database-and-mining-for-mamps)
+
+
+
 ## Downloading genomes from NCBI
 
 ### 1. Download the genomes
