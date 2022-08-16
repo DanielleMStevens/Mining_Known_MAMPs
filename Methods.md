@@ -2,8 +2,12 @@
 - [Downloading genomes from NCBI](#downloading-genomes-from-ncbi)
   - [1. Download the genomes](#1.-download-the-genomes)
 - [Setting up database and mining for MAMPs](#setting-up-database-and-mining-for-mamps)
-
-
+  - [2. Build the MAMP database](#2.-build-the-mamp-database)
+  - [3. Run all genomes against blast database](#3.-run-all-genomes-against-blast-database)
+  - [4. Processing Data to Form the MAMP database](#4.-processing-data-to-form-the-mamp-database)
+- [Assessing genome diveristy and removing redudnacy/clonality](#assessing-genome-diveristy-and-removing-redudnacy/clonality)
+  - [5. Prep genomes for fastANI and run fastANI](#5.-prep-genomes-for-fastani-and-run-fastani)
+  - [6. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure](#6.-parse-fastani-output,-use-to-filter-clonal-genomes,-and-plot-final-ani-figure)
 
 ## Downloading genomes from NCBI
 
@@ -31,7 +35,8 @@ ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
 I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. I then use the accession name (ex. Erwinia amylovora) to quick filter for accessions that are not either plant/agriculturally related. Once all the information was collected and put into a simple text file, the command below can be ran:
   
 ```
-ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
+ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 \\
+-v --flat-output -F genbank,fasta,protein-fasta bacteria
 ```
     
 where,
@@ -75,7 +80,7 @@ This fasta file can be used to build a database to use blast to find if anything
 makeblastdb -in MAMP_elicitor_list.fasta -parse_seqids -dbtype 'prot' -out MAMP_blast_db
 ```
 
-### 3. Run all genomes against balst database
+### 3. Run all genomes against blast database
 
 
 We can then go through each protein fasta file and pull out the peptide from the annotation. In this case, we can use a bash loop to blast each file. 
@@ -83,7 +88,9 @@ We can then go through each protein fasta file and pull out the peptide from the
   ```
   for file in *.faa
     do echo "$file"
-    blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 12 -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
+    blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file \\
+    -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 12 \\
+    -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
   done
   ```
   
@@ -185,7 +192,7 @@ First we will run an R script designed to pull all the genomes accession number 
   -o: output file name
   ```
   
-  ### 6. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure
+### 6. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure
   
   The output files can be parsed for their ANI values and to be compared in respect to the MAMP eptitopes found using the R script below:
 
@@ -203,8 +210,9 @@ First we will run an R script designed to pull all the genomes accession number 
     source("./11_ANI_plots.R")
     ```
   
-## Building phylogenimic tree to show MAMP adnudance in respect to species/genera relatedness
+## Phylogentic tree and core gene comparison in respect to MAMPs across species and genera
 
+In order to plot 
   
   ```
   ❯ conda create -y -n gtotree -c conda-forge -c bioconda -c defaults -c astrobiomike gtotree
@@ -274,8 +282,6 @@ But there are subtile variatoins in gff files
   
 
 
-
-################################################################################################################
 ### 3. Build Protein Trees of Full Length Sequences and their MAMPs
 
 We now can start building protein trees to understand their evolutionary history in respect to the MAMPs they encode for. We will run MAFFT to build our alignment and IQ-tree of make a maximum likelihood tree from the alignment. In each folder of which the fasta file was saved, the below commands were ran (names changed where needed).
@@ -313,5 +319,8 @@ One concern is despite trying to sample for a semi-large data set of genomes in 
   ls > MAMP_diversification_ANI_file.txt
   fastANI --rl /path/to/Contig_paths_for_ANI.txt --ql /path/to/Contig_paths_for_ANI.txt -o Clavibacter_ANI_comparison
   ```
+
+
+################################################################################################################ Old code ignore for now
 
  
