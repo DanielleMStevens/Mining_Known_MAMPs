@@ -129,7 +129,7 @@ Agro_tree %<+% map_data +
 ##############################################
 
 
-CSP_full_protein_tree <- read.tree("./../Protein_alignments_and_trees/cold_shock_protein/csp_domain_tree/CSD_hits_aligned.treefile")
+CSP_full_protein_tree <- read.tree("./../../Analyses/Protein_alignments_and_trees/cold_shock_protein/csp_domain_tree/CSD_hits_aligned.treefile")
 CSP_full_protein_tree <- phangorn::midpoint(CSP_full_protein_tree, node.labels='label')
 
 

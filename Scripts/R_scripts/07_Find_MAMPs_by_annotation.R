@@ -28,7 +28,7 @@
                                                                      read_protein_fasta$names),]
     
     # cross reference with metadata to provide genus, strain, filename info
-    get_accession_number <- Biostrings::strsplit(load_protein_fasta_files[[i]], "/")[[1]][6]
+    get_accession_number <- Biostrings::strsplit(load_protein_fasta_files[[i]], "/")[[1]][7]
     get_accession_number <- paste(strsplit(get_accession_number,"_")[[1]][1],
                                   strsplit(get_accession_number,"_")[[1]][2], sep = "_")
     get_strain_info <- subset(datasettable, Assembly_Accession == get_accession_number)

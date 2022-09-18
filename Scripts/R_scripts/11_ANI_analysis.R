@@ -14,7 +14,7 @@
 #########################################################################
 
 #matrix_table <- read.table(file = file.choose()) # select the output of the ANI analysis (file named ANI_analysis)
-  load_ANI_results <- list.files(path = "./../ANI_analysis/", pattern = ".txt_ANI_comparison")
+  load_ANI_results <- list.files(path = "./../../Analyses/ANI_analysis/", pattern = ".txt_ANI_comparison")
 
 
 #########################################################################
@@ -25,7 +25,7 @@
   ANI_values_df <- data.frame("Genome1" = character(0), "Genome2" = character(0), "ANI_val" = numeric(0))
   for (i in 1:length(load_ANI_results)){
     pb <- txtProgressBar(min = 0, max = length(load_ANI_results), style = 3)
-    ANI_output <- read.table(file = paste("./../ANI_analysis/",load_ANI_results[[i]], sep = "")) 
+    ANI_output <- read.table(file = paste("./../../Analyses/ANI_analysis/", load_ANI_results[[i]], sep = "")) 
     colnames(ANI_output) <- c("Genome1","Genome2","ANI_val","val2","val3")
     ANI_output$Genome1 <- as.character(ANI_output$Genome1)
     ANI_output$Genome2 <- as.character(ANI_output$Genome2)

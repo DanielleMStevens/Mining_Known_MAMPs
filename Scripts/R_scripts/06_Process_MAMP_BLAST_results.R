@@ -57,7 +57,7 @@
     read_blast_results <- read_blast_results[,c(1,2,3,4,5,9)]
     
     # cross reference with metadata to provide genus, strain, filename info
-    get_accession_number <- strsplit(load_protein_fasta_files[[i]], "/")[[1]][6]
+    get_accession_number <- strsplit(load_protein_fasta_files[[i]], "/")[[1]][7]
     get_accession_number <- paste(strsplit(get_accession_number,"_")[[1]][1],
                                     strsplit(get_accession_number,"_")[[1]][2], sep = "_")
     get_strain_info <- subset(datasettable, Assembly_Accession == get_accession_number)

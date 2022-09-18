@@ -64,7 +64,7 @@
 # comparing similarity of genomes to filter for clonality
 ##############################################
 
-  # write out files to run ANI
+  # write out files to run ANI - run once to generate file to run through fastANI
   source("./10_Parse_genomes_for_ANI_analysis.R")
 
 
