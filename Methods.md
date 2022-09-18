@@ -1,33 +1,52 @@
 # Table of Contents
+
+    [1. Packages need to run this pipeline](Packages-need-to-run-this-pipeline)
 - [Downloading genomes from NCBI](#downloading-genomes-from-ncbi)
-  - [1. Download the genomes](#1.-download-the-genomes)
+  - [2. Download the genomes](#1.-download-the-genomes)
 - [Setting up database and mining for MAMPs](#setting-up-database-and-mining-for-mamps)
-  - [2. Build the MAMP database](#2.-build-the-mamp-database)
-  - [3. Run all genomes against blast database](#3.-run-all-genomes-against-blast-database)
-  - [4. Processing Data to Form the MAMP database](#4.-processing-data-to-form-the-mamp-database)
+  - [3. Build the MAMP database](#2.-build-the-mamp-database)
+  - [4. Run all genomes against blast database](#3.-run-all-genomes-against-blast-database)
+  - [5. Processing Data to Form the MAMP database](#4.-processing-data-to-form-the-mamp-database)
 - [Assessing genome diveristy and removing redudnacy/clonality](#assessing-genome-diveristy-and-removing-redudnacy/clonality)
-  - [5. Prep genomes for fastANI and run fastANI](#5.-prep-genomes-for-fastani-and-run-fastani)
-  - [6. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure](#6.-parse-fastani-output,-use-to-filter-clonal-genomes,-and-plot-final-ani-figure)
+  - [6. Prep genomes for fastANI and run fastANI](#5.-prep-genomes-for-fastani-and-run-fastani)
+  - [7. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure](#6.-parse-fastani-output,-use-to-filter-clonal-genomes,-and-plot-final-ani-figure)
+
+
+### 1. Packages need to run this pipeline
+
+Before running all the downstream analyses, we can set up a conda environment with the necessarily software. Below is a brief description of what each package is for.
+
+| Package | Usage | Guide | Citation |
+|---------|-------|-------|----------|
+| ncbi-genome-download | Will allow us to easily download the genomes by accession number from NCBI's refseq. | [Github Page](https://github.com/kblin/ncbi-genome-download) | N/A |
+| fastANI | Calculates whole genome average nucleotide identity at-scale in an all-by-all manner | [Github Page](https://github.com/ParBLiSS/FastANI) | [Paper Link](https://www.nature.com/articles/s41467-018-07641-9) |
+
+
+```
+conda create --name myenv
+
+conda install ncbi-genome-download
+
+```
 
 ## Downloading genomes from NCBI
 
-### 1. Download the genomes
+### 2. Download the genomes
 
-We can use ncbi-genome-download to find what accession we can download for each major genus and then download them on the command line. 
-  
-The major genera include the following:
+We can use ncbi-genome-download to find which genome accessions we can download for each genus and then download them on the command line. 
+
+We decided to focus on several genera that have many known phytopathogens as well as all genera from actinobacterial pathogens. One aspect to note is that not all genomes are necessarily from pathogens as 1. this would be difficult to verify at scale and 2. previous work has shown examples of symbiont interacting similarily as pathogens in the content of MAMPsand PRR interactions. Therefore, any genome which is plant, agriculture (and in some cases soil) associated is included in the dataset.
 
 | Gram-type | Genera|
 | ------------- | --------------------|  
 | Gram-positive | Clavibacter, Leifsonia, Curtobacterium, Streptomyces, Rathayibacter, Rhodococcus |
 | Gram-negative | Agrobacterium, Ralstonia, Xanthomonas, Pseudomonas, Pectobacterium, Dickeya, Erwinia |
   
-We will need to install a package which will allow us to easily download the genomes by accession number from NCBI's refseq.
+
   
 In order to get accessions for each key genus of bacteria
 
 ```
-conda install ncbi-genome-download
 ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
 ```
 
