@@ -1,18 +1,18 @@
 # Table of Contents
 
-    [1. Packages needed to run this pipeline](#1.-packages-needed-to-run-this-pipeline)
+- [Packages needed to run this pipeline](#packages-needed-to-run-this-pipeline)
 - [Downloading genomes from NCBI](#downloading-genomes-from-ncbi)
-  - [2. Download the genomes](#2.-download-the-genomes)
+  - [1. Download the genomes](#1.-download-the-genomes)
 - [Setting up database and mining for MAMPs](#setting-up-database-and-mining-for-mamps)
-  - [3. Build the MAMP database](#3.-build-the-mamp-database)
-  - [4. Run all genomes against blast database](#4.-run-all-genomes-against-blast-database)
-  - [5. Processing Data to Form the MAMP database](#5.-processing-data-to-form-the-mamp-database)
+  - [2. Build the MAMP database](#2.-build-the-mamp-database)
+  - [3. Run all genomes against blast database](#3.-run-all-genomes-against-blast-database)
+  - [4. Processing Data to Form the MAMP database](#4.-processing-data-to-form-the-mamp-database)
 - [Assessing genome diveristy and removing redudnacy/clonality](#assessing-genome-diveristy-and-removing-redudnacy/clonality)
-  - [6. Prep genomes for fastANI and run fastANI](#6.-prep-genomes-for-fastani-and-run-fastani)
-  - [7. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure](#7.-parse-fastani-output,-use-to-filter-clonal-genomes,-and-plot-final-ani-figure)
+  - [5. Prep genomes for fastANI and run fastANI](#5.-prep-genomes-for-fastani-and-run-fastani)
+  - [6. Use fastANI output to filter list and plot dataset diversity](#6.-use-fastani-output-to-filter-list-and-plot-dataset-diversity)
 
 
-### 1. Packages needed to run this pipeline
+## Packages needed to run this pipeline
 
 Before running all the downstream analyses, we can set up a conda environment with the necessarily software. Below is a brief description of what each package is for.
 
@@ -20,6 +20,7 @@ Before running all the downstream analyses, we can set up a conda environment wi
 |---------|-------|-------|----------|
 | ncbi-genome-download | Will allow us to easily download the genomes by accession number from NCBI's refseq. | [Github Page](https://github.com/kblin/ncbi-genome-download) | N/A |
 | fastANI | Calculates whole genome average nucleotide identity at-scale in an all-by-all manner | [Github Page](https://github.com/ParBLiSS/FastANI) | [Paper Link](https://www.nature.com/articles/s41467-018-07641-9) |
+| GToTree | Builds phylogenetic trees from whole genomes on the fly based on prepared gene sets | [Github Page](https://github.com/AstrobioMike/GToTree) | [Paper Link](https://academic.oup.com/bioinformatics/article/35/20/4162/5378708) |
 
 
 ```
@@ -29,17 +30,20 @@ conda create --name myenv
 # Uses Conda/Bioconda to install packages
 conda install -c bioconda ncbi-genome-download 
 conda install -c bioconda fastani 
+conda install -c conda-forge -c bioconda -c defaults -c astrobiomike gtotree
+conda install -c bioconda blast 
 
-
+# Activate environment with loaded packages
+conda activate myenv
 ```
 
 ## Downloading genomes from NCBI
 
-### 2. Download the genomes
+### 1. Download the genomes
 
 We can use ncbi-genome-download to find which genome accessions we can download for each genus and then download them on the command line. 
 
-We decided to focus on several genera that have many known phytopathogens as well as all genera from actinobacterial pathogens. One aspect to note is that not all genomes are necessarily from pathogens as **(1)** this would be difficult to verify at scale and **(2)** previous work has shown examples of symbiont interacting similarily as pathogens in the content of MAMPsand PRR interactions. Therefore, any genome which is plant, agriculture (and in some cases soil) associated is included in the dataset.
+We decided to focus on several genera that have many known phytopathogens as well as all genera from actinobacterial pathogens. One aspect to note is that not all genomes are necessarily from pathogens as **(1)** this would be difficult to verify at scale and **(2)** previous work has shown examples of symbionts interacting similarily as pathogens in the content of MAMPs and PRR interactions. Therefore, any genome which is plant-, agriculture-, (and in some cases soil-) associated is included in the dataset.
 
 | Gram-type | Genera|
 | ------------- | --------------------|  
@@ -55,10 +59,13 @@ ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
 ```
 
   
-I have collected all the accession numbers as well as info about each one into two file stored in the Genome_accession_info directory. I then use the accession name (ex. Erwinia amylovora) to quick filter for accessions that are not either plant/agriculturally related. Once all the information was collected and put into a simple text file, the command below can be ran:
-  
+I have collected all the accession numbers for each genome. Using the accession name (ex. Erwinia amylovora), I quickly filter any accessions that are not either plant/agriculturally related. These accession numbers are listed in a text file in /Analyes/Genome_accession_info directory as well as in a database which stores extra info (Mining_for_known_MAMPs_genome_accession_info.xlsx). The text file list can be used to query and download the accessions using the command below:
+
+
 ```
-ncbi-genome-download --assembly-accessions ./Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 \\
+# Note, the genomes will be downloaded in the local directory of which this command is ran. If the path is changed from the main github repo path, the path to the text file must also be altered.
+
+ncbi-genome-download --assembly-accessions ./Analyses/Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 \\
 -v --flat-output -F genbank,fasta,protein-fasta bacteria
 ```
     
@@ -75,12 +82,13 @@ where,
 ```
 
 Move all the download genomes in directories based on their file type/ending (i.e. genbank files in genbank folder).
+
  
 ## Setting up database and mining for MAMPs
  
-### 3. Build the MAMP database
+### 2. Build the MAMP database
  
-In a text file, save the following MAMP sequences (/MAMP_database/MAMP_elicitor_list.fasta):
+In a text file, save the following MAMP sequences (/Analyses/MAMP_blast/MAMP_database/MAMP_elicitor_list.fasta):
  
 ```
 >csp22_consensus
@@ -117,10 +125,18 @@ We can then go through each protein fasta file and pull out the peptide from the
   done
   ```
   
+  where,
+  
+  ```
+  -task blastp-short : specialized version of blastp for short sequences
+  -xdrop_gap_final 1000 : heavily penalize dropping mis-hits on edges of MAMP sequences
+  -soft_masking false :
+  ```
+
 
 ### 4. Processing Data to Form the MAMP database
 
-With the intial serach for MAMPs complete, we will now A) clean up the data by removing any partial hits, B) cross referense the hits by annotation per genome and fill in any missing hits by using local-alignment to the protein with the MAMP of interest to pull out the variant sequenee. We will also set up all the packages we need for downstream analyses. 
+With the intial serach for MAMPs complete, we will now A) clean up the data by removing any partial hits, B) cross referense the hits by annotation per genome and fill in any missing hits by using local-alignment to the protein with the MAMP of interest to pull out the variant sequenee. 
 
 Using Main_script.R, run though the lines below:
 
@@ -182,22 +198,23 @@ Using Main_script.R, run though the lines below:
 
  ## Assessing genome diveristy and removing redudnacy/clonality 
 
-  Since we are trying to assess the sequence diversity that has naturally accumulated over time and how that has affected MAMP functionality, we need to do some filtering for clonal isolates so no one sequence is over represented. To do so, we can run all the whole genomes sequences on fastANI to calculate all-by-all ANI values. fastANI tends to inflate values, so we're going to put some strict cutoffs: to be considered clonal, two genomes need to be over 99.99 percent similar and carry the same MAMP eptitope sequnences. Those which are considered clonal by these considerations, duplicates will be removed.
+Since we are trying to assess the sequence diversity that has naturally accumulated over time and how that has affected MAMP functionality, we need to do some filtering for clonal isolates so no one sequence is over represented. To do so, we can run all the whole genomes sequences on fastANI to calculate all-by-all ANI values. fastANI tends to inflate values, so we're going to put some strict cutoffs: to be considered clonal, two genomes need to be over 99.99 percent similar and carry the same MAMP eptitope sequnences. Those which are considered clonal by these considerations, duplicates will be removed.
 
 ### 5. Prep genomes for fastANI and run fastANI
 
 First we will run an R script designed to pull all the genomes accession number for a particular genus as well as their file path and output them into a directory to run fastANI on each file.
 
   ```
-  ##############################################
-  # comparing similarity of genomes to filter for clonality
-  ##############################################
+##############################################
+# comparing similarity of genomes to filter for clonality
+##############################################
 
-    source("./09_Parse_genomes_for_ANI_analysis.R") 
+  # write out files to run ANI - run once to generate file to run through fastANI
+  source("./10_Parse_genomes_for_ANI_analysis.R")
     
   ```
   
-  We can then run the bash command below. Since we have a considerable amount of genomes, this analysis should be ran on a computer that has no less than 64 Gb of RAM and at least 10 threads (unless you want to wait many days for it to complete). 
+  We can then run the bash command below. Since we have a considerable amount of genomes, this analysis should be ran on a computer that has **no less than 64 Gb of RAM** and at least 10 threads (unless you want to wait many days for it to complete). 
   
   ```bash 
     for file in *.txt
@@ -215,31 +232,31 @@ First we will run an R script designed to pull all the genomes accession number 
   -o: output file name
   ```
   
-### 6. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure
+### 6. Use fastANI output to filter list and plot dataset diversity
   
-  The output files can be parsed for their ANI values and to be compared in respect to the MAMP eptitopes found using the R script below:
-
+  The output files can be parsed for their ANI values, compared in respect to the MAMP eptitopes found, and used to filter and create a final MAMP list. Additionally, we will create a figure showing the ANI values as a representative of a diverse dataset.
+  
+  Using Main_script.R, run though the lines below:
   
     ```
     # parsing ANI values and comparing them to MAMP sequences to remove clonal genomes
-    source("./10_ANI_analysis.R")  
+    source("./11_ANI_analysis.R")  
+  
+  
+    # ANI Figure  - takes a long time to run so only run once.
+    source("./12_ANI_plots.R")
+  
+  
+    # finalizing MAMP list
+    source("./13_Finalize_MAMP_list_post_ANI.R")
     ```
   
-  To create a figure showing the ANI values as a representative of a diverse dataset, run the below R script to creates these plots:
-  
-
-    ```
-    # ANI Figure 
-    source("./11_ANI_plots.R")
-    ```
   
 ## Phylogentic tree and core gene comparison in respect to MAMPs across species and genera
 
 In order to plot 
   
   ```
-  ❯ conda create -y -n gtotree -c conda-forge -c bioconda -c defaults -c astrobiomike gtotree
-  ❯ conda activate gtotree
   ❯ printf '%s\n' "$PWD"/* >filenames.txt
   #mannually remove files from the path list (based on this file)
   ❯ GToTree -g filenames.txt -H Bacteria -n 4 -j 6 -k -T IQ-TREE
@@ -247,7 +264,14 @@ In order to plot
   
 In order to build a core gene phyloogeny as well as pull out core genes to calculate Tajima's D, we can use roary to authomate a lot of this. But, unforunately, it doesn't take gbff files (only gff3) and so we need to convert the files before running.
 
-### 7. Prep files for Core Gene analysis
+
+
+################################################################################################################ Old code ignore for now
+
+
+
+
+### 6. Prep files for Core Gene analysis
 
 First, we can use a script from [Biocode](https://github.com/jorvis/biocode) which is a set of python scripts for file conversion, among other things. The gbff_to_gff3 script was copied and then the below coommands were ran to complete the install:
   
@@ -344,6 +368,6 @@ One concern is despite trying to sample for a semi-large data set of genomes in 
   ```
 
 
-################################################################################################################ Old code ignore for now
+
 
  

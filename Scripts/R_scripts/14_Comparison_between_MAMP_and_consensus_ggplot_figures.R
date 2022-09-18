@@ -35,15 +35,15 @@ MAMP_type <- ggplot(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP
                             "flg22_consensus" = "flg22",
                             "flgII-28" = "flgII-28")) +
   theme(legend.position = "none",
-        axis.text.x = element_text(color = "black", size = 14),
-        axis.text.y = element_text(color = "black", size = 14),
-        axis.title = element_text(color = "black", face = "bold", size = 14),
+        axis.text.x = element_text(color = "black", size = 12),
+        axis.text.y = element_text(color = "black", size = 12),
+        axis.title = element_text(color = "black", face = "bold", size = 12),
         axis.line = element_line(colour = "black", 
                                  size = 0.4, linetype = "solid")) +
   #scale_y_continuous(breaks = c(0,25,50,75,100), limits = c(0,110)) +
   scale_y_continuous(breaks = c(0,20,40,60,80,100), limits = c(0,110)) +
   geom_text(data = n_number, 
-            aes(x = MAMP_Hit, y = 110, label = n), size = 5)
+            aes(x = MAMP_Hit, y = 110, label = n), size = 4)
 
 
 MAMP_type <- MAMP_type + ggplot(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus"), 
