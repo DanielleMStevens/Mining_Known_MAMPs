@@ -1,18 +1,18 @@
 # Table of Contents
 
-    [1. Packages need to run this pipeline](Packages-need-to-run-this-pipeline)
+    [1. Packages needed to run this pipeline](#1.-packages-needed-to-run-this-pipeline)
 - [Downloading genomes from NCBI](#downloading-genomes-from-ncbi)
-  - [2. Download the genomes](#1.-download-the-genomes)
+  - [2. Download the genomes](#2.-download-the-genomes)
 - [Setting up database and mining for MAMPs](#setting-up-database-and-mining-for-mamps)
-  - [3. Build the MAMP database](#2.-build-the-mamp-database)
-  - [4. Run all genomes against blast database](#3.-run-all-genomes-against-blast-database)
-  - [5. Processing Data to Form the MAMP database](#4.-processing-data-to-form-the-mamp-database)
+  - [3. Build the MAMP database](#3.-build-the-mamp-database)
+  - [4. Run all genomes against blast database](#4.-run-all-genomes-against-blast-database)
+  - [5. Processing Data to Form the MAMP database](#5.-processing-data-to-form-the-mamp-database)
 - [Assessing genome diveristy and removing redudnacy/clonality](#assessing-genome-diveristy-and-removing-redudnacy/clonality)
-  - [6. Prep genomes for fastANI and run fastANI](#5.-prep-genomes-for-fastani-and-run-fastani)
-  - [7. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure](#6.-parse-fastani-output,-use-to-filter-clonal-genomes,-and-plot-final-ani-figure)
+  - [6. Prep genomes for fastANI and run fastANI](#6.-prep-genomes-for-fastani-and-run-fastani)
+  - [7. Parse fastANI output, use to filter clonal genomes, and plot final ANI figure](#7.-parse-fastani-output,-use-to-filter-clonal-genomes,-and-plot-final-ani-figure)
 
 
-### 1. Packages need to run this pipeline
+### 1. Packages needed to run this pipeline
 
 Before running all the downstream analyses, we can set up a conda environment with the necessarily software. Below is a brief description of what each package is for.
 
@@ -23,9 +23,13 @@ Before running all the downstream analyses, we can set up a conda environment wi
 
 
 ```
+# Crrates the conda environment
 conda create --name myenv
 
-conda install ncbi-genome-download
+# Uses Conda/Bioconda to install packages
+conda install -c bioconda ncbi-genome-download 
+conda install -c bioconda fastani 
+
 
 ```
 
@@ -35,7 +39,7 @@ conda install ncbi-genome-download
 
 We can use ncbi-genome-download to find which genome accessions we can download for each genus and then download them on the command line. 
 
-We decided to focus on several genera that have many known phytopathogens as well as all genera from actinobacterial pathogens. One aspect to note is that not all genomes are necessarily from pathogens as 1. this would be difficult to verify at scale and 2. previous work has shown examples of symbiont interacting similarily as pathogens in the content of MAMPsand PRR interactions. Therefore, any genome which is plant, agriculture (and in some cases soil) associated is included in the dataset.
+We decided to focus on several genera that have many known phytopathogens as well as all genera from actinobacterial pathogens. One aspect to note is that not all genomes are necessarily from pathogens as **(1)** this would be difficult to verify at scale and **(2)** previous work has shown examples of symbiont interacting similarily as pathogens in the content of MAMPsand PRR interactions. Therefore, any genome which is plant, agriculture (and in some cases soil) associated is included in the dataset.
 
 | Gram-type | Genera|
 | ------------- | --------------------|  
@@ -74,7 +78,7 @@ Move all the download genomes in directories based on their file type/ending (i.
  
 ## Setting up database and mining for MAMPs
  
-### 2. Build the MAMP database
+### 3. Build the MAMP database
  
 In a text file, save the following MAMP sequences (/MAMP_database/MAMP_elicitor_list.fasta):
  
