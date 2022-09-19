@@ -10,6 +10,7 @@
 - [Assessing genome diveristy and removing redudnacy/clonality](#assessing-genome-diveristy-and-removing-redudnacy/clonality)
   - [5. Prep genomes for fastANI and run fastANI](#5.-prep-genomes-for-fastani-and-run-fastani)
   - [6. Use fastANI output to filter list and plot dataset diversity](#6.-use-fastani-output-to-filter-list-and-plot-dataset-diversity)
+  - [7. Phylogentic tree in respect to MAMPs abundance across genera](#7.-phylogentic-tree-in-respect-to-mamps-abundance-across-genera)
 
 
 ## Packages needed to run this pipeline
@@ -21,7 +22,9 @@ Before running all the downstream analyses, we can set up a conda environment wi
 | ncbi-genome-download | Will allow us to easily download the genomes by accession number from NCBI's refseq. | [Github Page](https://github.com/kblin/ncbi-genome-download) | N/A |
 | fastANI | Calculates whole genome average nucleotide identity at-scale in an all-by-all manner | [Github Page](https://github.com/ParBLiSS/FastANI) | [Paper Link](https://www.nature.com/articles/s41467-018-07641-9) |
 | GToTree | Builds phylogenetic trees from whole genomes on the fly based on prepared gene sets | [Github Page](https://github.com/AstrobioMike/GToTree) | [Paper Link](https://academic.oup.com/bioinformatics/article/35/20/4162/5378708) |
+| Blast+ | Enables running blast on the command line | [NCBI Page](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs) | N/A |
 
+<br>
 
 ```
 # Crrates the conda environment
@@ -32,6 +35,11 @@ conda install -c bioconda ncbi-genome-download
 conda install -c bioconda fastani 
 conda install -c conda-forge -c bioconda -c defaults -c astrobiomike gtotree
 conda install -c bioconda blast 
+conda install -c bioconda agat
+conda install -c bioconda pirate 
+conda install r==3.5.1 r-ggplot2==3.1.0 r-dplyr==0.7.6 bioconductor-ggtree==1.14.4 r-phangorn==2.4.0 r-gridextra
+conda install -c bioconda diamond
+
 
 # Activate environment with loaded packages
 conda activate myenv
@@ -49,7 +57,6 @@ We decided to focus on several genera that have many known phytopathogens as wel
 | ------------- | --------------------|  
 | Gram-positive | Clavibacter, Leifsonia, Curtobacterium, Streptomyces, Rathayibacter, Rhodococcus |
 | Gram-negative | Agrobacterium, Ralstonia, Xanthomonas, Pseudomonas, Pectobacterium, Dickeya, Erwinia |
-  
 
   
 In order to get accessions for each key genus of bacteria
@@ -63,7 +70,8 @@ I have collected all the accession numbers for each genome. Using the accession 
 
 
 ```
-# Note, the genomes will be downloaded in the local directory of which this command is ran. If the path is changed from the main github repo path, the path to the text file must also be altered.
+# Note, the genomes will be downloaded in the local directory of which this command is ran. 
+# If the path is changed from the main github repo path, the path to the text file must also be altered.
 
 ncbi-genome-download --assembly-accessions ./Analyses/Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 \\
 -v --flat-output -F genbank,fasta,protein-fasta bacteria
@@ -198,7 +206,7 @@ Using Main_script.R, run though the lines below:
 
  ## Assessing genome diveristy and removing redudnacy/clonality 
 
-Since we are trying to assess the sequence diversity that has naturally accumulated over time and how that has affected MAMP functionality, we need to do some filtering for clonal isolates so no one sequence is over represented. To do so, we can run all the whole genomes sequences on fastANI to calculate all-by-all ANI values. fastANI tends to inflate values, so we're going to put some strict cutoffs: to be considered clonal, two genomes need to be over 99.99 percent similar and carry the same MAMP eptitope sequnences. Those which are considered clonal by these considerations, duplicates will be removed.
+Since we are trying to assess the sequence diversity that has naturally accumulated over time and how that has affected MAMP functionality, we need to do some filtering for clonal isolates so no one sequence is over represented. To do so, we can run all the whole genomes sequences on fastANI to calculate all-by-all ANI values. fastANI tends to inflate values, so we're going to put some strict cutoffs: to be considered clonal, two genomes need to be over 99.999 percent similar and carry the same MAMP eptitope sequnences. Those which are considered clonal by these considerations, duplicates will be removed. This number was also based on using the Clavibacter genus as a reference since I'm more personally familair with those genomes and if this number was reasonable.
 
 ### 5. Prep genomes for fastANI and run fastANI
 
@@ -252,18 +260,91 @@ First we will run an R script designed to pull all the genomes accession number 
     ```
   
   
-## Phylogentic tree and core gene comparison in respect to MAMPs across species and genera
+## 7. Phylogentic tree in respect to MAMPs abundance across genera
 
-In order to plot 
+In order to plot the distribution of these MAMPs
   
   ```
-  ❯ printf '%s\n' "$PWD"/* >filenames.txt
-  #mannually remove files from the path list (based on this file)
-  ❯ GToTree -g filenames.txt -H Bacteria -n 4 -j 6 -k -T IQ-TREE
+  # First we will print all the gbff genome files into a text file
+  printf '%s\n' "$PWD"/* > filenames.txt
   ```
   
-In order to build a core gene phyloogeny as well as pull out core genes to calculate Tajima's D, we can use roary to authomate a lot of this. But, unforunately, it doesn't take gbff files (only gff3) and so we need to convert the files before running.
+   We will then mannually remove files from the path list (based on this file)
+  
+  ```
+  GToTree -g filenames.txt -H Bacteria -n 6 -j 10 -k -G 0.2 -c 0.4 -T IQ-TREE -o phylogenic_tree_for_figure1
+  ```
+  
+  where,
+  
+  ```
+  -H Bacteria : HMM models for bacteria to bulld key genes representative of a bacterial dataset
+  -n 8 : Number of cpus to use during hmm search
+  -j 10 : Number of jobs to run during parallelizable steps
+  -k : Individual protein alignment files will be retained
+  -G 0.2 : Genome minimum gene-copy threshold
+  -T IQ-TREE : IQ Tree will be used to build phylogenic tree from concatinated multi-gene alignments
+  ```
+  
+  Note -X parameter, which does not speed up alignments, was not used for this analyses becuase 1. it seems to be broken on my installation an 2. 100% percision isn't needed for this kind of anaylses.
+  
 
+## Determining Core genes to assess selection of MAMP-endcoded genes compared to other conserved genes
+
+In MAMP-focused resarch, there is an idea that MAMPs undergo co-evolution with their cognant PRR receptors. Therefore, in order to evade perception, MAMPs are thought to be under positive selection compared to other gene counterparts (which are typically under negative selection). In order to assess this on an epitope and overall gene basis, we need to first determine which genes are considered 'core' accross all the genomes. However, determining which genes are considered 'core' accross genera so diverse may be difficult and computationally rigorus. Therefore, we aim to find intra-genus core genes and calculate a variety of pop. gene stats.
+  
+
+### 7. Converting and binning files before core gene analysis
+
+We will use Pirate to determine which genes are considered 'core' for each genus of bacteria but, unforunately, it doesn't take gbff files (only gff3) and so we need to convert the files before running. First, we moved the list of accessions into new text files. We will then remove those that are redudant based on previous ANI analyses as similar to before. Then we will temperarily re-download the gbff files for each genus into dedicated folders (per genus) and convert them into gff3 files (thus removing the gbff files).
+
+For each text file in each genus specific folder:
+
+  ```
+  ncbi-genome-download --assembly-accessions ./Clavibacter_genome_list.txt -p 6 -r 2 -v --flat-output -F genbank bacteria
+  ```
+  
+For each genus, the gbff files were unzip and convert into gff files. But even then those files needed
+
+  ```
+  for file in *.gbff
+  do
+        echo "$file"
+        python ./../../Mining_Known_MAMPs/python_scripts/convert_genbank_to_gff3.py -i ./../../Whole_Genomes_v2/genbank/$file -o ./../gff/$file.gff
+  done
+  ```
+
+
+
+
+
+
+
+But there are subtile variatoins in gff files
+
+  ```
+  for file in *.gff
+  do
+        echo "$file"
+        agat_convert_sp_gxf2gxf.pl -g $file -o ${file}_fixed.gff -gff_version_output 3  
+  done
+
+
+  # move the files into a new folder
+  mkdir gff_for_pirate
+  mv *.gff_fixed.gff ./../gff_for_pirate
+  
+
+  
+  # run pirate locally in new gff folder
+  PIRATE -i ~/Documents/Mining_MAMPs/Whole_Genomes_v2/gff_for_pirate/ -s "70,90" -k "--cd-step 2 --cd-low 90" -a -r -t 14 
+  ```
+  
+
+
+  
+  
+  
 
 
 ################################################################################################################ Old code ignore for now
@@ -284,46 +365,14 @@ First, we can use a script from [Biocode](https://github.com/jorvis/biocode) whi
 
 We can then create a folder to hold the gff files.
 
-  ```
-  for file in *.gbff
-  do
-        echo "$file"
-        python ./../../Mining_Known_MAMPs/python_scripts/convert_genbank_to_gff3.py -i ./../../Whole_Genomes_v2/genbank/$file -o ./../gff/$file.gff
-  done
-  ```
-  
-But there are subtile variatoins in gff files
 
-  ```
-  conda install -c bioconda agat
-  for file in *.gff
-  do
-        echo "$file"
-        agat_convert_sp_gxf2gxf.pl -g $file -o ${file}_fixed.gff -gff_version_output 3  
-  done
-
-
-  # move the files into a new folder
-  mkdir gff_for_pirate
-  mv *.gff_fixed.gff ./../gff_for_pirate
-  
-  # PIRATE package
-  conda install pirate 
-
-  # optional dependencies for plotting figures in R
-  conda install r==3.5.1 r-ggplot2==3.1.0 r-dplyr==0.7.6 bioconductor-ggtree==1.14.4 r-phangorn==2.4.0 r-gridextra
-  conda install -c bioconda diamond
-  
-  # run pirate locally in new gff folder
-  PIRATE -i ~/Documents/Mining_MAMPs/Whole_Genomes_v2/gff_for_pirate/ -s "70,90" -k "--cd-step 2 --cd-low 90" -a -r -t 14 
-  ```
   
   We then use datasettable and genomes_to_check in the R-console to view the dataframe and remove gff files manually which are considered clonal by previous analyses. Once we 
 
   ```
   # run the below with the name of the environment, run once
   #conda create --name roary_analysis
-
+  ```
   
   
   
