@@ -1,12 +1,15 @@
 # Table of Contents
 
 - [Packages needed to run this pipeline](#packages-needed-to-run-this-pipeline)
+
 - [Downloading genomes from NCBI](#downloading-genomes-from-ncbi)
   - [1. Download the genomes](#1.-download-the-genomes)
+  
 - [Setting up database and mining for MAMPs](#setting-up-database-and-mining-for-mamps)
   - [2. Build the MAMP database](#2.-build-the-mamp-database)
   - [3. Run all genomes against blast database](#3.-run-all-genomes-against-blast-database)
   - [4. Processing Data to Form the MAMP database](#4.-processing-data-to-form-the-mamp-database)
+  
 - [Assessing genome diveristy and removing redudnacy/clonality](#assessing-genome-diveristy-and-removing-redudnacy/clonality)
   - [5. Prep genomes for fastANI and run fastANI](#5.-prep-genomes-for-fastani-and-run-fastani)
   - [6. Use fastANI output to filter list and plot dataset diversity](#6.-use-fastani-output-to-filter-list-and-plot-dataset-diversity)
@@ -23,6 +26,8 @@ Before running all the downstream analyses, we can set up a conda environment wi
 | fastANI | Calculates whole genome average nucleotide identity at-scale in an all-by-all manner | [Github Page](https://github.com/ParBLiSS/FastANI) | [Paper Link](https://www.nature.com/articles/s41467-018-07641-9) |
 | GToTree | Builds phylogenetic trees from whole genomes on the fly based on prepared gene sets | [Github Page](https://github.com/AstrobioMike/GToTree) | [Paper Link](https://academic.oup.com/bioinformatics/article/35/20/4162/5378708) |
 | Blast+ | Enables running blast on the command line | [NCBI Page](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs) | N/A |
+| Agat | A tool which helps convert between various iterations of Gff file formats | [Github Link](https://github.com/NBISweden/AGAT) | N/A - Zenodo DOI - see Github Page |
+| Pirate | Determines Core genes based on a group of genomes using  | [Github Page](https://github.com/SionBayliss/PIRATE) | [Paper Link](https://academic.oup.com/gigascience/article/8/10/giz119/5584409) |
 
 <br>
 
@@ -31,6 +36,10 @@ Before running all the downstream analyses, we can set up a conda environment wi
 conda create --name myenv
 
 # Uses Conda/Bioconda to install packages
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+
 conda install -c bioconda ncbi-genome-download 
 conda install -c bioconda fastani 
 conda install -c conda-forge -c bioconda -c defaults -c astrobiomike gtotree
