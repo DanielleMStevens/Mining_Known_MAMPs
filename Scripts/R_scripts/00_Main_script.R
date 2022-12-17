@@ -64,7 +64,7 @@
 # comparing similarity of genomes to filter for clonality
 ##############################################
 
-  # write out files to run ANI - run once to generate file to run through fastANI
+  # write out files to run ANI - run ONCE to generate file to run through fastANI
   source("./10_Parse_genomes_for_ANI_analysis.R")
 
 
@@ -76,30 +76,43 @@
   source("./11_ANI_analysis.R")  
   
   
-  # ANI Figure  - takes a long time to run so only run once.
-  source("./12_ANI_plots.R")
-  
-  
   # finalizing MAMP list
-  source("./13_Finalize_MAMP_list_post_ANI.R")
-
+  source("./12_Finalize_MAMP_list_post_ANI.R")
+  
+  
+  # ANI Figure  - takes a long time to run so only run once.
+  # Part of Supplemental Figure 1
+  source("./13_ANI_plots.R")
+  
 
 ##############################################
-# Violin plot Figures - MAMP in comparison to their consensus
+# Dyanamic changes of MAMPs from diverse bacteria - Figure 1
 ##############################################
+  
+  #*******************************************
+  # go back to methods.md to run phylogeneitc analysis
+  #*******************************************
+  
+  # phylogenetic tree of diverse bacteria with MAMP eptitope number plotted on
+  source("./14_Core_tree_with_MAMP_number_plotted.R")
 
+  
   # ggplot figures such as violin plots
-  # includes Figure 1C, D, E; Supplemental Figure 1A, B. C;
-  source("./14_Comparison_between_MAMP_and_consensus_ggplot_figures.R")
+  # includes Figure 1C, D, E; as well as part of Supplemental Figure 1
+  source("./15_Comparison_between_MAMP_and_consensus_ggplot_figures.R")
+  
+  
+  # Assessing variation within each MAMP epitope and in a positional manner 
+  # includes Figure 1G
+  source("./16_Assessing_MAMP_variation.R")
   
   
   # how many MAMPs are there, the variation that extists, and how many/offen plot
   # includes Supplemental Figure 4
-  source("./15_Abundance_of_MAMPs.R")
+  source("./17_Abundance_of_MAMPs.R")
 
 
-  # nlp20 specific figures
-  source("./16_nlp20_plots.R")
+
 
 
 ##############################################
@@ -118,7 +131,6 @@
 
 
 
-
 ##############################################
 # make figures
 ##############################################
@@ -127,6 +139,9 @@
   
   # Tree's to plot
   source("./Tree_plotting.R")
+  
+  # nlp20 specific figures - old plots - 
+  source("./16_nlp20_plots.R")
 
 
 

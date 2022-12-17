@@ -7,91 +7,6 @@
 # Outputs: 
 #-----------------------------------------------------------------------------------------------
 
-
-##############################################
-# 'core' gene phylogeny
-##############################################
-
-# import number of copies of each mamp on a per genome basis
-map_data <- datasettable[,c(6,1:5,7)]
-
-
-#filter genomes based on ANI analysis
-map_data <- map_data[!map_data$Filename %in% Genomes_to_check$Genome1,]
-map_data_to_remove <- map_data[!map_data$Filename %in% filtered_hold_MAMP_seqs$File_Name,]
-
-csp22_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "csp22_consensus")
-map_data <- cbind(map_data, "csp22_consensus" = csp22_copy_number[match(map_data[,1], csp22_copy_number[,2]),5])
-
-elf18_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "elf18_consensus")
-map_data <- cbind(map_data, "elf18_consensus" = elf18_copy_number[match(map_data[,1], elf18_copy_number[,2]),5])
-map_data[is.na(map_data$elf18_consensus),9] <- 0
-
-flg22_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "flg22_consensus")
-map_data <- cbind(map_data, "flg22_consensus" = flg22_copy_number[match(map_data[,1], flg22_copy_number[,2]),5])
-map_data[is.na(map_data$flg22_consensus),10] <- 0
-
-flg22_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "flgII-28")
-map_data <- cbind(map_data, "flgII-28" = flg22_copy_number[match(map_data[,1], flg22_copy_number[,2]),5])
-map_data[is.na(map_data$`flgII-28`),11] <- 0
-
-
-map_data <- map_data[!map_data$Filename %in% map_data_to_remove$Filename,]
-
-
-core_gene_phylo <- read.tree("./../All_bacteria_phylogenomic_tree/output_lower_g_cutoff/output_lower_g_cutoff.tre")
-core_gene_phylo <- phangorn::midpoint(core_gene_phylo, node.labels='label')
-
-for (i in 1:length(core_gene_phylo$tip.label)){
-  accession_label <- paste(strsplit(core_gene_phylo$tip.label[[i]], "_")[[1]][1],
-                           strsplit(core_gene_phylo$tip.label[[i]], "_")[[1]][2],
-                           sep = "_")
-  core_gene_phylo$tip.label[[i]] <- datasettable[datasettable$Assembly_Accession %in% accession_label,6]
-}
-
-
-
-#plot full tree -> basic
-full_tree <- ggtree::ggtree(core_gene_phylo,  ladderize = T, size = 0.09, linetype = 1) 
-
-
-
-#subset tree by each genera -> Agrobacterium
-Agro_tree <- viewClade(full_tree + geom_tiplab(size =0.5), node=6626) 
-
-
-#add details to main tree regarding genome generas and MAMP abundance 
-full_tree <- full_tree %<+% map_data +
-  geom_fruit(geom = geom_tile, mapping = aes(color = Genera, fill = Genera), width = 0.04,
-            offset = -1.02, axis.params = list(line.color = "black"), show.legend = FALSE) +
-  scale_color_manual("Genera", values = Genera_colors) +
-  scale_fill_manual("Genera", values = Genera_colors) +
-  layout_dendrogram() +
-
-
-  ggnewscale::new_scale_fill() +
-
-  geom_fruit(geom = geom_tile, mapping = aes(fill = csp22_consensus), width = 0.04,
-             offset = -1.08) +
-  geom_fruit(geom = geom_tile, mapping = aes(fill = elf18_consensus), width = 0.04, 
-             offset = -2.2) +
-  geom_fruit(geom = geom_tile, mapping = aes(fill = flg22_consensus), width = 0.04,
-             offset = -4.44) + 
-  geom_fruit(geom = geom_tile, mapping = aes(fill = `flgII-28`), width = 0.04,
-             offset = -8.92) +
-  #scale_fill_gradient(low = "white", high = "black", breaks = c(0,1,2,3,4,8,16), guide = "legend") +
-  scale_fill_gradientn(name = "MAMP Abundance",
-                       colors = c("white","grey60","black"), 
-                       limits = c(0,15),
-                       breaks = c(0,1,2,4,6,15)) +
-
-  theme(legend.direction = "horizontal", 
-        legend.position = "bottom")
-
-
-ggsave(full_tree, filename = "./../Figures/Figure_1/Full_phylogenomic_tree_with_MAMPs.pdf", device = cairo_pdf, width = 7, height = 3.5, units = "in")
-
-
 ##############################################
 # subset 'core' gene phylogeny by genera
 ##############################################
@@ -238,8 +153,7 @@ for (i in 1:length(WP_csp22)) {
 # plotting protein tree for EF-Tu
 #######################################################################
 
-
-EFTu_full_protein_tree <- read.tree("./../Protein_alignments_and_trees/EfTu/EFTu_full_length_alignment.treefile")
+EFTu_full_protein_tree <- read.tree("./../../Analyses/Protein_alignments_and_trees/EfTu/EFTu_full_length_alignment.treefile")
 EFTu_full_protein_tree <- phangorn::midpoint(EFTu_full_protein_tree, node.labels='label')
 
 
@@ -287,11 +201,13 @@ d <- d[d$label > 99,]
 EFTu_tree <- EFTu_tree +
   geom_nodepoint(data=d,aes(label=label), shape = 21, size = 1, fill = "grey35") 
 
-EFTu_tree
 
 
-  EFTu_tree  + geom_nodepoint(aes(subset = node == 1396), size=5, color='blue')
-  
+
+
+
+
+
   %>% ggtree::collapse(1396, 'mixed', fill="#7bc98f", color="#7bc98f")
   #
   

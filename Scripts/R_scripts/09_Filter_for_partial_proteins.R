@@ -38,4 +38,16 @@ rm(filter_list_2)
 filter_list_2 <- c("WP_146034239.1","WP_027713652.1")
 hold_MAMP_seqs <- hold_MAMP_seqs[!hold_MAMP_seqs$Protein_Name %in% filter_list_2,]
 
+## these hits (WP_174040680.1) appear to have a 1 aa deletion in the center which casues issues with the alogrithum, droppping off the 
+# 1 aa length of the epitope. I manually aligned the sequence and replace it below
+
+# replace the sequence
+hold_MAMP_seqs[hold_MAMP_seqs$Protein_Name %in% "WP_174040680.1",4] <- "ATGTVKFNATKGFGFIQPDDGS"
+
+# replace the AA sim score
+hold_MAMP_seqs[hold_MAMP_seqs$Protein_Name %in% "WP_174040680.1",3] <- 
+  Biostrings::pid(Biostrings::pairwiseAlignment("AVGTVKWFNAEKGFGFITPDDG", "ATGTVKFNATKGFGFIQPDDGS", type = "global-local", 
+                                                                substitutionMatrix = BLOSUM45), type = "PID1")
+
+
 

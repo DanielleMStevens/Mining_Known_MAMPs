@@ -75,7 +75,7 @@ ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
 ```
 
   
-I have collected all the accession numbers for each genome. Using the accession name (ex. Erwinia amylovora), I quickly filter any accessions that are not either plant/agriculturally related. These accession numbers are listed in a text file in /Analyes/Genome_accession_info directory as well as in a database which stores extra info (Mining_for_known_MAMPs_genome_accession_info.xlsx). The text file list can be used to query and download the accessions using the command below:
+I have collected all the accession numbers for each genome. Using the accession name (ex. Erwinia amylovora), I filter any accessions that are not plant/agriculturally related. These accession numbers are listed in a text file in /Analyes/Genome_accession_info directory as well as in a database which stores extra info (Mining_for_known_MAMPs_genome_accession_info.xlsx). The text file list can be used to query and download the accessions using the command below:
 
 
 ```
@@ -95,7 +95,7 @@ where,
             than each isolate having a dedicated directory)
 -v : verbose
 -F 'genbank,fasta,protein-fasta' : download genbank, whole genome fasta, 
-    and protein fasta associtaed with the accession number
+    and protein fasta associated with the accession number
 ```
 
 Move all the download genomes in directories based on their file type/ending (i.e. genbank files in genbank folder).
@@ -116,8 +116,6 @@ SKEKFERTKPHVNVGTIG
 QRLSTGSRINSAKDDAAGLQIA
 >flgII-28
 ESTNILQRMRELAVQSRNDSNSATDREA
->nlp20_consensus
-GSFYSLYFLKDQILNGVNSGHR
 ```
 
 This fasta file can be used to build a database to use blast to find if anything in the genome shares these sequences. To build the blast database, the below command was ran. Also this should be ran in the same folder as /MAMP_database/MAMP_elicitor_list.fasta. 
@@ -226,7 +224,7 @@ First we will run an R script designed to pull all the genomes accession number 
 # comparing similarity of genomes to filter for clonality
 ##############################################
 
-  # write out files to run ANI - run once to generate file to run through fastANI
+  # write out files to run ANI - run ONCE to generate file to run through fastANI
   source("./10_Parse_genomes_for_ANI_analysis.R")
     
   ```
@@ -258,30 +256,35 @@ First we will run an R script designed to pull all the genomes accession number 
     ```
     # parsing ANI values and comparing them to MAMP sequences to remove clonal genomes
     source("./11_ANI_analysis.R")  
-  
-  
-    # ANI Figure  - takes a long time to run so only run once.
-    source("./12_ANI_plots.R")
-  
-  
+    
+    
     # finalizing MAMP list
-    source("./13_Finalize_MAMP_list_post_ANI.R")
+    source("./12_Finalize_MAMP_list_post_ANI.R")
+    
+    
+    # ANI Figure  - takes a long time to run so only run once.
+    # Part of Supplemental Figure 1
+    source("./13_ANI_plots.R")
     ```
   
-  
-## 7. Phylogentic tree in respect to MAMPs abundance across genera
 
-In order to plot the distribution of these MAMPs
+## Assessing MAMP Abundance across diverse bacteria 
+
+Now that we have a finalized MAMP list across a large number of genomes from diverse agriculturally-associated bacteria, I wanted to see how abundant each MAMP is across the genera assessed. To do so, I want to do a phylogenetic approach which is rhobust but not computationally intensive. To do so, I choose to use GToTree (into here)[https://github.com/AstrobioMike/GToTree], which assess 74 housekeeping genes found in bacteria. This should be more rhobust than a MSLA tree and less intensive than a core gene phylogeny.
+  
+### 7. Phylogentic tree in respect to MAMPs abundance across genera
+
+In order to plot the distribution of these MAMPs, I first needed to list all the genomes assessed in this study using the command below.
   
   ```
   # First we will print all the gbff genome files into a text file
   printf '%s\n' "$PWD"/* > filenames.txt
   ```
   
-   We will then mannually remove files from the path list (based on this file)
+  I will then mannually remove genomes listed from the file if there were found as clonal based on fastANI comparisons. This final list in file named filenames.txt will be passed to GToTree with the following below parameters.
   
   ```
-  GToTree -g filenames.txt -H Bacteria -n 6 -j 10 -k -G 0.2 -c 0.4 -T IQ-TREE -o phylogenic_tree_for_figure1
+  GToTree -g filenames.txt -H Bacteria -n 8 -j 10 -k -G 0.2 -o GToTree_output
   ```
   
   where,
@@ -292,10 +295,23 @@ In order to plot the distribution of these MAMPs
   -j 10 : Number of jobs to run during parallelizable steps
   -k : Individual protein alignment files will be retained
   -G 0.2 : Genome minimum gene-copy threshold
-  -T IQ-TREE : IQ Tree will be used to build phylogenic tree from concatinated multi-gene alignments
   ```
   
   Note -X parameter, which does not speed up alignments, was not used for this analyses becuase 1. it seems to be broken on my installation an 2. 100% percision isn't needed for this kind of anaylses.
+  
+  
+------
+
+
+--->
+    
+ for trees for Figure 2A, 3A
+ ```
+ mafft --auto peptide_list_in.fasta > peptide_list_aligned
+ FastTree peptide_list_aligned > peptide_list_tree
+ ```
+
+
   
 
 ## Determining Core genes to assess selection of MAMP-endcoded genes compared to other conserved genes

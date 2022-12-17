@@ -36,7 +36,7 @@ names(MAMP_colors) <- c("csp22_consensus","elf18_consensus","flg22_consensus","f
 
 
 # color code for gram-type of interest
-Gram_colors <- c("#204254","#B94A3E")
+Gram_colors <- c("#3b7796","#e05353")
 names(Gram_colors) <- c("+","-")
 
 

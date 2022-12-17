@@ -94,3 +94,25 @@ filter_title <- function(which_table, which_phrase){
   return(which_table) 
 }
 
+
+#########################################################################
+# create a weblogo plotting function, where take a list of imput strings of the 
+# same length and use ggseqlogo to create a weblogo
+#########################################################################
+
+
+make_me_a_weblogo <- function(file_in){
+  logo <- ggseqlogo::ggseqlogo(file_in, seq_type='aa', method = 'prob') +
+    theme(panel.grid = element_blank(),
+          legend.position = "none", axis.text.x = element_blank(),
+          axis.text.y.left = element_text(color = "black", size = 12),
+          axis.title.x = element_text(color = "black", size = 12, vjust = 1),
+          axis.title.y = element_text(color = "black", size = 12, vjust = 1),
+          axis.ticks.x = element_blank())
+  
+  return(logo)
+}
+
+
+
+

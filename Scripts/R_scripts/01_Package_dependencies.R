@@ -43,6 +43,7 @@ library(extrafont)
 library(RColorBrewer)
 library(scales)
 library(viridis)
+library(see)
 
 #---------Packages for text/dataframe loading and manipulation---------
 
@@ -58,7 +59,7 @@ library(circlize)
 library(ggseqlogo)
 #download via devtools
 library(devtools)
-library(ggmsa)
+#library(ggmsa)
 
 
 #BiocManager::install('XVector')
