@@ -7,37 +7,99 @@
 # Outputs: 
 #-----------------------------------------------------------------------------------------------
 
-##############################################
-# subset 'core' gene phylogeny by genera
-##############################################
+
+#-----------------------Figure 2 Plots------------------------------------------------------------------------------
+
+
+#######################################################################
+# Plot EF-Tu Tree with data that includes genera, similarity, and ROS induction
+#######################################################################
+
+EFTu_full_protein_tree <- read.tree("./../../Analyses/Protein_alignments_and_trees/EfTu/EFTu_full_length_alignment.treefile")
+EFTu_full_protein_tree <- phangorn::midpoint(EFTu_full_protein_tree, node.labels='label')
 
 
 
-Agro_tree %<+% map_data +
-  geom_fruit(geom = geom_tile, mapping = aes(color = Genera, fill = Genera), width = 0.04,
-             offset = -1.02, axis.params = list(line.color = "black")) +
+for (i in 1:length(EFTu_full_protein_tree$tip.label)){
+  EFTu_full_protein_tree$tip.label[i] <- paste(strsplit(EFTu_full_protein_tree$tip.label[i], "|", fixed = T)[[1]][1],
+                                               strsplit(EFTu_full_protein_tree$tip.label[i], "|", fixed = T)[[1]][5],
+                                               sep = "|")
+}
+
+# subset elf18 variant data
+MAMP_elf18_hit_data <- subset(filtered_hold_MAMP_seqs, MAMP_Hit == "elf18_consensus")
+
+# add info for ROS outcome 
+
+
+MAMP_elf18_hit_data["New_label"] <- paste(MAMP_elf18_hit_data$Protein_Name, MAMP_elf18_hit_data$File_Name, sep = "|")
+MAMP_elf18_hit_data <- MAMP_elf18_hit_data[c("New_label", "Percent_Identity", "Genera")]
+MAMP_elf18_hit_data <- MAMP_elf18_hit_data[MAMP_elf18_hit_data$New_label %in% EFTu_full_protein_tree$tip.label,]
+
+
+EFTu_tree <- ggtree(EFTu_full_protein_tree,  layout="rectangular", ladderize = T, size = 0.25, linetype = 1) %<+% MAMP_elf18_hit_data +
+  geom_tippoint(aes(color = Genera), size = 0.05, alpha = 0.5, show.legend = FALSE) +
   scale_color_manual("Genera", values = Genera_colors) +
+  #layout_dendrogram() +
+  #xlim(0, 0) 
+  geom_treescale(x = -0.5, y = -3, linesize = 1, family = "Arial", offset = 28) +
+  
+  #ggnewscale::new_scale_fill() +
+  geom_fruit(geom = geom_tile, mapping=aes(fill = Genera), width = 0.07, offset = 0.05, show.legend = FALSE) +
+  
+  #geom_fruit(geom = geom_tile, mapping=aes(fill = Genera), width = 0.1, offset = -1.06, show.legend = FALSE) +
   scale_fill_manual("Genera", values = Genera_colors) +
-  theme(legend.position = "none") +
-  layout_dendrogram() +
-  
-  
   ggnewscale::new_scale_fill() +
+  geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = 0.07, offset = 0.1, axis.params = list(line.color = "black"), show.legend = FALSE) +
   
-  geom_fruit(geom = geom_tile, mapping = aes(fill = csp22_consensus), width = 0.04,
-             offset = -1.08) +
-  geom_fruit(geom = geom_tile, mapping = aes(fill = elf18_consensus), width = 0.04, 
-             offset = -2.2) +
-  geom_fruit(geom = geom_tile, mapping = aes(fill = flg22_consensus), width = 0.04,
-             offset = -4.44) + 
-  geom_fruit(geom = geom_tile, mapping = aes(fill = `flgII-28`), width = 0.04,
-             offset = -8.92) +
-  scale_fill_gradient(low = "white", high = "black", breaks = c(0,2,4,6,8,10,12,14), 
-                      guide = "legend")
+  #geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = 0.13,axis.params = list(line.color = "black"), offset = -2.17, show.legend = FALSE) +
+  scale_fill_viridis(option="magma", name = "Percent AA\nSimilarity", 
+                     breaks = c(0, 20, 40, 60, 80, 100),
+                     labels = c(0, 20, 40, 60, 80, 100),
+                     limits = c(0,100)) 
 
-#geom_hilight(data=nodedf, mapping=aes(node=node),
-#             extendto=6.8, alpha=0.3, fill="grey", color="grey50",
-#             size=0.05) +
+
+
+
+# need to make data table to map bootstrap values onto tree
+d <- EFTu_tree$data
+d <- d[!d$isTip,]
+d$label <- as.numeric(d$label)
+d <- d[d$label > 99,]
+
+EFTu_tree <- EFTu_tree +
+  geom_nodepoint(data=d,aes(label=label), shape = 21, size = 1, fill = "grey35") 
+
+
+
+
+
+
+
+
+
+
+%>% ggtree::collapse(1396, 'mixed', fill="#7bc98f", color="#7bc98f")
+
+
+elf18_tree + theme(legend.position = c(0.05, 0.3), legend.title = element_text("Genera", family = "Arial" ,
+                                                                               face = "bold", color = "black", size = 12),
+                   legend.text = element_text(family = "Arial", color = "black", size = 12)) +
+  guides(colour = guide_legend(override.aes = list(size = 3)))
+
+
+
+
+# need to make data table to map bootstrap values onto tree
+d <- elf18_tree$data
+d <- d[!d$isTip,]
+d$label <- as.numeric(d$label)
+d <- d[d$label > 70,]
+
+
+
+
+
 
 ##############################################
 # load a tree file in newick tree format
@@ -150,83 +212,6 @@ for (i in 1:length(WP_csp22)) {
 
 
 #######################################################################
-# plotting protein tree for EF-Tu
-#######################################################################
-
-EFTu_full_protein_tree <- read.tree("./../../Analyses/Protein_alignments_and_trees/EfTu/EFTu_full_length_alignment.treefile")
-EFTu_full_protein_tree <- phangorn::midpoint(EFTu_full_protein_tree, node.labels='label')
-
-
-
-for (i in 1:length(EFTu_full_protein_tree$tip.label)){
-  EFTu_full_protein_tree$tip.label[i] <- paste(strsplit(EFTu_full_protein_tree$tip.label[i], "|", fixed = T)[[1]][1],
-                                                strsplit(EFTu_full_protein_tree$tip.label[i], "|", fixed = T)[[1]][5],
-                                                sep = "|")
-}
-
-
-MAMP_elf18_hit_data <- subset(filtered_hold_MAMP_seqs, MAMP_Hit == "elf18_consensus")
-MAMP_elf18_hit_data["New_label"] <- paste(MAMP_elf18_hit_data$Protein_Name, MAMP_elf18_hit_data$File_Name, sep = "|")
-MAMP_elf18_hit_data <- MAMP_elf18_hit_data[c("New_label", "Percent_Identity", "Genera")]
-MAMP_elf18_hit_data <- MAMP_elf18_hit_data[MAMP_elf18_hit_data$New_label %in% EFTu_full_protein_tree$tip.label,]
-
-
-EFTu_tree <- ggtree(EFTu_full_protein_tree,  layout="rectangular", ladderize = T, size = 0.25, linetype = 1) %<+% MAMP_elf18_hit_data +
-  geom_tippoint(aes(color = Genera), size = 0.05, alpha = 0.5, show.legend = FALSE) +
-  scale_color_manual("Genera", values = Genera_colors) +
-  #layout_dendrogram() +
-  #xlim(0, 0) 
-  geom_treescale(x = -0.5, y = -3, linesize = 1, family = "Arial", offset = 28) +
-
-  #ggnewscale::new_scale_fill() +
-  geom_fruit(geom = geom_tile, mapping=aes(fill = Genera), width = 0.07, offset = 0.05, show.legend = FALSE) +
-  
-  #geom_fruit(geom = geom_tile, mapping=aes(fill = Genera), width = 0.1, offset = -1.06, show.legend = FALSE) +
-  scale_fill_manual("Genera", values = Genera_colors) +
-  ggnewscale::new_scale_fill() +
-  geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = 0.07, offset = 0.1, axis.params = list(line.color = "black"), show.legend = FALSE) +
-  
-  #geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = 0.13,axis.params = list(line.color = "black"), offset = -2.17, show.legend = FALSE) +
-  scale_fill_viridis(option="magma", name = "Percent AA\nSimilarity", 
-                     breaks = c(0, 20, 40, 60, 80, 100),
-                     labels = c(0, 20, 40, 60, 80, 100),
-                     limits = c(0,100)) 
-
-# need to make data table to map bootstrap values onto tree
-d <- EFTu_tree$data
-d <- d[!d$isTip,]
-d$label <- as.numeric(d$label)
-d <- d[d$label > 99,]
-
-EFTu_tree <- EFTu_tree +
-  geom_nodepoint(data=d,aes(label=label), shape = 21, size = 1, fill = "grey35") 
-
-
-
-
-
-
-
-
-  %>% ggtree::collapse(1396, 'mixed', fill="#7bc98f", color="#7bc98f")
-  #
-  
-elf18_tree + theme(legend.position = c(0.05, 0.3), legend.title = element_text("Genera", family = "Arial" ,
-                                                                              face = "bold", color = "black", size = 12),
-                   legend.text = element_text(family = "Arial", color = "black", size = 12)) +
-  guides(colour = guide_legend(override.aes = list(size = 3)))
-
-
-
-
-# need to make data table to map bootstrap values onto tree
-d <- elf18_tree$data
-d <- d[!d$isTip,]
-d$label <- as.numeric(d$label)
-d <- d[d$label > 70,]
-
-
-#######################################################################
 # plotting protein tree for Flagellin
 #######################################################################
 
@@ -285,6 +270,53 @@ ggsave(flg22_tree,
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##############################################
+# subset 'core' gene phylogeny by genera
+##############################################
+
+
+
+Agro_tree %<+% map_data +
+  geom_fruit(geom = geom_tile, mapping = aes(color = Genera, fill = Genera), width = 0.04,
+             offset = -1.02, axis.params = list(line.color = "black")) +
+  scale_color_manual("Genera", values = Genera_colors) +
+  scale_fill_manual("Genera", values = Genera_colors) +
+  theme(legend.position = "none") +
+  layout_dendrogram() +
+  
+  
+  ggnewscale::new_scale_fill() +
+  
+  geom_fruit(geom = geom_tile, mapping = aes(fill = csp22_consensus), width = 0.04,
+             offset = -1.08) +
+  geom_fruit(geom = geom_tile, mapping = aes(fill = elf18_consensus), width = 0.04, 
+             offset = -2.2) +
+  geom_fruit(geom = geom_tile, mapping = aes(fill = flg22_consensus), width = 0.04,
+             offset = -4.44) + 
+  geom_fruit(geom = geom_tile, mapping = aes(fill = `flgII-28`), width = 0.04,
+             offset = -8.92) +
+  scale_fill_gradient(low = "white", high = "black", breaks = c(0,2,4,6,8,10,12,14), 
+                      guide = "legend")
+
+#geom_hilight(data=nodedf, mapping=aes(node=node),
+#             extendto=6.8, alpha=0.3, fill="grey", color="grey50",
+#             size=0.05) +
 
 #######################################################################
 # plotting protein tree Genus Specific CSP tress

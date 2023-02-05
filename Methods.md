@@ -32,8 +32,8 @@ Before running all the downstream analyses, we can set up a conda environment wi
 <br>
 
 ```
-# Crrates the conda environment
-conda create --name myenv
+# Creates the conda environment 
+conda create --name mining_mamps
 
 # Uses Conda/Bioconda to install packages
 conda config --add channels defaults
@@ -51,7 +51,7 @@ conda install -c bioconda diamond
 
 
 # Activate environment with loaded packages
-conda activate myenv
+conda activate mining_mamps
 ```
 
 ## Downloading genomes from NCBI
@@ -145,7 +145,7 @@ We can then go through each protein fasta file and pull out the peptide from the
   ```
   -task blastp-short : specialized version of blastp for short sequences
   -xdrop_gap_final 1000 : heavily penalize dropping mis-hits on edges of MAMP sequences
-  -soft_masking false :
+  -soft_masking false : to prevent false-negative annotations of sequences of interest
   ```
 
 
@@ -297,7 +297,39 @@ In order to plot the distribution of these MAMPs, I first needed to list all the
   -G 0.2 : Genome minimum gene-copy threshold
   ```
   
-  Note -X parameter, which does not speed up alignments, was not used for this analyses becuase 1. it seems to be broken on my installation an 2. 100% percision isn't needed for this kind of anaylses.
+  Note -X parameter, which does not speed up alignments, was not used for this analyses becuase 1. it seems to be broken on my installation an 2. 100% percision isn't needed for this kind of anaylses. Make sure the tree files are moved to the appropriate directory (Analyses/All_bacteria_phylogenetic_tree/Figure1B_Phylogenetic_tree/). We then will return to the Main_script.R to process the tree data as well as make some plots on general comparisons of the diversity of MAMP eptiopes.
+  
+    Using Main_script.R, run though the lines below:
+  
+    ```
+    ##############################################
+    # Dyanamic changes of MAMPs from diverse bacteria - Figure 1
+    ##############################################
+      
+      #*******************************************
+      # go back to methods.md to run phylogeneitc analysis
+      #*******************************************
+      
+      # phylogenetic tree of diverse bacteria with MAMP eptitope number plotted on
+      source("./14_Core_tree_with_MAMP_number_plotted.R")
+    
+      
+      # ggplot figures such as violin plots
+      # includes Figure 1C, D, E; as well as part of Supplemental Figure 1
+      source("./15_Comparison_between_MAMP_and_consensus_ggplot_figures.R")
+      
+      
+      # Assessing variation within each MAMP epitope and in a positional manner 
+      # includes Figure 1G
+      source("./16_Assessing_MAMP_variation.R")
+      
+      
+      # how many MAMPs are there, the variation that extists, and how many/offen plot
+      # includes Supplemental Figure 4
+      source("./17_Abundance_of_MAMPs.R")
+
+    ```
+  
   
   
 ------
