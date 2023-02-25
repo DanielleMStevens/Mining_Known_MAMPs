@@ -112,9 +112,16 @@
   source("./17_Abundance_of_MAMPs.R")
 
 
+##############################################
+# Diverse epitopes and their impact on plant immmune perception - Figure 2 and 3
+##############################################
 
-
-
+  # Creating phylogenic tree with immunogenicity data (via ROS assays)
+  source("./18_ROS_Screen_tree.R")
+  
+  
+  
+  
 ##############################################
 # writing MAMP hits to fasta files for protein tree building
 ##############################################

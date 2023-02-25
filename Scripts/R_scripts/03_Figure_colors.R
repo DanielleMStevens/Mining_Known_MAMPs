@@ -35,6 +35,10 @@ MAMP_colors <- c("#FDBE83", "#d6a5bd", "#2F4E68", "#6b8c82", "#982e26")
 names(MAMP_colors) <- c("csp22_consensus","elf18_consensus","flg22_consensus","flgII-28","nlp20_consensus")
 
 
+# color code for Immunogenicity
+Immunogenicity_colors <- c("#000000","#005b96","#800000", "#808080")
+names(Immunogenicity_colors) <- c("Immunogenic","Slightly Immunogenic","Non-Immunogenic","Not Tested")
+
 # color code for gram-type of interest
 Gram_colors <- c("#3b7796","#e05353")
 names(Gram_colors) <- c("+","-")

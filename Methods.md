@@ -15,6 +15,9 @@
   - [6. Use fastANI output to filter list and plot dataset diversity](#6.-use-fastani-output-to-filter-list-and-plot-dataset-diversity)
   - [7. Phylogentic tree in respect to MAMPs abundance across genera](#7.-phylogentic-tree-in-respect-to-mamps-abundance-across-genera)
 
+- [Characterizing Diversity of MAMPs and their MAMP-Encoded Proteins](#characterizing-diversity-of-mamps-and-their-mamp-encoded-proteins)
+  - [8. Displaying the relatedness of epitope variants in respect to immmunogenicity](#8.-displaying-the-relatedness-of-epitope-variants-in-respect-to-immmunogenicity)
+
 
 ## Packages needed to run this pipeline
 
@@ -27,7 +30,8 @@ Before running all the downstream analyses, we can set up a conda environment wi
 | GToTree | Builds phylogenetic trees from whole genomes on the fly based on prepared gene sets | [Github Page](https://github.com/AstrobioMike/GToTree) | [Paper Link](https://academic.oup.com/bioinformatics/article/35/20/4162/5378708) |
 | Blast+ | Enables running blast on the command line | [NCBI Page](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs) | N/A |
 | Agat | A tool which helps convert between various iterations of Gff file formats | [Github Link](https://github.com/NBISweden/AGAT) | N/A - Zenodo DOI - see Github Page |
-| Pirate | Determines Core genes based on a group of genomes using  | [Github Page](https://github.com/SionBayliss/PIRATE) | [Paper Link](https://academic.oup.com/gigascience/article/8/10/giz119/5584409) |
+| Pirate | Determines Core genes based on a group of genomes | [Github Page](https://github.com/SionBayliss/PIRATE) | [Paper Link](https://academic.oup.com/gigascience/article/8/10/giz119/5584409) |
+| FastTree | FastTree infers approximately-maximum-likelihood phylogenetic trees | [Github Page](tbd) | [Paper Link](TBD) |
 
 <br>
 
@@ -48,6 +52,7 @@ conda install -c bioconda agat
 conda install -c bioconda pirate 
 conda install r==3.5.1 r-ggplot2==3.1.0 r-dplyr==0.7.6 bioconductor-ggtree==1.14.4 r-phangorn==2.4.0 r-gridextra
 conda install -c bioconda diamond
+conda install -c bioconda fasttree
 
 
 # Activate environment with loaded packages
@@ -82,8 +87,8 @@ I have collected all the accession numbers for each genome. Using the accession 
 # Note, the genomes will be downloaded in the local directory of which this command is ran. 
 # If the path is changed from the main github repo path, the path to the text file must also be altered.
 
-ncbi-genome-download --assembly-accessions ./Analyses/Genome_accession_info/Genome_accessions_to_download.txt -p 6 -r 2 \\
--v --flat-output -F genbank,fasta,protein-fasta bacteria
+ncbi-genome-download --assembly-accessions ./Analyses/Genome_accession_info/Genome_accessions_to_download.txt -p 6 \\
+-r 2 -v --flat-output -F genbank,fasta,protein-fasta bacteria
 ```
     
 where,
@@ -330,21 +335,34 @@ In order to plot the distribution of these MAMPs, I first needed to list all the
 
     ```
   
+  We see that MAMPs how different trajectories in how they have changed over time. This is likely due to a combination of factors including differences in selection due to protein function/necessity to life, protein abundance, and cognate receptor conservation. But there are futher questions on how this diversity arrise and what this means in the context of impacting immune perception.
   
   
-------
-
-
---->
-    
- for trees for Figure 2A, 3A
- ```
- mafft --auto peptide_list_in.fasta > peptide_list_aligned
- FastTree peptide_list_aligned > peptide_list_tree
- ```
-
-
   
+## Characterizing Diversity of MAMPs and their MAMP-Encoded Proteins
+  
+First we will want to plot the immune outcomes for each epitope tested (via ROS burst) and then secondarily, we will want to assess if this immune output is drive by the associated MAMP-dervived gene. To assess this, we will 1) make a cladogram based on the sequences of the epitopes tested and 2) make a phylogenic tree and plot information in respect to the genera the protein is derived from, the amino acid similarity, and the immnogencity to understand which and how much different eptiopes are changing and if that is correlated with immunogencity, 
+
+### 8. Displaying the relatedness of epitope variants in respect to immmunogenicity
+
+
+After completeing the screen, all the epitope sequences for each MAMP were copied into a fasta file (in Analyses/ROS Screen/epitope_tree_for_ROS). We then built the tree using both mafft and FastTREE. For each epitope, run the below code (though altering the file names):
+
+
+   ```
+   mafft --auto peptide_list_in.fasta > peptide_list_aligned
+   FastTree peptide_list_aligned > peptide_list_tree
+   ```
+
+The outputs for both elf18 and csp22 variants were saved in the Analyses/ROS Screen/epitope_tree_for_ROS directory. We will then open run the 
+
+
+
+Considering each MAMP has a different evolutionary trajectory, we then wanted to better understand the diversity and evolution of the genes/proteins of which the MAMPs are encoded. This is of particular interest for CSPs as they are so diverse and so many copies are present. To do so, we will use a variety of techniques 
+
+
+
+
 
 ## Determining Core genes to assess selection of MAMP-endcoded genes compared to other conserved genes
 
@@ -362,6 +380,7 @@ For each text file in each genus specific folder:
   ```
   
 For each genus, the gbff files were unzip and convert into gff files. But even then those files needed
+#https://pypi.org/project/biocode/
 
   ```
   for file in *.gbff
