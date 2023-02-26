@@ -119,7 +119,8 @@
   # Creating phylogenic tree with immunogenicity data (via ROS assays)
   source("./18_ROS_Screen_tree.R")
   
-  
+  # Re-pull whole protein sequences for MAMP hits and write to fasta file
+  source("./19_Write_MAMP_hits_to_fasta.R")
   
   
 ##############################################

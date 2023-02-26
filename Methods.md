@@ -19,6 +19,9 @@
   - [8. Displaying the relatedness of epitope variants in respect to immmunogenicity](#8.-displaying-the-relatedness-of-epitope-variants-in-respect-to-immmunogenicity)
 
 
+<br>
+
+
 ## Packages needed to run this pipeline
 
 Before running all the downstream analyses, we can set up a conda environment with the necessarily software. Below is a brief description of what each package is for.
@@ -32,6 +35,7 @@ Before running all the downstream analyses, we can set up a conda environment wi
 | Agat | A tool which helps convert between various iterations of Gff file formats | [Github Link](https://github.com/NBISweden/AGAT) | N/A - Zenodo DOI - see Github Page |
 | Pirate | Determines Core genes based on a group of genomes | [Github Page](https://github.com/SionBayliss/PIRATE) | [Paper Link](https://academic.oup.com/gigascience/article/8/10/giz119/5584409) |
 | FastTree | FastTree infers approximately-maximum-likelihood phylogenetic trees | [Github Page](tbd) | [Paper Link](TBD) |
+| HMMER | ddd | [Github Page](https://github.com/EddyRivasLab/hmmer) | ddd |
 
 <br>
 
@@ -53,6 +57,7 @@ conda install -c bioconda pirate
 conda install r==3.5.1 r-ggplot2==3.1.0 r-dplyr==0.7.6 bioconductor-ggtree==1.14.4 r-phangorn==2.4.0 r-gridextra
 conda install -c bioconda diamond
 conda install -c bioconda fasttree
+conda install -c bioconda hmmer
 
 
 # Activate environment with loaded packages
@@ -341,7 +346,7 @@ In order to plot the distribution of these MAMPs, I first needed to list all the
   
 ## Characterizing Diversity of MAMPs and their MAMP-Encoded Proteins
   
-First we will want to plot the immune outcomes for each epitope tested (via ROS burst) and then secondarily, we will want to assess if this immune output is drive by the associated MAMP-dervived gene. To assess this, we will 1) make a cladogram based on the sequences of the epitopes tested and 2) make a phylogenic tree and plot information in respect to the genera the protein is derived from, the amino acid similarity, and the immnogencity to understand which and how much different eptiopes are changing and if that is correlated with immunogencity, 
+First, we will want to plot the immune outcomes for each epitope tested (via ROS burst) and then secondarily, we will want to assess if this immune output is drive by the associated MAMP-dervived gene. To assess this, we will 1) make a cladogram based on the sequences of the epitopes tested and 2) make a phylogenic tree and plot information in respect to the genera the protein is derived from, the amino acid similarity, and the immnogencity to understand which and how much different eptiopes are changing and if that is correlated with immunogencity, 
 
 ### 8. Displaying the relatedness of epitope variants in respect to immmunogenicity
 
@@ -350,18 +355,82 @@ After completeing the screen, all the epitope sequences for each MAMP were copie
 
 
    ```
-   mafft --auto peptide_list_in.fasta > peptide_list_aligned
-   FastTree peptide_list_aligned > peptide_list_tree
+   # build tree for elf18 variants
+   mafft --auto elf18_variants.fasta > elf18_variants_aligned
+   FastTree elf18_variants_aligned > elf18_variants_tree
+   
+   # build tree for csp22 variants
+   mafft --auto csp22_variants.fasta > csp22_variants_aligned
+   FastTree csp22_variants_aligned > csp22_variants_tree
    ```
 
-The outputs for both elf18 and csp22 variants were saved in the Analyses/ROS Screen/epitope_tree_for_ROS directory. We will then open run the 
+The outputs for both elf18 and csp22 variants were saved in the Analyses/ROS Screen/epitope_tree_for_ROS directory. We will then return to the main page and run the following script.
+
+    Using Main_script.R, run though the lines below:
+    
+    ```
+    ##############################################
+    # Diverse epitopes and their impact on plant immmune perception - Figure 2 and 3
+    ##############################################
+
+    # Creating phylogenic tree with immunogenicity data (via ROS assays)
+    source("./18_ROS_Screen_tree.R")
+    
+    ```
+
+These output trees are used to build Figure 2A and Figure 3A. The tips are colored manually as well as adding the of the data using Inkscape. 
+
+### 8. Assessing immunogenicity outcomes follow diversifcation of a common ancestor
+
+Looking at the trees, there seems to be a trend of which epotopes are related and how that impacts immune perception. But keep in mind, the tree are only built off the epitope sequence not the whole protein. To assesss if the MAMP-derived variants which have different immunological outcomes have diverved from a common ancestor or potentially via convergent evolution, we will be a whole protein evolutionary tree (rather than just the epitope). With EF-Tu being so conserved as a housekeeping gene, this will relatively trival. However, with CSPs so different in sequence, yet conserved in structure, this will be a little trickier. For the latter, we will try a similar approach to what Ksenia's lab has done with NLR work ([link](link)) where we will build the tree based on a conserved domain and plot additional informaiton onto the tree.
+
+First, we will need to re-pull out all the protein sequences for each MAMP variant. We can do this using the main script: 
 
 
+    Using Main_script.R, run though the lines below:
+    
+    ```
+    ##############################################
+    # Diverse epitopes and their impact on plant immmune perception - Figure 2 and 3
+    ##############################################
+
+    # Re-pull whole protein sequences for MAMP hits and write to fasta file
+    source("./19_Write_MAMP_hits_to_fasta.R")
+  
+    ```
+    
+For EF-Tu, we moved the fasta file to the following directory (Analyses/Protein_alignments_and_trees/EfTu) and then run the below code:
+
+  ```bash 
+  # build tree for EF-Tu homologs
+  
+  # for full length proteins, 
+  mafft --reorder --thread 12 --maxiterate 1000 --localpair EFTu_full_length.fasta > "EFTu_full_length_alignment"
+  # --localpair, slowest but most accurate method of alignment
+  # --reorder, reorder entries in fasta file to improve alignment
+  
+  iqtree -s EFTu_full_length_alignment -st AA -bb 1000 -mtree -nt 12 -keep-ident-safe
+  # -s, input alignment file
+  # -st, file type (in this case amino acids, hence AA)
+  # -bb 1000, number of ultrafast bootstrapping ran on the tree
+  # -mtree, iterate thorugh all models to find the best one
+  # -nt 12, number of threads used to run analysis (I have max 16)
+
+  ```
+
+
+For CSP, we first need to obtain the conserved CSP domain model and use HMMER to extract this domain from each CSP sequence. This was previously found on the Pfam website but as of January 2023, that website has been deprcipated. Details of the domain can be now found on the InterPro site ([link here](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR011129/)). A copy of this model was downloaded and move into a directory in this Github repo (Analyses/Characterizing_csps/Hmm_models/CSD_model).
+hmm
+
+
+  ```
+  hmmmsearch --tblout csp_domain.txt -E 1 --domE 1 --incE 0.01 --incdomE 0.04 -A CSD_alignment.stk --cpu 8 ./Hmm_models/CSD_model/CSD.hmm csp_full_length.fasta
+  ```
+
+
+### 9. Evolution of CSP variants 
 
 Considering each MAMP has a different evolutionary trajectory, we then wanted to better understand the diversity and evolution of the genes/proteins of which the MAMPs are encoded. This is of particular interest for CSPs as they are so diverse and so many copies are present. To do so, we will use a variety of techniques 
-
-
-
 
 
 ## Determining Core genes to assess selection of MAMP-endcoded genes compared to other conserved genes
@@ -369,7 +438,7 @@ Considering each MAMP has a different evolutionary trajectory, we then wanted to
 In MAMP-focused resarch, there is an idea that MAMPs undergo co-evolution with their cognant PRR receptors. Therefore, in order to evade perception, MAMPs are thought to be under positive selection compared to other gene counterparts (which are typically under negative selection). In order to assess this on an epitope and overall gene basis, we need to first determine which genes are considered 'core' accross all the genomes. However, determining which genes are considered 'core' accross genera so diverse may be difficult and computationally rigorus. Therefore, we aim to find intra-genus core genes and calculate a variety of pop. gene stats.
   
 
-### 7. Converting and binning files before core gene analysis
+### 10. Converting and binning files before core gene analysis
 
 We will use Pirate to determine which genes are considered 'core' for each genus of bacteria but, unforunately, it doesn't take gbff files (only gff3) and so we need to convert the files before running. First, we moved the list of accessions into new text files. We will then remove those that are redudant based on previous ANI analyses as similar to before. Then we will temperarily re-download the gbff files for each genus into dedicated folders (per genus) and convert them into gff3 files (thus removing the gbff files).
 

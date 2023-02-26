@@ -45,23 +45,23 @@ csp22_ros_screen_outcome <- rbind(import_ros_screen_outcome[1:68,], import_ros_s
 
 ################ old code. saving for future reference ########################
 
-hc <- hclust(dist(empty_elf18_matrix), "ave")
-hcdata <- dendro_data(hc, type = "rectangle")
-ggplot() +
-  geom_segment(data = segment(hcdata), 
-               aes(x = x, y = y, xend = xend, yend = yend)
-  ) +
-  geom_text(data = label(hcdata), 
-            aes(x = x, y = y, label = label, hjust = 0), 
-            size = 3
-  ) +
-  coord_flip() +
-  scale_y_reverse(expand = c(0.8, 0)) + 
-  my_ggplot_theme +
-  theme(rect = element_blank(),
-       axis.text.x = element_blank(),
-       axis.text.y = element_blank(),
-       axis.title.x = element_blank(),
-       axis.title.y = element_blank())
+#hc <- hclust(dist(empty_elf18_matrix), "ave")
+#hcdata <- dendro_data(hc, type = "rectangle")
+#ggplot() +
+#  geom_segment(data = segment(hcdata), 
+#               aes(x = x, y = y, xend = xend, yend = yend)
+#  ) +
+#  geom_text(data = label(hcdata), 
+#            aes(x = x, y = y, label = label, hjust = 0), 
+#            size = 3
+#  ) +
+#  coord_flip() +
+#  scale_y_reverse(expand = c(0.8, 0)) + 
+#  my_ggplot_theme +
+#  theme(rect = element_blank(),
+#       axis.text.x = element_blank(),
+#       axis.text.y = element_blank(),
+#       axis.title.x = element_blank(),
+#       axis.title.y = element_blank())
 
 
