@@ -36,6 +36,8 @@ Before running all the downstream analyses, we can set up a conda environment wi
 | Pirate | Determines Core genes based on a group of genomes | [Github Page](https://github.com/SionBayliss/PIRATE) | [Paper Link](https://academic.oup.com/gigascience/article/8/10/giz119/5584409) |
 | FastTree | FastTree infers approximately-maximum-likelihood phylogenetic trees | [Github Page](tbd) | [Paper Link](TBD) |
 | HMMER | ddd | [Github Page](https://github.com/EddyRivasLab/hmmer) | ddd |
+| MMseqs2 | ultra fast and sensitive sequence search and clustering suite | [Github Page](https://github.com/soedinglab/MMseqs2) | [Paper Link](https://academic.oup.com/bioinformatics/article/37/18/3029/6178277?login=true) |
+
 
 <br>
 
@@ -58,6 +60,7 @@ conda install r==3.5.1 r-ggplot2==3.1.0 r-dplyr==0.7.6 bioconductor-ggtree==1.14
 conda install -c bioconda diamond
 conda install -c bioconda fasttree
 conda install -c bioconda hmmer
+conda install -c conda-forge -c bioconda mmseqs2
 
 
 # Activate environment with loaded packages
@@ -229,7 +232,7 @@ Since we are trying to assess the sequence diversity that has naturally accumula
 
 First we will run an R script designed to pull all the genomes accession number for a particular genus as well as their file path and output them into a directory to run fastANI on each file.
 
-  ```
+  ```R
 ##############################################
 # comparing similarity of genomes to filter for clonality
 ##############################################
@@ -241,11 +244,11 @@ First we will run an R script designed to pull all the genomes accession number 
   
   We can then run the bash command below. Since we have a considerable amount of genomes, this analysis should be ran on a computer that has **no less than 64 Gb of RAM** and at least 10 threads (unless you want to wait many days for it to complete). 
   
-  ```bash 
-    for file in *.txt
-      do echo "$file"
-      fastANI --rl ./$file --ql ./$file -t 14 -o ${file}_ANI_comparison
-    done
+  ``` bash
+  for file in *.txt
+    do echo "$file"
+    fastANI --rl ./$file --ql ./$file -t 14 -o ${file}_ANI_comparison
+  done
   ```
   
   For fastANI, the following commands are:
@@ -378,7 +381,8 @@ The outputs for both elf18 and csp22 variants were saved in the Analyses/ROS Scr
     
     ```
 
-These output trees are used to build Figure 2A and Figure 3A. The tips are colored manually as well as adding the of the data using Inkscape. 
+These output trees are used to build Figure 2A and Figure 3A. The tips are colored manually as well as adding the of the data using Inkscape. This script will also import the immunogenicity conclusions which will be mapped onto the phylogenetic trees in #9 (Analyses/ROS_Screen/ROS_Screen_data.xlsx).
+
 
 ### 8. Assessing immunogenicity outcomes follow diversifcation of a common ancestor
 
@@ -401,15 +405,16 @@ First, we will need to re-pull out all the protein sequences for each MAMP varia
     
 For EF-Tu, we moved the fasta file to the following directory (Analyses/Protein_alignments_and_trees/EfTu) and then run the below code:
 
-  ```bash 
+  ``` 
   # build tree for EF-Tu homologs
   
   # for full length proteins, 
   mafft --reorder --thread 12 --maxiterate 1000 --localpair EFTu_full_length.fasta > "EFTu_full_length_alignment"
+  
   # --localpair, slowest but most accurate method of alignment
   # --reorder, reorder entries in fasta file to improve alignment
   
-  iqtree -s EFTu_full_length_alignment -st AA -bb 1000 -mtree -nt 12 -keep-ident-safe
+  
   # -s, input alignment file
   # -st, file type (in this case amino acids, hence AA)
   # -bb 1000, number of ultrafast bootstrapping ran on the tree
@@ -424,13 +429,49 @@ hmm
 
 
   ```
-  hmmmsearch --tblout csp_domain.txt -E 1 --domE 1 --incE 0.01 --incdomE 0.04 -A CSD_alignment.stk --cpu 8 ./Hmm_models/CSD_model/CSD.hmm csp_full_length.fasta
+  # search all the protein fasta files for the CSP doamin
+  hmmsearch -A CSD_alignment.stk --tblout csp_domains.txt -E 1 --domE 1 --incE 0.01 --incdomE 0.04 --cpu 8 \//
+  ./Hmm_modles/CSD.hmm csp_full_length.fasta 
+  
+  # convert the output from hmmersearch into a fasta file
+  esl-reformat fasta CSD_alignment.stk > reformat_CSD_hits.fasta
   ```
+
+  However, before we can build a tree off of this, we need to remove redundancies and clean up header names. Based off of previous manual inspecion
+  
+  
+  We will then build our alignment and phylogenetic tree using the following commands.
+  
+    ``` 
+    # build tree for CSPs homologs and paralogs
+  
+    # for full length proteins, 
+    mafft --reorder --thread 12 --maxiterate 1000 --localpair reformat_CSD_hits.fasta > "reformat_CSD_hits_aligned"
+  
+    # --localpair, slowest but most accurate method of alignment
+    # --reorder, reorder entries in fasta file to improve alignment
+  
+    iqtree -s reformat_CSD_hits_aligned -st AA -bb 1000 -mtree -nt 12 -keep-ident-safe
+    
+    # -s, input alignment file
+    # -st, file type (in this case amino acids, hence AA)
+    # -bb 1000, number of ultrafast bootstrapping ran on the tree
+    # -mtree, iterate thorugh all models to find the best one
+    # -nt 12, number of threads used to run analysis (I have max 16)
+    ```
+  
+This tree may take awhlie o build as it is quite large. Once it is completed 
+
+
 
 
 ### 9. Evolution of CSP variants 
 
-Considering each MAMP has a different evolutionary trajectory, we then wanted to better understand the diversity and evolution of the genes/proteins of which the MAMPs are encoded. This is of particular interest for CSPs as they are so diverse and so many copies are present. To do so, we will use a variety of techniques 
+Considering each MAMP has a different evolutionary trajectory, we then wanted to better understand the diversity and evolution of the genes/proteins of which the MAMPs are encoded. This is of particular interest for CSPs as they are so diverse and so many copies are present. To do so, we will use a variety of techniques including the phylogenetic tree built in #8 as well as mmseqs2 and MEME suite. 
+
+
+
+Details for catagotizing 
 
 
 ## Determining Core genes to assess selection of MAMP-endcoded genes compared to other conserved genes
