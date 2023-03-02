@@ -79,6 +79,11 @@ library(cluster)
 
 
 
+BiocManager::install("memes")
+remotes::install_github("snystrom/memes", ref = "no-r-4")
+install.packages("ggmotif")
+
+
 ##############################################
 # Install packages if needed 
 ##############################################

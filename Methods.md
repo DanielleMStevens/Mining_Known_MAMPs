@@ -37,6 +37,7 @@ Before running all the downstream analyses, we can set up a conda environment wi
 | FastTree | FastTree infers approximately-maximum-likelihood phylogenetic trees | [Github Page](tbd) | [Paper Link](TBD) |
 | HMMER | ddd | [Github Page](https://github.com/EddyRivasLab/hmmer) | ddd |
 | MMseqs2 | ultra fast and sensitive sequence search and clustering suite | [Github Page](https://github.com/soedinglab/MMseqs2) | [Paper Link](https://academic.oup.com/bioinformatics/article/37/18/3029/6178277?login=true) |
+| TrimAL | Tool to trim alignments | [Github Page](https://github.com/inab/trimal) | [Paper Link](http://trimal.cgenomics.org/_media/trimal.2009.pdf) |
 
 
 <br>
@@ -460,7 +461,7 @@ hmm
     # -nt 12, number of threads used to run analysis (I have max 16)
     ```
   
-This tree may take awhlie o build as it is quite large. Once it is completed 
+This tree may take awhlie o build as it is quite large. Once it is completed, we will build our phylogenetic trees using genera, MAMP epitopes, and immunogenicity outcome data to better understand the evolution of these proteins.  
 
 
 
@@ -472,6 +473,10 @@ Considering each MAMP has a different evolutionary trajectory, we then wanted to
 
 
 Details for catagotizing 
+
+    ```
+    ❯ mmseqs easy-cluster Rathayibacter_CSPs.fasta clusterRes tmp --min-seq-id 0.5 -c 0.8 --cov-mode 1
+    ```
 
 
 ## Determining Core genes to assess selection of MAMP-endcoded genes compared to other conserved genes
@@ -487,6 +492,7 @@ For each text file in each genus specific folder:
 
   ```
   ncbi-genome-download --assembly-accessions ./Clavibacter_genome_list.txt -p 6 -r 2 -v --flat-output -F genbank bacteria
+  cds-fasta
   ```
   
 For each genus, the gbff files were unzip and convert into gff files. But even then those files needed
@@ -602,6 +608,9 @@ One concern is despite trying to sample for a semi-large data set of genomes in 
   fastANI --rl /path/to/Contig_paths_for_ANI.txt --ql /path/to/Contig_paths_for_ANI.txt -o Clavibacter_ANI_comparison
   ```
 
+  ```
+  ❯ trimal -in LYK5_alignment -out LYK5_alignment_trimmed -automated1
+  ```
 
 
 

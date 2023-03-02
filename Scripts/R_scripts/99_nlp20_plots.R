@@ -2,6 +2,31 @@
 
 
 
+if(filtered_hold_MAMP_seqs$MAMP_Hit[i] == "nlp20_consensus"){
+  
+  #if csp is not in annotation (i.e, csp22 like proteins, skip over them)
+  if (any(is.na(All_target_by_annotation[grepl(filtered_hold_MAMP_seqs$Protein_Name[i], All_target_by_annotation$names),][1,])) == TRUE){
+    next
+  }
+  
+  #find full length protein sequence
+  if (any(is.na(All_target_by_annotation[grepl(filtered_hold_MAMP_seqs$Protein_Name[i], All_target_by_annotation$names),][1,])) == FALSE){
+    protein_of_interest <- All_target_by_annotation[grepl(filtered_hold_MAMP_seqs$Protein_Name[i], All_target_by_annotation$names),]
+    protein_of_interest <- protein_of_interest[grepl(filtered_hold_MAMP_seqs$File_Name[i], protein_of_interest$Filename),]
+    
+    
+    nlp_full_length <- rbind(nlp_full_length, data.frame(
+      "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
+                               protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
+      "Sequence" = protein_of_interest[1,3])
+    )
+  }
+}
+
+
+
+
+
 #-----------------------Supplemental Figure 2 Plots------------------------------------------------------------------------------
 
 # plots all MAMPs grouped by whether it's a gram-positive or gram-negative bacteria
