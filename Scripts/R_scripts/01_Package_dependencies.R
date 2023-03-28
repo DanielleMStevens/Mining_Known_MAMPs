@@ -61,6 +61,18 @@ library(ggseqlogo)
 library(devtools)
 #library(ggmsa)
 
+#---------Package for html file---------
+library(DT)
+
+
+#---------Packages for meme/motif processing---------
+library(memes)
+library(universalmotif)
+library(ggmotif)
+#BiocManager::install("universalmotif")
+#remotes::install_github("snystrom/memes", ref = "no-r-4")
+#install.packages("ggmotif")
+
 
 #BiocManager::install('XVector')
 #library(gghalves)
@@ -79,9 +91,6 @@ library(cluster)
 
 
 
-BiocManager::install("memes")
-remotes::install_github("snystrom/memes", ref = "no-r-4")
-install.packages("ggmotif")
 
 
 ##############################################

@@ -31,9 +31,8 @@ for (i in 1:length(colnames(kmer_hash_matrix))){
 
 #colnames(kmer_hash_matrix) <- colnames(kmer_hash)
 
-ComplexHeatmap::Heatmap(matrix = kmer_hash_matrix[1:100,1:100])
 
-ComplexHeatmap::Heatmap(matrix = kmer_hash_matrix[1:5000,1:5000],
+ComplexHeatmap::Heatmap(matrix = kmer_hash_matrix,
                         
                         row_dend_reorder = T,
                         column_dend_reorder = T,
@@ -42,4 +41,3 @@ ComplexHeatmap::Heatmap(matrix = kmer_hash_matrix[1:5000,1:5000],
                         show_row_names = F)
 
 
-                        row_names_gp = gpar(fontsize = 2.5))

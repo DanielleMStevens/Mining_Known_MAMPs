@@ -13,7 +13,7 @@
 #######################################################################
 
 
-csp_catagorization_tree <- function(tree_file, catagorization_file){
+csp_catagorization_tree <- function(tree_file, catagorization_file, tree_collapse_adj, ring_thickness, offset_value){
   tree_file <- phangorn::midpoint(tree_file, node.labels='label')
   
   for (i in 1:length(tree_file$tip.label)){
@@ -27,53 +27,133 @@ csp_catagorization_tree <- function(tree_file, catagorization_file){
   catagorization_file <- catagorization_file[catagorization_file$New_label %in% tree_file$tip.label,]
   
   
-  save_tree <- ggtree(tree_file, size = 0.5, layout = 'rectangular', ladderize = T) %<+% catagorization_file +
-    geom_treescale(fontsize = 4, linesize = 1.4, x = 0.2, y = 0, offset = 3) +
-    geom_tippoint(aes(color = Type_Catagorization), size = 1) +
+  save_tree <- ggtree(tree_file, size = 0.5, layout = 'circular', ladderize = T) %<+% catagorization_file +
+    geom_treescale(fontsize = 3.5, linesize = 1, x = tree_collapse_adj, y = 0, offset = offset_value) +
+    geom_tippoint(aes(color = Type_Catagorization), size = 1, show.legend = TRUE) +
     
     ggnewscale::new_scale_fill() +
-    geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = 0.05, offset = 0.1, axis.params = list(line.color = "black"), show.legend = FALSE) +
+    geom_fruit(geom = geom_tile, mapping=aes(fill = Percent_Identity), width = ring_thickness, offset = 0.2, axis.params = list(line.color = "black"), show.legend = FALSE) +
     scale_fill_viridis(option="magma", name = "Percent AA\nSimilarity", 
                        breaks = c(0, 20, 40, 60, 80, 100),
                        labels = c(0, 20, 40, 60, 80, 100),
                        limits = c(0,100)) 
-  
+
   return(save_tree)
 }
 
 
 
-# Clavibacter CSP
+# -----------------------------Clavibacter CSP--------------------------------------------------------
 Clavibacter_CSP_protein_tree <- read.tree(file = "./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/Clavibacter/CSPs/reformat_clavi_cds_hits_aligned.tre")
 import_clav_csp_types <- xlsx:::read.xlsx("./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/MAMP_Catagorization.xlsx", sheetName = "Clavibacter")
-csp_catagorization_tree(Clavibacter_CSP_protein_tree, import_clav_csp_types)
+motif_extract <- getMotifFromMEME(data = "./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/Clavibacter/Clavi_meme_results.xml", format="xml")
 
 
-#  geom_treescale(fontsize = 4, linesize = 1.4, x = 0.2, y = 0, offset = 3) +
+motif_test <- motif_extract
+motif_test$input.seq.id <- as.character(motif_test$input.seq.id)
+for (i in 1:nrow(motif_test)){
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "csp22_consensus\\|Full_Seq\\|Clavibacter\\|","")
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "\\|[0-9]","")
+}
+motif_test <- motifLocation(motif_test[!duplicated(motif_test[c(2,3,5,6,7,8,9)]),])
+
+# csp meme results
+motif_test +
+  ggsci::scale_fill_aaas() +
+  ylab("") +
+  theme(axis.text.x = element_text(size = 8, color = "black"), 
+        axis.text.y = element_text(size = 8, color = "black"), 
+        axis.title.x = element_text(color = "black"),
+        axis.title.y = element_text(color = "black"))
+
+
+csp_catagorization_tree(Clavibacter_CSP_protein_tree, import_clav_csp_types, -0.6, 0.11, 0.2)
 
 
 
 
 
-# Rhodococcus CSP
+# -----------------------------Rhodococcus CSP--------------------------------------------------------
 Rhodococcus_CSP_protein_tree <- read.tree(file = "./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/Rhodococcus/CSPs/reformat_rhodo_cds_hits_aligned.tre")
 import_rhodo_csp_types <- xlsx:::read.xlsx("./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/MAMP_Catagorization.xlsx", sheetName = "Rhodococcus")
-csp_catagorization_tree(Rhodococcus_CSP_protein_tree, import_rhodo_csp_types)
+motif_extract <- getMotifFromMEME(data = "./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/Rhodococcus/Rhodo_meme_results.xml", format="xml")
 
 
-#geom_treescale(fontsize = 4, linesize = 1.2, x = -1, y = 0, offset = 100) +
-  
+motif_test <- motif_extract
+motif_test$input.seq.id <- as.character(motif_test$input.seq.id)
+for (i in 1:nrow(motif_test)){
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "csp22_consensus\\|Full_Seq\\|Rhodococcus\\|","")
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "\\|[0-9]","")
+}
+motif_test <- motifLocation(motif_test[!duplicated(motif_test[c(2,3,5,6,7,8,9)]),])
+
+# csp tree
+csp_catagorization_tree(Rhodococcus_CSP_protein_tree, import_rhodo_csp_types, -0.8, 0.3, 100)
+
+# csp meme results
+motif_test +
+  ggsci::scale_fill_aaas() +
+  ylab("") +
+  theme(axis.text.x = element_text(size = 8, color = "black"), 
+        axis.text.y = element_text(size = 8, color = "black"), 
+        axis.title.x = element_text(color = "black"),
+        axis.title.y = element_text(color = "black"))
 
 
 
-# Leifsonia CSP
+
+# -----------------------------Leifsonia CSP--------------------------------------------------------
 Leifsonia_CSP_protein_tree <- read.tree(file = "./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/Leifsonia/reformat_leif_cds_hits_aligned.tre")
 import_leif_csp_types <- xlsx:::read.xlsx("./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/MAMP_Catagorization.xlsx", sheetName = "Leifsonia")
-csp_catagorization_tree(Leifsonia_CSP_protein_tree, import_leif_csp_types)
+csp_catagorization_tree(Leifsonia_CSP_protein_tree, import_leif_csp_types, -0.8, 0.2, 10)
+
+motif_extract <- getMotifFromMEME(data = "./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/Leifsonia/Leif_meme_results.xml", format="xml")
 
 
-#geom_treescale(fontsize = 4, linesize = 1.2, x = -1, y = 0, offset = 1) +
+motif_test <- motif_extract
+motif_test$input.seq.id <- as.character(motif_test$input.seq.id)
+for (i in 1:nrow(motif_test)){
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "csp22_consensus\\|Full_Seq\\|Leifsonia\\|","")
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "\\|[0-9]","")
+}
+motif_test <- motifLocation(motif_test[!duplicated(motif_test[c(2,3,5,6,7,8,9)]),])
 
+# csp meme results
+motif_test +
+  ggsci::scale_fill_aaas() +
+  ylab("") +
+  theme(axis.text.x = element_text(size = 8, color = "black"), 
+        axis.text.y = element_text(size = 8, color = "black"), 
+        axis.title.x = element_text(color = "black"),
+        axis.title.y = element_text(color = "black"))
+
+
+
+
+# -----------------------------Erwinia CSP--------------------------------------------------------
+Erwinia_CSP_protein_tree <- read.tree(file = "./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/Erwinia/reformat_leif_cds_hits_aligned.tre")
+import_erwin_csp_types <- xlsx:::read.xlsx("./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/MAMP_Catagorization.xlsx", sheetName = "Erwinia")
+csp_catagorization_tree(Erwinia_CSP_protein_tree, import_erwin_csp_types, -0.8, 0.2, 10)
+
+motif_extract <- getMotifFromMEME(data = "./../../Analyses/Catagorizing_MAMPs/Genera_specific_analysis/Leifsonia/Leif_meme_results.xml", format="xml")
+
+
+motif_test <- motif_extract
+motif_test$input.seq.id <- as.character(motif_test$input.seq.id)
+for (i in 1:nrow(motif_test)){
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "csp22_consensus\\|Full_Seq\\|Leifsonia\\|","")
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "\\|[0-9]","")
+}
+motif_test <- motifLocation(motif_test[!duplicated(motif_test[c(2,3,5,6,7,8,9)]),])
+
+# csp meme results
+motif_test +
+  ggsci::scale_fill_aaas() +
+  ylab("") +
+  theme(axis.text.x = element_text(size = 8, color = "black"), 
+        axis.text.y = element_text(size = 8, color = "black"), 
+        axis.title.x = element_text(color = "black"),
+        axis.title.y = element_text(color = "black"))
 
 
 
@@ -84,12 +164,6 @@ import_rals_csp_types <- xlsx:::read.xlsx("./../../Analyses/Catagorizing_MAMPs/G
 
 
 
-filepath <- system.file("examples", "meme.xml", package = "ggmotif")
-motif_extract <- getMotifFromMEME(data = file.choose(), format="xml")
-motif_plot <- motifLocation(data = motif_extract)
-motif_plot +
-  ggsci::scale_fill_aaas() +
-  theme(axis.text.y = element_text(size = 3))
 
 
 

@@ -75,8 +75,6 @@ hold_copy_number <- as.data.frame(filtered_hold_MAMP_seqs %>% group_by(MAMP_Hit,
 # create the final dataframe into an html file so others can 
 ######################################################################
 
-library(DT)
-
 DT::datatable(filtered_hold_MAMP_seqs, 
               colnames = c('WP Tag', 'MAMP Hit', 'Percent Identity', 
                            'MAMP Sequence', 'Genera', 'Strain', 
