@@ -89,7 +89,7 @@ ncbi-genome-download -s refseq -g Agrobacterium --dry-run bacteria
 ```
 
   
-I have collected all the accession numbers for each genome. Using the accession name (ex. Erwinia amylovora), I filter any accessions that are not plant/agriculturally related. These accession numbers are listed in a text file in /Analyes/Genome_accession_info directory as well as in a database which stores extra info (Mining_for_known_MAMPs_genome_accession_info.xlsx). The text file list can be used to query and download the accessions using the command below:
+I have collected all the accession numbers for each genome. Using the accession name (ex. Erwinia amylovora), I filter any accessions that are not plant/agriculturally related. These accession numbers are listed in a text file in /Analyses/Genome_accession_info directory as well as in a database which stores extra info (Mining_for_known_MAMPs_genome_accession_info.xlsx). The text file list can be used to query and download the accessions using the command below:
 
 
 ```
@@ -112,7 +112,7 @@ where,
     and protein fasta associated with the accession number
 ```
 
-Move all the download genomes in directories based on their file type/ending (i.e. genbank files in genbank folder).
+I moved all the download genomes in directories based on their file type/ending (i.e. genbank files in genbank folder).
 
  
 ## Setting up database and mining for MAMPs
@@ -130,6 +130,8 @@ SKEKFERTKPHVNVGTIG
 QRLSTGSRINSAKDDAAGLQIA
 >flgII-28
 ESTNILQRMRELAVQSRNDSNSATDREA
+>nlp20_consensus_pp
+AIMYSWYFPKDSPVTGLGHR
 ```
 
 This fasta file can be used to build a database to use blast to find if anything in the genome shares these sequences. To build the blast database, the below command was ran. Also this should be ran in the same folder as /MAMP_database/MAMP_elicitor_list.fasta. 
@@ -143,7 +145,7 @@ makeblastdb -in MAMP_elicitor_list.fasta -parse_seqids -dbtype 'prot' -out MAMP_
 ### 3. Run all genomes against blast database
 
 
-We can then go through each protein fasta file and pull out the peptide from the annotation. In this case, we can use a bash loop to blast each file. 
+We can then go through each protein fasta file and pull out the possible peptide. In this case, we can use a bash loop to blast each file. 
 
   ```
   for file in *.faa
@@ -165,7 +167,7 @@ We can then go through each protein fasta file and pull out the peptide from the
 
 ### 4. Processing Data to Form the MAMP database
 
-With the intial serach for MAMPs complete, we will now A) clean up the data by removing any partial hits, B) cross referense the hits by annotation per genome and fill in any missing hits by using local-alignment to the protein with the MAMP of interest to pull out the variant sequenee. 
+With the intial serach for MAMPs complete, we will now A) clean up the data by removing any partial hits, B) cross referense the hits by annotation per genome and fill in any missing hits by using local-alignment to the protein with the MAMP of interest. This will allow us to pull out the variant peptide sequence. 
 
 Using Main_script.R, run though the lines below:
 
@@ -350,7 +352,7 @@ In order to plot the distribution of these MAMPs, I first needed to list all the
   
 ## Characterizing Diversity of MAMPs and their MAMP-Encoded Proteins
   
-First, we will want to plot the immune outcomes for each epitope tested (via ROS burst) and then secondarily, we will want to assess if this immune output is drive by the associated MAMP-dervived gene. To assess this, we will 1) make a cladogram based on the sequences of the epitopes tested and 2) make a phylogenic tree and plot information in respect to the genera the protein is derived from, the amino acid similarity, and the immnogencity to understand which and how much different eptiopes are changing and if that is correlated with immunogencity, 
+First, we will want to plot the immune outcomes for each epitope tested (via ROS burst) and then secondarily, we will want to assess if this immune output is driven by the associated MAMP-dervived gene. To assess this, we will 1) make a cladogram based on the sequences of the epitopes tested and 2) make a phylogenic tree and plot information in respect to the genera the protein is derived from, the amino acid similarity, and the immnogencity to understand which and how much different eptiopes are changing and if that is correlated with immunogencity, 
 
 ### 8. Displaying the relatedness of epitope variants in respect to immmunogenicity
 
@@ -382,12 +384,12 @@ The outputs for both elf18 and csp22 variants were saved in the Analyses/ROS Scr
     
     ```
 
-These output trees are used to build Figure 2A and Figure 3A. The tips are colored manually as well as adding the of the data using Inkscape. This script will also import the immunogenicity conclusions which will be mapped onto the phylogenetic trees in #9 (Analyses/ROS_Screen/ROS_Screen_data.xlsx).
+These output trees are used to build Figure 2A and Figure 3A. The tips are colored manually as well as adding the of the data using Inkscape. This script will also import the immunogenicity conclusions which will be mapped onto the phylogenetic trees in #9: Evolution of CSP variants (Analyses/ROS_Screen/ROS_Screen_data.xlsx).
 
 
 ### 8. Assessing immunogenicity outcomes follow diversifcation of a common ancestor
 
-Looking at the trees, there seems to be a trend of which epotopes are related and how that impacts immune perception. But keep in mind, the tree are only built off the epitope sequence not the whole protein. To assesss if the MAMP-derived variants which have different immunological outcomes have diverved from a common ancestor or potentially via convergent evolution, we will be a whole protein evolutionary tree (rather than just the epitope). With EF-Tu being so conserved as a housekeeping gene, this will relatively trival. However, with CSPs so different in sequence, yet conserved in structure, this will be a little trickier. For the latter, we will try a similar approach to what Ksenia's lab has done with NLR work ([link](link)) where we will build the tree based on a conserved domain and plot additional informaiton onto the tree.
+Looking at the cladograms, there seems to be a trend of which epitopes are related and how that impacts immune perception. But keep in mind, the tree were only built off the epitope sequence not the whole protein. To assesss if the MAMP-derived variants which have different immunological outcomes have diverved from a common ancestor or potentially via convergent evolution, we will built a whole protein evolutionary tree (rather than just the epitope). With EF-Tu being so conserved as a housekeeping gene, this will relatively trival. However, with CSPs being so different in sequence, yet conserved in structure, this will be a little trickier. For the latter, we will try a similar approach to what Ksenia's lab has done with NLR work ([link](https://github.com/krasileva-group/hvNLR)) where we will build the tree based on a conserved domain and plot additional informaiton onto the tree.
 
 First, we will need to re-pull out all the protein sequences for each MAMP variant. We can do this using the main script: 
 
@@ -416,6 +418,7 @@ For EF-Tu, we moved the fasta file to the following directory (Analyses/Protein_
   # --reorder, reorder entries in fasta file to improve alignment
   
   
+  iqtree -s EFTu_full_length_alignment -m MFP -bb 1000 -T AUTO -v
   # -s, input alignment file
   # -st, file type (in this case amino acids, hence AA)
   # -bb 1000, number of ultrafast bootstrapping ran on the tree
@@ -425,16 +428,15 @@ For EF-Tu, we moved the fasta file to the following directory (Analyses/Protein_
   ```
 
 
-For CSP, we first need to obtain the conserved CSP domain model and use HMMER to extract this domain from each CSP sequence. This was previously found on the Pfam website but as of January 2023, that website has been deprcipated. Details of the domain can be now found on the InterPro site ([link here](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR011129/)). A copy of this model was downloaded and move into a directory in this Github repo (Analyses/Characterizing_csps/Hmm_models/CSD_model).
-hmm
+For CSPs, we first need to obtain the conserved CSP domain model and use HMMER to extract this domain from each CSP sequence. This was previously found on the Pfam website but as of January 2023, that website has been deprcipated. Details of the domain can be now found on the InterPro site ([link here](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR011129/)). A copy of this model was downloaded and move into a directory in this Github repo (Analyses/Characterizing_CSPs/Hmm_models/CSD_model).
 
 
   ```
-  # search all the protein fasta files for the CSP doamin
+  # Search all the protein fasta files for the CSP doamin
   hmmsearch -A CSD_alignment.stk --tblout csp_domains.txt -E 1 --domE 1 --incE 0.01 --incdomE 0.04 --cpu 8 \//
   ./Hmm_modles/CSD.hmm csp_full_length.fasta 
   
-  # convert the output from hmmersearch into a fasta file
+  # Convert the output from hmmersearch into a fasta file
   esl-reformat fasta CSD_alignment.stk > reformat_CSD_hits.fasta
   ```
 

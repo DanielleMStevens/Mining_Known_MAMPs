@@ -1,0 +1,11 @@
+IQ-TREE multicore version 2.1.2 COVID-edition for Linux 64-bit built Mar 30 2021
+Developed by Bui Quang Minh, James Barbetti, Nguyen Lam Tung,
+Olga Chernomor, Heiko Schmidt, Dominik Schrempf, Michael Woodhams.
+
+Host:    danimstevens-MS-7B93 (AVX2, FMA3, 125 GB RAM)
+Command: iqtree -s EFTu_full_length -bb 1000 -T AUTO -v
+Seed:    893487 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Wed Mar 16 15:35:22 2022
+Kernel:  AVX+FMA - auto-detect threads (16 CPU cores detected)
+
+Reading alignment file EFTu_full_length ... ERROR: File not found EFTu_full_length
