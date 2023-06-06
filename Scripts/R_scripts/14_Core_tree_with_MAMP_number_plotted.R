@@ -15,7 +15,6 @@
 # import number of copies of each mamp on a per genome basis
 map_data <- datasettable[,c(6,1:5,7)]
 
-
 #filter genomes based on ANI analysis
 map_data <- map_data[!map_data$Filename %in% Genomes_to_check$Genome1,]
 
@@ -32,10 +31,13 @@ flg22_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "flg2
 map_data <- cbind(map_data, "flg22_consensus" = flg22_copy_number[match(map_data[,1], flg22_copy_number[,2]),5])
 map_data[is.na(map_data$flg22_consensus),10] <- 0
 
-flg22_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "flgII-28")
-map_data <- cbind(map_data, "flgII-28" = flg22_copy_number[match(map_data[,1], flg22_copy_number[,2]),5])
+flg28_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "flgII-28")
+map_data <- cbind(map_data, "flgII-28" = flg28_copy_number[match(map_data[,1], flg28_copy_number[,2]),5])
 map_data[is.na(map_data$`flgII-28`),11] <- 0
 
+nlp20_copy_number <- subset(hold_copy_number, hold_copy_number$MAMP_Hit == "nlp20_consensus")
+map_data <- cbind(map_data, "nlp20_consensus" = nlp20_copy_number[match(map_data[,1], nlp20_copy_number[,2]),5])
+map_data[is.na(map_data$`nlp20_consensus`),12] <- 0
 
 #map_data_to_remove <- map_data[!map_data$Filename %in% filtered_hold_MAMP_seqs$File_Name,]
 #map_data <- map_data[!map_data$Filename %in% map_data_to_remove$Filename,]
@@ -72,11 +74,23 @@ full_tree <- full_tree %<+% map_data +
              offset = -4.44) + 
   geom_fruit(geom = geom_tile, mapping = aes(fill = `flgII-28`), width = 0.04,
              offset = -8.92) +
-  scale_fill_gradient(low = "white", high = "black", breaks = c(0,1,2,4,8), limits = c(0,15), guide = "legend", name = "MAMP Abundance") +
+  #geom_fruit(geom = geom_tile, mapping = aes(fill = nlp20_consensus), width = 0.04,
+  #           offset = -17.88) +
+
+  #scale_fill_stepsn(colours = c("grey99","grey60","grey24","grey1"),
+  #                  breaks = c(1,2,4,8),
+  #                  limits = c(0,15),
+  #                  guide = "legend", name = "MAMP Abundance") +
+    
+  scale_fill_gradient(low = "white", high = "black", breaks = c(0,1,2,4,8), limits = c(0,15), 
+                      guide = "legend", name = "MAMP Abundance") +
   
   theme(legend.direction = "horizontal", 
         legend.position = "bottom")
 
+full_tree
+
+  
 
 ggsave(full_tree, filename = "./../../Figures/Figure_1/Full_phylogenomic_tree_with_MAMPs_v2.pdf", device = cairo_pdf, width = 7, height = 3.2, units = "in")
 
