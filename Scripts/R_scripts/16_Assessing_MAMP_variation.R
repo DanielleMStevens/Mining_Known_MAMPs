@@ -19,6 +19,7 @@ elf18_MAMP_seqs <- subset(elf18_MAMP_seqs, elf18_MAMP_seqs$Percent_Identity > 50
 elf18_unique <- unique(elf18_MAMP_seqs$MAMP_Sequence)
 
 csp22_MAMP_seqs <- subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus")
+csp22_MAMP_seqs <- subset(csp22_MAMP_seqs, csp22_MAMP_seqs$Percent_Identity > 20)
 csp22_unique <- unique(csp22_MAMP_seqs$MAMP_Sequence)
 
 flg22_MAMP_seqs <- subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit == "flg22_consensus")
@@ -149,6 +150,7 @@ elf18_heatmap <- ComplexHeatmap::Heatmap(empty_elf18_matrix,
 csp22_heatmap <- ComplexHeatmap::Heatmap(empty_csp22_matrix,
                                          col = col_fun,
                                          show_column_dend = F,
+                                         show_row_dend = F,
                                          show_row_names = F,
                                          show_column_names = F, 
                                          border = T,
@@ -183,11 +185,12 @@ flgII_28_heatmap <- ComplexHeatmap::Heatmap(empty_flgII_28_matrix,
 draw(elf18_heatmap, show_heatmap_legend = FALSE, padding = unit(c(7, 7, 7, 7), "mm"))
 draw(csp22_heatmap, show_heatmap_legend = FALSE, padding = unit(c(7, 7, 7, 7), "mm"))
 draw(flg22_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5), "mm"))
+draw(flgII_28_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5), "mm"))
 
 
 
 ##############################################
-# make weblogos of all variants based 
+# make weblogos of all variants based - IGNORE
 ##############################################
 
 
@@ -272,13 +275,7 @@ ggplot(flgII_28_sim_score %>% filter(MAMP_v1!=MAMP_v2), aes(x = "", y = Percent_
 
 
 
-
-
-
 #ha <- rowAnnotation("MAMP \nOccurance" = anno_barplot(elf18_occurance$n, width = unit(1, "cm")))
-
-
-
 
 
 
