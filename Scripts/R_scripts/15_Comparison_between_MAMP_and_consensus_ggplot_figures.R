@@ -17,7 +17,10 @@
 
 # plots all MAMPs grouped by MAMP type ----- Figure 1C and 1D ------
 
-n_number <- as.data.frame(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus") %>% group_by(MAMP_Hit) %>% summarise(n=n()))
+subset_without_nlps <- 
+
+n_number <- subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus")
+n_number <- as.data.frame(subset(n_number, n_number$MAMP_Hit != "nlp20_Pcc") %>% group_by(MAMP_Hit) %>% summarise(n=n()))
 
 
 MAMP_type <- ggplot(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus"), 

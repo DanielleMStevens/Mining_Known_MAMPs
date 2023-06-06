@@ -42,6 +42,45 @@ csp22_ros_screen_outcome <- rbind(import_ros_screen_outcome[1:68,], import_ros_s
 
 
 
+##############################################
+# Assessing how similarity equates to immunogenicity
+##############################################
+
+#elf18_ros_screen_outcome_ggplot <- elf18_ros_screen_outcome
+#elf18_ros_screen_outcome_ggplot["Percent_Identity"] <- numeric(0)
+#for (i in 1:nrow(elf18_ros_screen_outcome_ggplot)){
+#  elf18_ros_screen_outcome_ggplot$Percent_Identity[i] <- unique(subset(filtered_hold_MAMP_seqs, 
+#                                                                       filtered_hold_MAMP_seqs$MAMP_Sequence == elf18_ros_screen_outcome_ggplot$Sequence[i])[3])[[1]]
+#}
+
+#ggplot(elf18_ros_screen_outcome_ggplot, aes(x = 1, y = Percent_Identity, color = Outcome)) +
+#  geom_jitter(width = 0.2) +
+#  my_ggplot_theme
+
+
+#csp22_ros_screen_outcome_ggplot <- csp22_ros_screen_outcome
+#csp22_ros_screen_outcome_ggplot["Percent_Identity"] <- numeric(0)
+#for (i in 1:nrow(csp22_ros_screen_outcome_ggplot)){
+#  csp22_ros_screen_outcome_ggplot$Percent_Identity[i] <- unique(subset(filtered_hold_MAMP_seqs, 
+#                                                                       filtered_hold_MAMP_seqs$MAMP_Sequence == csp22_ros_screen_outcome_ggplot$Sequence[i])[3])[[1]]
+#}
+#csp22_ros_screen_outcome_ggplot["MAMP_type"] <- c("csp22_variant")
+
+#ggplot(csp22_ros_screen_outcome_ggplot, aes(x = factor(Outcome, levels = c("Immunogenic","Slightly Immunogenic","Non-Immunogenic","Not Tested")), 
+#                                            y = Percent_Identity, color = Outcome)) +
+#  geom_quasirandom(method = "tukeyDense", size = 0.5) +
+#  geom_boxplot(alpha = 0.7, outlier.fill = NA, width = 0.2) +
+#  scale_color_manual("", values = Immunogenicity_colors) +
+#  my_ggplot_theme +
+#  xlab("") +
+#  ylab("Percent AA Similarity") +
+#  ylim(0,100) +
+#  coord_flip() +
+#  theme(legend.position = "none", axis.text.x = element_text(size = 7), axis.text.y = element_text(size = 7),
+#        axis.title.x = element_text(size = 8),axis.title.y = element_text(size = 8))
+
+
+
 
 ################ old code. saving for future reference ########################
 

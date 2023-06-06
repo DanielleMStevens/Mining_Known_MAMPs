@@ -130,7 +130,7 @@ SKEKFERTKPHVNVGTIG
 QRLSTGSRINSAKDDAAGLQIA
 >flgII-28
 ESTNILQRMRELAVQSRNDSNSATDREA
->nlp20_consensus_pp
+>nlp20_consensus
 AIMYSWYFPKDSPVTGLGHR
 ```
 
@@ -151,10 +151,14 @@ We can then go through each protein fasta file and pull out the possible peptide
   for file in *.faa
     do echo "$file"
     blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file \\
-    -db ./../../Mining_Known_MAMPs/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 12 \\
+    -db ./../../Mining_Known_MAMPs/Analyses/MAMP_blast/MAMP_database/MAMP_blast_db \\
+    -evalue 1e-4 -num_threads 12 \\
     -outfmt "6 qseqid sseqid pident evalue slen qstart qend length qseq" -out $file.txt
   done
   ```
+  
+  blastp -task blastp-short -xdrop_gap_final 1000 -soft_masking false -query $file -db ./../../Mining_Known_MAMPs/Analyses/MAMP_blast/MAMP_database/MAMP_blast_db -evalue 1e-4 -num_threads 12 -outfmt "6 qseqid sseqid pident evalue sl
+en qstart qend length qseq" -out $file.txt
   
   where,
   

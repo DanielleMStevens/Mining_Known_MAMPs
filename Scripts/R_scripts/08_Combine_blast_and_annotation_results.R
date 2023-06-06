@@ -214,7 +214,7 @@ for (i in 1:nrow(hold_MAMP_seqs)){
           if (hold_MAMP_seqs$Percent_Identity[i] < 30){
             filter_list_2[[i]] <- FALSE
           }
-        }  
+    }
           
         
   }

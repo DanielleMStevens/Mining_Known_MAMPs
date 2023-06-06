@@ -52,11 +52,15 @@ Cm_csp22_3_ros_data <- reshape2::melt(Cm_csp22_3_ros_data[1:16,])
 
 (ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_03_2022_Cm3_anti_Cm1_rep1") , aes(x = variable, y = value)) +
   geom_boxplot() +
-  geom_point()) +
+  geom_point())
 
 ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_03_2022_Cm3_anti_Cm1_rep2") , aes(x = variable, y = value)) +
-  geom_boxplot() +
-  geom_point()
+  geom_boxplot(fill = "grey", color = "black") +
+  geom_point() +
+  my_ggplot_theme +
+  ylab("Max RLUs") +
+  xlab("") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # look at con. elf18
 Cm_csp22_3_ros_data <- xlsx:::read.xlsx("./../../Analyses/MAMP_antagonism/Antagonism_screen.xlsx", sheetName = "con. elf18 | Cm csp22-1")
@@ -66,11 +70,19 @@ Cm_csp22_3_ros_data <- reshape2::melt(Cm_csp22_3_ros_data[1:16,])
 
 (ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_04_2022_elf18_anti_Cm1_rep1") , aes(x = variable, y = value)) +
     geom_boxplot() +
-    geom_point()) +
+    geom_point()) 
   
-  (ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_15_2022_elf18_anti_Cm1") , aes(x = variable, y = value)) +
-     geom_boxplot() +
-     geom_point()) +
+  ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_15_2022_elf18_anti_Cm1") , aes(x = variable, y = value)) +
+  geom_boxplot(fill = "grey", color = "black") +
+  geom_point() +
+  my_ggplot_theme +
+  ylab("Max RLUs") +
+  xlab("") + 
+  ylim(0,120000) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
   
   ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_09_2022_elf18_anti_Cm1") , aes(x = variable, y = value)) +
   geom_boxplot() +
@@ -84,9 +96,14 @@ colnames(Cm_csp22_3_ros_data) <- c("Replicate","Water","Control","100 nM","200 n
 
 Cm_csp22_3_ros_data <- reshape2::melt(Cm_csp22_3_ros_data[1:12,])
 
-(ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_03_2022_scram_anti_Cm1_rep1") , aes(x = variable, y = value)) +
-    geom_boxplot() +
-    geom_point()) +
+ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_03_2022_scram_anti_Cm1_rep1") , aes(x = variable, y = value)) +
+    geom_boxplot(fill = "grey", color = "black") +
+    geom_point() +
+    my_ggplot_theme +
+    ylab("Max RLUs") +
+    xlab("") + 
+    ylim(0,125000) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
   
   (ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_03_2022_scram_anti_Cm1_rep2") , aes(x = variable, y = value)) +
      geom_boxplot() +

@@ -44,10 +44,12 @@
       if (read_blast_results$Hit_Length[j] != read_blast_results$MAMP_length[j]){
         subset_protein_seq <- grab_right_protein_seq_blast_results[grepl(read_blast_results$Protein_Name[j], 
                                                                          grab_right_protein_seq_blast_results$names),]
+
         pull_ref_MAMP <- subset(load_reference_MAMPs_fasta, names == read_blast_results$MAMP_Hit[j])
         Alignment_between_MAMP_and_Ref <- Biostrings::pairwiseAlignment(pull_ref_MAMP$seq, 
                                                                         subset_protein_seq$seq, type = "global-local", 
                                                                         gapOpening = 300, gapExtension = 100, substitutionMatrix = BLOSUM62)
+
         read_blast_results$Sequence[j] <- as.character(Alignment_between_MAMP_and_Ref@subject)
         read_blast_results$Percent_Identity[j] <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
       }
