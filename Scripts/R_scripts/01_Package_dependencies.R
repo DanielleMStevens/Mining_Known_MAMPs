@@ -44,6 +44,7 @@ library(RColorBrewer)
 library(scales)
 library(viridis)
 library(see)
+library(patchwork)
 
 #---------Packages for text/dataframe loading and manipulation---------
 

@@ -103,7 +103,7 @@
   
   
   # Assessing variation within each MAMP epitope and in a positional manner 
-  ### this takes a long time to complete -1.5-2 hours
+  ### this takes a long time to complete -1-1.5 hours
   source("./16_Assessing_MAMP_variation.R")
   
   

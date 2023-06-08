@@ -1,6 +1,6 @@
 
 
-import_antagonist_ros_data <- xlsx:::read.xlsx("./../../Analyses/MAMP_antagonism/Antagonism_screen.xlsx", sheetName = "Summary")
+import_antagonist_ros_data <- xlsx:::read.xlsx("./../../Analyses/MAMP_antagonism/Figure6BD_Antagonism_Screen.xlsx", sheetName = "Summary")
 colnames(import_antagonist_ros_data) <- c("Candidate Antagonist","Agonist","Water","Control","100 nM","200 nM","500 nM","1 uM")
 
 import_antagonist_ros_data <- import_antagonist_ros_data[,c(1,2,4:8)]
