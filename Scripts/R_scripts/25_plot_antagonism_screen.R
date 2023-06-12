@@ -26,7 +26,7 @@ import_antagonist_ros_data <- reshape2::melt(import_antagonist_ros_data[,c(2:8)]
   my_ggplot_theme +
   theme(legend.position = "none", axis.text.x = element_text(angle = 45, hjust = 1)) +
   
-  plot_layout(heights = c(3, 1))
+  patchwork::plot_layout(heights = c(3, 1))
 
 
 test <- as.matrix(subset(import_antagonist_ros_data, import_antagonist_ros_data$Agonist == "con. csp22")[c(3:8)])

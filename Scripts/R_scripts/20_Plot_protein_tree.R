@@ -8,7 +8,7 @@
 #-----------------------------------------------------------------------------------------------
 
 
-#-----------------------Figure 2 Plots------------------------------------------------------------------------------
+#-----------------------Figure 3 Plot------------------------------------------------------------------------------
 
 
 #######################################################################
@@ -42,6 +42,8 @@ MAMP_elf18_hit_data <- MAMP_elf18_hit_data[c("New_label", "Percent_Identity", "G
 MAMP_elf18_hit_data <- MAMP_elf18_hit_data[MAMP_elf18_hit_data$New_label %in% EFTu_full_protein_tree$tip.label,]
 
 
+
+# ---------------------------------------------------------- Figure 3F------------------------------------------------------------------------
 EFTu_tree <- ggtree(EFTu_full_protein_tree,  layout="rectangular", ladderize = T, size = 0.3, linetype = 1) %<+% MAMP_elf18_hit_data +
   geom_tippoint(aes(color = Genera), size = 0.05, alpha = 0.5, show.legend = FALSE) +
   scale_color_manual("Genera", values = Genera_colors) +
@@ -70,52 +72,50 @@ EFTu_tree <- ggtree(EFTu_full_protein_tree,  layout="rectangular", ladderize = T
 
 
 
-
-
-# need to make data table to map bootstrap values onto tree
-d <- EFTu_tree$data
-d <- d[!d$isTip,]
-d$label <- as.numeric(d$label)
-d <- d[d$label > 99,]
-
-EFTu_tree <- EFTu_tree +
-  geom_nodepoint(data=d,aes(label=label), shape = 21, size = 1, fill = "grey35") 
-
-
-
-
-
-
-
-
-
-
-%>% ggtree::collapse(1396, 'mixed', fill="#7bc98f", color="#7bc98f")
-
-
-elf18_tree + theme(legend.position = c(0.05, 0.3), legend.title = element_text("Genera", family = "Arial" ,
-                                                                               face = "bold", color = "black", size = 12),
-                   legend.text = element_text(family = "Arial", color = "black", size = 12)) +
-  guides(colour = guide_legend(override.aes = list(size = 3)))
-
-
-
+# note the code below will add the bootstrap values, however many are too close to the tips.  
 
 # need to make data table to map bootstrap values onto tree
-d <- elf18_tree$data
-d <- d[!d$isTip,]
-d$label <- as.numeric(d$label)
-d <- d[d$label > 70,]
+#d <- EFTu_tree$data
+#d <- d[!d$isTip,]
+#d$label <- as.numeric(d$label)
+#d <- d[d$label > 99,]
+
+#EFTu_tree <- EFTu_tree +
+#  geom_nodepoint(data=d,aes(label=label), shape = 21, size = 1, fill = "grey35") 
+
+
+
+
+# ---------------------------------------------------------- Supplemental Figure 6C ------------------------------------------------------------------------
+
+# in order to zoom in on two copies of Streptomyces, we need to A) determine which node to collase (likely the one which seperated immunogenic G+ and G- EFTU)
+# sequences. Then replot for supplemental Figure 6C
+
+# label the nodes - this is for visualization only to determine which nodes to expand and collapse
+EFTu_tree + geom_text2(aes(subset = !isTip, label = node), hjust = -.3, size = 2) 
+
+# save as 5x5.5 inches - pdf
+scaleClade(EFTu_tree, 6451, 0.3) %>% ggtree::collapse(6451, 'min')  %>%  ggtree::collapse(6457, 'min')
+
+# Zoom in on each part of tree - export both as 5 x 3 inches - pdf
+ggtree::viewClade(EFTu_tree, 7034) 
+ggtree::viewClade(EFTu_tree, 7174) + geom_tiplab(size = 1.5)
 
 
 
 
 
+
+
+
+
+#-----------------------Figure 5 Plot------------------------------------------------------------------------------
 
 ##############################################
 # load a tree file in newick tree format
 ##############################################
 
+EFTu_full_protein_tree <- read.tree("./../../Analyses/Protein_alignments_and_trees/EfTu/EFTu_full_length_alignment.treefile")
 
 CSP_full_protein_tree <- read.tree("./../../Analyses/Protein_alignments_and_trees/cold_shock_protein/csp_domain_tree/CSD_hits_aligned.treefile")
 CSP_full_protein_tree <- phangorn::midpoint(CSP_full_protein_tree, node.labels='label')
