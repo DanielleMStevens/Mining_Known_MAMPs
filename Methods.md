@@ -62,6 +62,8 @@ conda install -c bioconda diamond
 conda install -c bioconda fasttree
 conda install -c bioconda hmmer
 conda install -c conda-forge -c bioconda mmseqs2
+conda install -c bioconda mafft
+conda install -c bioconda iqtree
 
 
 # Activate environment with loaded packages
@@ -474,14 +476,31 @@ This tree may take awhlie o build as it is quite large. Once it is completed, we
 
 ### 9. Evolution of CSP variants 
 
-Considering each MAMP has a different evolutionary trajectory, we then wanted to better understand the diversity and evolution of the genes/proteins of which the MAMPs are encoded. This is of particular interest for CSPs as they are so diverse and so many copies are present. To do so, we will use a variety of techniques including the phylogenetic tree built in #8 as well as mmseqs2 and MEME suite. 
+Considering each MAMP has a different evolutionary trajectory, we then wanted to better understand the diversity and evolution of the genes/proteins of which the MAMPs are encoded. This is of particular interest for CSPs as they are so diverse and so many copies are present. To do so, we will use a variety of techniques including the phylogenetic tree built in #8 as well as mmseqs2 and MEME suite. First, we will use mmseq2 to cluster
 
 
 
 Details for catagotizing 
 
     ```
+    # Re-pull whole protein sequences for MAMP hits and write to fasta file
+    source("./23_by_genera_csps_to_fasta.R")
+    
+    # for each outputed genera specific fasta file, we will first catagorize using mmseq 2 and the outputs will go into directories labeled by each genera
     ❯ mmseqs easy-cluster Rathayibacter_CSPs.fasta clusterRes tmp --min-seq-id 0.5 -c 0.8 --cov-mode 1
+    
+    ```
+
+We will then build phylogenetic trees from the csp domain. To do this, we need to extra the csp domain, reformat the flie, align the sequences and build the tree.
+
+
+    ```
+    # For each genera sepecifc csp fasta file, run the following commands.
+    hmmsearch -A CSD_alignment.stk --tblout csp_domains.txt -E 1 --domE 1 --incE 0.01 --incdomE 0.04 --cpu 8 ./Hmm_modles/CSD.hmm csp_full_length.fasta 
+  
+    # Convert the output from hmmersearch into a fasta file
+    esl-reformat fasta CSD_alignment.stk > reformat_CSD_hits.fasta
+    
     ```
 
 

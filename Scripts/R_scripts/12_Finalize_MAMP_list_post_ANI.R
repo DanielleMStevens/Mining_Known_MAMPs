@@ -61,8 +61,43 @@ filtered_hold_MAMP_seqs$File_Name <- stringr::str_replace(filtered_hold_MAMP_seq
 filtered_hold_MAMP_seqs$File_Name <- stringr::str_replace(filtered_hold_MAMP_seqs$File_Name, '\\,', '\\_')
 filtered_hold_MAMP_seqs$File_Name <- stringr::str_replace(filtered_hold_MAMP_seqs$File_Name, '\\;', '\\_')
 filtered_hold_MAMP_seqs$File_Name <- stringr::str_replace(filtered_hold_MAMP_seqs$File_Name, '\\#', '\\_')
+filtered_hold_MAMP_seqs$File_Name <- stringr::str_replace(filtered_hold_MAMP_seqs$File_Name, '\\.', '\\_')
 
 
+
+######################################################################
+# Final remove hits which are very low (less than 20 percent) and are likely off taregts
+######################################################################
+
+filter_list_2 <- list()
+for (i in 1:nrow(filtered_hold_MAMP_seqs)){
+  if (filtered_hold_MAMP_seqs$Percent_Identity[i] >= 20){
+    filter_list_2[[i]] <- TRUE
+  }
+  if (filtered_hold_MAMP_seqs$Percent_Identity[i] < 20){
+    filter_list_2[[i]] <- FALSE
+  }
+}
+filtered_hold_MAMP_seqs <- filtered_hold_MAMP_seqs[unlist(filter_list_2),]
+rm(filter_list_2)
+
+
+filter_list_2 <- list()
+for (i in 1:nrow(filtered_hold_MAMP_seqs)){
+  if (filtered_hold_MAMP_seqs$MAMP_Hit[i] == "elf18_consensus"){
+    if (filtered_hold_MAMP_seqs$Percent_Identity[i] < 50){
+      filter_list_2[[i]] <- FALSE
+      }
+    if (filtered_hold_MAMP_seqs$Percent_Identity[i] >= 50){
+      filter_list_2[[i]] <- TRUE
+    }
+  }
+  if (filtered_hold_MAMP_seqs$MAMP_Hit[i] != "elf18_consensus"){
+    filter_list_2[[i]] <- TRUE
+  }
+}
+filtered_hold_MAMP_seqs <- filtered_hold_MAMP_seqs[unlist(filter_list_2),]
+rm(filter_list_2)
 
 
 ######################################################################

@@ -30,6 +30,7 @@ for (i in 1:nrow(hold_MAMP_seqs)){
 hold_MAMP_seqs <- hold_MAMP_seqs[unlist(filter_list_2),]
 rm(filter_list_2)
 
+
 ######################################################################
 # final mannnual filter
 ######################################################################

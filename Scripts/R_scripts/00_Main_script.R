@@ -86,11 +86,11 @@
   
 
 ##############################################
-# Dyanamic changes of MAMPs from diverse bacteria - Figure 1
+# Dyanamic changes of MAMPs from diverse bacteria - Figure 1 & 2
 ##############################################
   
   #*******************************************
-  # go back to methods.md to run phylogeneitc analysis
+  # go back to methods.md to run phylogenetic analysis
   #*******************************************
   
   # phylogenetic tree of diverse bacteria with MAMP eptitope number plotted on
@@ -102,14 +102,22 @@
   source("./15_Comparison_between_MAMP_and_consensus_ggplot_figures.R")
   
   
+  # ggplot figure for nlp20 - Supplemental Figure 1
+  source("./16_nlp20_plots.R")
+  
+  
+  # A deeper dive on eptiope variation at the genera level
+  source("./17_Compare_mamps_to_consensus_by_genera_figures.R")
+  
+  
   # Assessing variation within each MAMP epitope and in a positional manner 
   ### this takes a long time to complete -1-1.5 hours
-  source("./16_Assessing_MAMP_variation.R")
+  source("./18_Assessing_MAMP_variation.R")
   
   
   # how many MAMPs are there, the variation that extists, and how many/offen plot
   # includes Supplemental Figure 4
-  source("./17_Abundance_of_MAMPs.R")
+  source("./19_Abundance_of_MAMPs.R")
 
 
 ##############################################
@@ -117,39 +125,37 @@
 ##############################################
 
   # Creating phylogenic tree with immunogenicity data (via ROS assays)
-  source("./18_ROS_Screen_tree.R")
-  
-  # Re-pull whole protein sequences for MAMP hits and write to fasta file
-  source("./19_Write_MAMP_hits_to_fasta.R")
-  
+  source("./20_ROS_Screen_tree.R")
   
 ##############################################
 # writing MAMP hits to fasta files for protein tree building
 ##############################################
   
-  source("./17_Write_MAMP_hits_to_fasta.R")
+  # Re-pull whole protein sequences for MAMP hits and write to fasta file
+  source("./21_Write_MAMP_hits_to_fasta.R")
+  
+  #*******************************************
+  # go back to methods.md to run phylogenetic analysis - build protein trees
+  #*******************************************
+  
+  # plot whole protein trees 
+  source("./22_Plot_protein_tree")
   
   
 ##############################################
 # parsing csp22 peptides for classification
 ##############################################
 
+  # to classify CSPs, first we will assess those within each genera
+  # Pull CSPs from each genera and write to a fasta file
+  source("./23_by_genera_csps_to_fasta.R")
 
+  # combining mmseq2, meme, and protein tree analyses to determine number of csp types
+  source("./24_CSP_classification.R")
 
+  # comparing csp types across genera
+  source("./25_ortho_csp_cluster.R")
 
-
-
-##############################################
-# make figures
-##############################################
-  
-
-  
-  # Tree's to plot
-  source("./Tree_plotting.R")
-  
-  # nlp20 specific figures - old plots - 
-  source("./16_nlp20_plots.R")
 
 
 

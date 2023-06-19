@@ -80,7 +80,7 @@ library(ggmotif)
 library(XVector)
 library(stringr)
 library(readr)
-library(plotly)
+#library(plotly)
 #library(ggpubr)
 #library(rstatix)
 library(phylotools)
@@ -89,6 +89,11 @@ library(phylotools)
 #library(ggfortify)
 library(see)
 library(cluster)
+
+
+#-----for csp orotholog-----
+library(orthologr)
+library(ggbeeswarm)
 
 
 

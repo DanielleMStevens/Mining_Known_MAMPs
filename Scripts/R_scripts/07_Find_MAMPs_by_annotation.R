@@ -18,7 +18,7 @@
                                          "Genera" = character(0), "Strain_Name" = character(0), "Filename" = character(0), "Gram" = character(0))
   
   # description to filter gene descriptions for those associated with the MAMPs we are interested in
-  key_gene_description <- c("cold-shock","elongation factor Tu","flagellin","cold shock","NPP1","RNA chaperone/antiterminator")
+  key_gene_description <- c("cold-shock","elongation factor Tu","flagellin","cold shock","NPP1","RNA chaperone/antiterminator","transcription antiterminator/RNA stability")
   
   for (i in 1:length(load_protein_fasta_files)){
     read_protein_fasta <-  dss2df(Biostrings::readAAStringSet(load_protein_fasta_files[[i]]))
@@ -81,7 +81,7 @@
   for (j in 1:nrow(All_target_by_annotation)){
     
     # cold shock protein
-    if (grepl(paste(c("cold-shock","cold shock","RNA chaperone/antiterminator"), collapse = "|"), All_target_by_annotation$names[j]) == TRUE){
+    if (grepl(paste(c("cold-shock","cold shock","RNA chaperone/antiterminator","transcription antiterminator/RNA stability"), collapse = "|"), All_target_by_annotation$names[j]) == TRUE){
       
       # if csp protein is less than 50 AA long, it's very likely a partial CDS and will be removed
       if (All_target_by_annotation$width[j] < 50){

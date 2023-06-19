@@ -39,6 +39,84 @@ for (i in 1:ncol(MIT_elf18_matrix)){
 }
 
 
+col_fun = colorRamp2(c(0, 1), c("white", "cornflowerblue"))
+
+ComplexHeatmap::Heatmap(as.matrix(MIT_elf18_AA_freq_prob),
+                        col = col_fun,
+                        cluster_rows = FALSE,
+                        cluster_columns = FALSE,
+                        row_dend_reorder = FALSE,
+                        column_dend_reorder = FALSE,
+                        border = TRUE)
+
+
+
+
+
+
+#####------------------------- csp frequency-------------------------------
+
+# import elf18 fasta file (Analyses/Protein_alignments_and_trees/csp22/csp22.fasta)
+MIT_csp22 <- Biostrings::readAAStringSet(filepath = file.choose())
+MIT_csp22 <- dss2df(MIT_csp22)
+
+# convert fasta file into 'alignwed' dataframe
+MIT_csp22_matrix <- data.frame(MIT_csp22$seq)
+MIT_csp22_matrix <- do.call(rbind, strsplit(MIT_csp22_matrix$MIT_csp22, ""))
+MIT_csp22_matrix <- as.data.frame(MIT_csp22_matrix)
+
+# based on this paper, we can calculate MIT - https://academic.oup.com/bioinformatics/article/25/9/1125/204722?login=false
+# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2234412/pdf/1748-7188-2-12.pdf
+# first, we will determine the frequence of each aa for each position (i.e P(ai)/P(bj))
+MIT_csp22_AA_freq <- matrix(data = 0, ncol = 20, nrow = 22)
+colnames(MIT_csp22_AA_freq) <- Biostrings::AA_STANDARD
+MIT_csp22_AA_freq <- as.data.frame(MIT_csp22_AA_freq)
+MIT_csp22_AA_freq <- t(MIT_csp22_AA_freq)
+colnames(MIT_csp22_AA_freq) <- as.character(seq(1, 22, by=1))
+MIT_csp22_AA_freq_prob <- MIT_csp22_AA_freq
+
+for (i in 1:ncol(MIT_csp22_matrix)){
+  calculate_freq_per_position <- as.data.table(table(MIT_csp22_matrix[[i]]))
+  rownames(calculate_freq_per_position) <- calculate_freq_per_position[[1]]
+  
+  # input instances (frequency) of occurance
+  MIT_csp22_AA_freq[match(rownames(calculate_freq_per_position), rownames(MIT_csp22_AA_freq)),i] <- calculate_freq_per_position$N
+  
+  # input occurance of AA at each position normalized by number of total instances
+  calculate_freq_per_position$N <- calculate_freq_per_position[[2]]/sum(calculate_freq_per_position$N)
+  MIT_csp22_AA_freq_prob[match(rownames(calculate_freq_per_position), rownames(MIT_csp22_AA_freq_prob)),i] <- calculate_freq_per_position$N
+}
+
+
+col_fun = colorRamp2(c(0, 1), c("white", "cornflowerblue"))
+
+ComplexHeatmap::Heatmap(as.matrix(MIT_csp22_AA_freq_prob),
+                        col = col_fun,
+                        cluster_rows = FALSE,
+                        cluster_columns = FALSE,
+                        row_dend_reorder = FALSE,
+                        column_dend_reorder = FALSE,
+                        border = TRUE)
+
+
+
+
+#####-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # the probability of a particular pair is represented as P(Xi, Yj) -> sum (ai, bj)/ N (total number of possible pairs)
 MIT_elf18_Pa_Pb <- data.frame("Amino_acid_1" = character(0),"Position_1" = character(0),
                               "Amino_acid_2" = character(0),"Position_2" = character(0),
@@ -111,3 +189,10 @@ run_analysis <- function(mit, msa = "NA") {
   mit$pvalue <- pnorm(mit$zscore, lower.tail = F)
   return(mit)
 }
+
+
+
+
+
+# --------------------------
+

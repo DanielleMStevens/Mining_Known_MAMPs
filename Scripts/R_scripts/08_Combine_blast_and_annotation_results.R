@@ -169,7 +169,7 @@ for (i in 1:nrow(hold_MAMP_seqs)){
             }
           }
 
-        }
+    }
         
         
     # flagellin - flg22
@@ -185,7 +185,7 @@ for (i in 1:nrow(hold_MAMP_seqs)){
             #print(hold_MAMP_seqs[i,1:4])
             filter_list_2[[i]] <- FALSE
           }
-        }
+    }
         
         
     # flagellin - flgII-28
@@ -197,7 +197,7 @@ for (i in 1:nrow(hold_MAMP_seqs)){
           if (hold_MAMP_seqs$Percent_Identity[i] < 30){
             filter_list_2[[i]] <- FALSE
           }
-        }
+    }
          
          
     # NPP1 protein
