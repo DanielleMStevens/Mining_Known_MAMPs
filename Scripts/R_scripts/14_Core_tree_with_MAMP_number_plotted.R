@@ -74,16 +74,21 @@ full_tree <- full_tree %<+% map_data +
              offset = -4.44) + 
   geom_fruit(geom = geom_tile, mapping = aes(fill = `flgII-28`), width = 0.04,
              offset = -8.92) +
-  #geom_fruit(geom = geom_tile, mapping = aes(fill = nlp20_consensus), width = 0.04,
-  #           offset = -17.88) +
-
-  #scale_fill_stepsn(colours = c("grey99","grey60","grey24","grey1"),
-  #                  breaks = c(1,2,4,8),
-  #                  limits = c(0,15),
-  #                  guide = "legend", name = "MAMP Abundance") +
+  geom_fruit(geom = geom_tile, mapping = aes(fill = nlp20_consensus), width = 0.04,
+             offset = -17.88) +
+ 
+  #scale_fill_stepsn(colours = c("#ffffff","#e5e5e5","#c7c7c7","#999999","black"),
+  #                  values = scales::rescale(c(0,1,2,4,8), from = c(0,8)),
+  #                  breaks = c(0,1,2,4,8),
+  #                limits = c(0,8),
+  #                guide = "legend", name = "MAMP Abundance") +
     
   scale_fill_gradient(low = "white", high = "black", breaks = c(0,1,2,4,8), limits = c(0,15), 
                       guide = "legend", name = "MAMP Abundance") +
+  
+  #scale_fill_stepsn(
+  #  colours=c("#ffffff","#e5e5e5","#c7c7c7","#999999","black"),
+  #  values=c(  0,       1,  2,    4,      8)/8) +
   
   theme(legend.direction = "horizontal", 
         legend.position = "bottom")
@@ -92,5 +97,32 @@ full_tree
 
   
 
-ggsave(full_tree, filename = "./../../Figures/Figure_1/Full_phylogenomic_tree_with_MAMPs_v2.pdf", device = cairo_pdf, width = 7, height = 3.2, units = "in")
+  ggsave(full_tree, filename = "./../../Figures/Figure_1/Full_phylogenomic_tree_with_MAMPs_v2.pdf", device = cairo_pdf, width = 7, height = 3.2, units = "in")
+
+
+
+library(ggplot2)
+
+colour_breaks <- c(10, 20, 30)
+colours <- c("darkblue", "lightblue", "yellow")
+
+ggplot(mpg, aes(displ, hwy, colour = cty)) +
+  geom_point() +
+  scale_colour_gradientn(
+    limits  = range(mpg$cty),
+    colours = colours[c(1, seq_along(colours), length(colours))],
+    values  = c(0, scales::rescale(colour_breaks, from = range(mpg$cty)), 1),
+  )
+
+
+#### for MPMI Presentation
+full_tree <- ggtree(core_gene_phylo, layout="daylight", branch.length = 'none',  ladderize = T, size = 0.12, linetype = 1)
+full_tree <- ggtree::ggtree(core_gene_phylo, layout = 'fan', open.angle = 110, ladderize = T, size = 0.15, linetype = 1) 
+
+full_tree %<+% map_data +
+  geom_fruit(geom = geom_tile, mapping = aes(color = Genera, fill = Genera), width = 0.04,
+             axis.params = list(line.color = "black"), show.legend = FALSE) +
+  scale_color_manual("Genera", values = Genera_colors) +
+  scale_fill_manual("Genera", values = Genera_colors) 
+
 

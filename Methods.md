@@ -455,12 +455,13 @@ For CSPs, we first need to obtain the conserved CSP domain model and use HMMER t
     # build tree for CSPs homologs and paralogs
   
     # for full length proteins, 
-    mafft --reorder --thread 12 --maxiterate 1000 --localpair reformat_CSD_hits.fasta > "reformat_CSD_hits_aligned"
+    mafft --reorder --thread 12 --maxiterate 1000 --localpair reformat_CSD_hits.fasta > "full_tree_csp_domain_aligned"
   
     # --localpair, slowest but most accurate method of alignment
     # --reorder, reorder entries in fasta file to improve alignment
   
-    iqtree -s reformat_CSD_hits_aligned -st AA -bb 1000 -mtree -nt 12 -keep-ident-safe
+    iqtree -s full_tree_csp_domain_aligned -st AA -bb 1000 -T AUTO -m MFP -keep-ident-safe
+  
     
     # -s, input alignment file
     # -st, file type (in this case amino acids, hence AA)

@@ -53,6 +53,7 @@ library(data.table)
 library(tidyr)
 library(dplyr)
 library(reshape2)
+library(writexl)
 
 #---------Packages for heatmaps and other visuals---------
 library(ComplexHeatmap)

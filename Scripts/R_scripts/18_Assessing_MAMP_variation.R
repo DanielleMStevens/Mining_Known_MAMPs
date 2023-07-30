@@ -28,6 +28,8 @@ flg22_unique <- unique(flg22_occurance$MAMP_Sequence)
 flgII_28_MAMP_seqs <- subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit == "flgII-28")
 flgII_28_unique <- unique(flgII_28_MAMP_seqs$MAMP_Sequence)
 
+nlp20_MAMP_seqs <- subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit == "nlp20_consensus")
+nlp20_unique <- unique(nlp20_MAMP_seqs$MAMP_Sequence)
 
 ##############################################
 # make all-by-all comparisons of each MAMP and their varaints
@@ -91,6 +93,19 @@ for (i in 1:length(flgII_28_unique)){
   setTxtProgressBar(pb, i)
 } 
 
+### Compare all by all local similarity score - nlp20 variant comparisons
+pb <- txtProgressBar(min = 0, max = length(nlp20_unique), style = 3)
+nlp20_sim_score <- data.frame("MAMP_v1" = character(0), "MAMP_v2" = character(0), "Percent_sim" = numeric(0))
+for (i in 1:length(nlp20_unique)){
+  for (j in 1:length(nlp20_unique)){
+    nlp20_sim_score <- rbind(nlp20_sim_score, data.frame("MAMP_v1" = nlp20_unique[[i]],
+                                                         "MAMP_v2" = nlp20_unique[[j]],
+                                                         "Percent_sim" = Biostrings::pid(Biostrings::pairwiseAlignment(nlp20_unique[[i]], nlp20_unique[[j]], 
+                                                                                                                       type = "global", substitutionMatrix = BLOSUM62), type = "PID1")))
+  }
+  setTxtProgressBar(pb, i)
+  #print(i) - for debugging 
+} 
 
 ##############################################
 ### reorganize table for plotting 
@@ -120,11 +135,17 @@ flgII_28_Names <- sort(unique(as.character(unlist(flgII_28_sim_score[1]))))
 empty_flgII_28_matrix <- matrix(0, nrow = length(flgII_28_Names), ncol = length(flgII_28_Names),
                              dimnames = list(flgII_28_Names, flgII_28_Names))
 
+### reorganize table for plotting - nlp20
+nlp20_Names <- sort(unique(as.character(unlist(nlp20_sim_score[1]))))
+empty_nlp20_matrix <- matrix(0, nrow = length(nlp20_Names), ncol = length(nlp20_Names),
+                                dimnames = list(nlp20_Names, nlp20_Names))
+
 ### fill in upper triangle
 empty_elf18_matrix[as.matrix(elf18_sim_score[1:2])] <- elf18_sim_score$Percent_sim
 empty_csp22_matrix[as.matrix(csp22_sim_score[1:2])] <- csp22_sim_score$Percent_sim
 empty_flg22_matrix[as.matrix(flg22_sim_score[1:2])] <- flg22_sim_score$Percent_sim
 empty_flgII_28_matrix[as.matrix(flgII_28_sim_score[1:2])] <- flgII_28_sim_score$Percent_sim
+empty_nlp20_matrix[as.matrix(nlp20_sim_score[1:2])] <- nlp20_sim_score$Percent_sim
 
 
 
@@ -179,6 +200,16 @@ flgII_28_heatmap <- ComplexHeatmap::Heatmap(empty_flgII_28_matrix,
                                             row_dend_reorder = T,
                                             column_dend_reorder = T)
 
+nlp20_heatmap <- ComplexHeatmap::Heatmap(empty_nlp20_matrix,
+                                            col = col_fun,
+                                            show_column_dend = F,
+                                            show_row_dend = F,
+                                            show_row_names = F,
+                                            show_column_names = F, 
+                                            border = T,
+                                            row_dend_reorder = T,
+                                            column_dend_reorder = T)
+
 
 
 ### ------------- elf18 heatmap as part of Figure 1G -- export as 2.5 x 2.2 inch pdf     
@@ -186,6 +217,7 @@ draw(elf18_heatmap, show_heatmap_legend = FALSE, padding = unit(c(7, 7, 7, 7), "
 draw(csp22_heatmap, show_heatmap_legend = FALSE, padding = unit(c(7, 7, 7, 7), "mm"))
 draw(flg22_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5), "mm"))
 draw(flgII_28_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5), "mm"))
+draw(nlp20_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5), "mm"))
 
 
 
@@ -226,16 +258,23 @@ draw(flgII_28_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5)
                      breaks = c(0,20,40,60,80,100)) ) /
 
 
-
-ggplot(flgII_28_sim_score, aes(x=Percent_sim)) +
+(ggplot(flgII_28_sim_score, aes(x=Percent_sim)) +
   geom_density(fill="gray")+
   geom_vline(aes(xintercept=mean(Percent_sim)), color="blue",
              linetype="dashed")+
   labs(title="flgII-28",x="Percent Similarity", y = "Density")+
   theme_classic() +
   scale_x_continuous(limits = c(0,100),
-                     breaks = c(0,20,40,60,80,100)) 
+                     breaks = c(0,20,40,60,80,100))) / 
  
+  ggplot(nlp20_sim_score, aes(x=Percent_sim)) +
+  geom_density(fill="gray")+
+  geom_vline(aes(xintercept=mean(Percent_sim)), color="blue",
+             linetype="dashed")+
+  labs(title="nlp20",x="Percent Similarity", y = "Density")+
+  theme_classic() +
+  scale_x_continuous(limits = c(0,100),
+                     breaks = c(0,20,40,60,80,100))
  
 
 

@@ -111,10 +111,10 @@ for (i in 1:nrow(filtered_hold_MAMP_seqs)){
 close(pb)
 
 
-writeFasta(csp_full_length, "./../Protein_alignments_and_trees/cold_shock_protein/csp_full_length.fasta")
-writeFasta(EFTu_full_length, "./../Protein_alignments_and_trees/EfTu/EFTu_full_length.fasta")
-writeFasta(filC_full_length, "./../Protein_alignments_and_trees/Flagellin/filC_full_length.fasta")
-#writeFasta(nlp_full_length, "./../Protein_alignments_and_trees/NLPs/nlp_full_length.fasta")
+writeFasta(csp_full_length, "./../../Analyses/Protein_alignments_and_trees/cold_shock_protein/csp_full_length.fasta")
+writeFasta(EFTu_full_length, "./../../Analyses/Protein_alignments_and_trees/EfTu/EFTu_full_length.fasta")
+writeFasta(filC_full_length, "./../../Analyses/Protein_alignments_and_trees/Flagellin/filC_full_length.fasta")
+#writeFasta(nlp_full_length, "./../../Analyses/Protein_alignments_and_trees/NLPs/nlp_full_length.fasta")
 
 
 # reforte alternate "long" csps into fasta file

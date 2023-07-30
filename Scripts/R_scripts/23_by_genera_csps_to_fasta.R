@@ -167,157 +167,45 @@ writeFasta(Ralstonia_CSPs, "./../../Analyses/Catagorizing_CSPs/CSP_types/Ralston
 
 
 
+#---------------------------------------------------------- export peptides from database in genera specific manner --------------------------------------------------------
 
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Clavibacter",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Leifsonia",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Rathayibacter",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Rhodococcus",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
-#--------------------------------------------------------------------------------------------------------------------------------------------------
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Curtobacterium",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Streptomyces",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
-# seperate EFTu by genera for Tajima's D calculations in Figure 2 & 3
-Clavibacter_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Rathayibacter_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Rhodococcus_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Leifsonia_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Streptomyces_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Curtobacterium_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Erwinia",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
-Pectobacterium_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Dickeya_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Erwinia_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Pectobacterium",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
-Agrobacterium_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Xanthomonas_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Pseudomonas_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
-Ralstonia_ETFu <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Dickeya",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Xanthomonas",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
-for (i in 1:nrow(filtered_hold_MAMP_seqs)){
-  if(filtered_hold_MAMP_seqs$MAMP_Hit[i] == "elf18_consensus"){
-    
-    #if csp is not in annotation (i.e, csp22 like proteins, skip over them)
-    if (any(is.na(All_target_by_annotation[grepl(filtered_hold_MAMP_seqs$Protein_Name[i], All_target_by_annotation$names),][1,])) == TRUE){
-      next
-    }
-    
-    #find full length protein sequence
-    if (any(is.na(All_target_by_annotation[grepl(filtered_hold_MAMP_seqs$Protein_Name[i], All_target_by_annotation$names),][1,])) == FALSE){
-      protein_of_interest <- All_target_by_annotation[grepl(filtered_hold_MAMP_seqs$Protein_Name[i], All_target_by_annotation$names),]
-      protein_of_interest <- protein_of_interest[grepl(filtered_hold_MAMP_seqs$File_Name[i], protein_of_interest$Filename, fixed = T),]
-      
-      if (is.na(protein_of_interest$width[1]) == TRUE){
-        print("missing seq")
-        next
-      }
-      if (protein_of_interest$Genera[1] == "Clavibacter"){
-        Clavibacter_ETFu <- rbind(Clavibacter_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Xanthomonas"){
-        Xanthomonas_ETFu <- rbind(Xanthomonas_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Leifsonia"){
-        Leifsonia_ETFu <- rbind(Leifsonia_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Pseudomonas"){
-        Pseudomonas_ETFu <- rbind(Pseudomonas_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Ralstonia"){
-        Ralstonia_ETFu <- rbind(Ralstonia_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Streptomyces"){
-        Streptomyces_ETFu <- rbind(Streptomyces_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Pectobacterium"){
-        Pectobacterium_ETFu <- rbind(Pectobacterium_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Agrobacterium"){
-        Agrobacterium_ETFu <- rbind(Agrobacterium_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Dickeya"){
-        Dickeya_ETFu <- rbind(Dickeya_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Erwinia"){
-        Erwinia_ETFu <- rbind(Erwinia_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Rhodococcus"){
-        Rhodococcus_ETFu <- rbind(Rhodococcus_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Curtobacterium"){
-        Curtobacterium_ETFu <- rbind(Curtobacterium_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      if (protein_of_interest$Genera[1] == "Rathayibacter"){
-        Rathayibacter_ETFu <- rbind(Rathayibacter_ETFu, data.frame(
-          "Locus_Tag_Name" = paste(paste(">",protein_of_interest$Protein_Name[1], sep=""), protein_of_interest$MAMP_Hit[1], "Full_Seq", 
-                                   protein_of_interest$Genera[1], protein_of_interest$Filename[1], i, sep = "|"),
-          "Sequence" = protein_of_interest[1,3]))
-      }
-      
-      
-    }
-    #print(paste(i,protein_of_interest[1,1], sep = "|"))
-    
-  }
-  
-  setTxtProgressBar(pb, i)
-}
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Pseudomonas",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
-close(pb)
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Ralstonia",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
-
-# write out data framees to fasta files 
-writeFasta(Clavibacter_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Clavibacter/EFTu/Clavibacter_EFTu.fasta")
-writeFasta(Rathayibacter_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Rathayibacter/EFTu/Rathayibacter_EFTu.fasta")
-writeFasta(Rhodococcus_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Rhodococcus/EFTu/Rhodococcus_EFTu.fasta")
-writeFasta(Leifsonia_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Leifsonia/EFTu/Leifsonia_EFTu.fasta")
-writeFasta(Streptomyces_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Streptomyces/EFTu/Streptomyces_EFTu.fasta")
-writeFasta(Curtobacterium_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Curtobacterium/EFTu/Curtobacterium_EFTu.fasta")
-
-writeFasta(Pectobacterium_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Pectobacterium/EFTu/Pectobacterium_EFTu.fasta")
-writeFasta(Dickeya_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Dickeya/EFTu/Dickeya_EFTu.fasta")
-writeFasta(Erwinia_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Erwinia/EFTu/Erwinia_EFTu.fasta")
-
-writeFasta(Agrobacterium_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Agrobacterium/EFTu/Agrobacterium_EFTu.fasta")
-writeFasta(Xanthomonas_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Xanthomonas/EFTu/Xanthomonas_EFTu.fasta")
-writeFasta(Pseudomonas_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Pseudomonas/EFTu/Pseudomonas_EFTu.fasta")
-writeFasta(Ralstonia_ETFu, "./../Protein_alignments_and_trees/Genera_specific_trees/Ralstonia/EFTu/Ralstonia_EFTu.fasta")
-
-
+write_xlsx(filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus" & filtered_hold_MAMP_seqs$Genera == "Agrobacterium",] %>% arrange(-Percent_Identity),
+           "/home/danimstevens/Documents/Mining_MAMPs/Mining_Known_MAMPs/Analyses/csp_catagorization.xlsx")
 
 
