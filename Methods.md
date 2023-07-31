@@ -11,12 +11,12 @@
     - [4. Processing Data to Form the MAMP database](#4-processing-data-to-form-the-mamp-database)
   
 - [Assessing genome diveristy and removing redudnacy/clonality](#assessing-genome-diveristy-and-removing-redudnacy/clonality)
-  - [5. Prep genomes for fastANI and run fastANI](#5.-prep-genomes-for-fastani-and-run-fastani)
-  - [6. Use fastANI output to filter list and plot dataset diversity](#6.-use-fastani-output-to-filter-list-and-plot-dataset-diversity)
-  - [7. Phylogentic tree in respect to MAMPs abundance across genera](#7.-phylogentic-tree-in-respect-to-mamps-abundance-across-genera)
+    - [5. Prep genomes for fastANI and run fastANI](#5-prep-genomes-for-fastani-and-run-fastani)
+    - [6. Use fastANI output to filter list and plot dataset diversity](#6-use-fastani-output-to-filter-list-and-plot-dataset-diversity)
+    - [7. Phylogentic tree in respect to MAMPs abundance across genera](#7-phylogentic-tree-in-respect-to-mamps-abundance-across-genera)
 
 - [Characterizing Diversity of MAMPs and their MAMP-Encoded Proteins](#characterizing-diversity-of-mamps-and-their-mamp-encoded-proteins)
-  - [8. Displaying the relatedness of epitope variants in respect to immmunogenicity](#8.-displaying-the-relatedness-of-epitope-variants-in-respect-to-immmunogenicity)
+    - [8. Displaying the relatedness of epitope variants in respect to immmunogenicity](#8-displaying-the-relatedness-of-epitope-variants-in-respect-to-immmunogenicity)
 
 
 <br>
