@@ -3,9 +3,9 @@
 - [Packages needed to run this pipeline](#packages-needed-to-run-this-pipeline)
 
 - [Downloading genomes from NCBI](#downloading-genomes-from-ncbi)
-    - [1. Download the genomes](#1.-download-the-genomes)
-    <a href="#1.-download-the-genomes">1. Download the genomes</a>
-  
+    - [1. Download the genomes](#1-download-the-genomes)
+    - [1. Download the genomes](#1-download-the-genomes)
+
 - [Setting up database and mining for MAMPs](#setting-up-database-and-mining-for-mamps)
   - [2. Build the MAMP database](#2.-build-the-mamp-database)
   - [3. Run all genomes against blast database](#3.-run-all-genomes-against-blast-database)
