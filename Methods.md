@@ -17,6 +17,11 @@
 
 - [Characterizing Diversity of MAMPs and their MAMP-Encoded Proteins](#characterizing-diversity-of-mamps-and-their-mamp-encoded-proteins)
     - [8. Displaying the relatedness of epitope variants in respect to immmunogenicity](#8-displaying-the-relatedness-of-epitope-variants-in-respect-to-immmunogenicity)
+    
+- [Evolution of the Gene MAMPs are Encoded on](#evolution-of-the-gene-mamps-are-encoded-on)
+    - [9. Assessing immunogenicity outcomes following diversifcation of a common ancestor](#9-assessing-immunogenicity-outcomes-following-diversifcation-of-a-common-ancestor)
+    - [10. Evolution of CSPs](10-evolution-of-csps)
+    - [11. Core gene analyses to assess selection (Tajma's D)](#11-core-gene-analyses-to-assess-selection-(tajma's-d))
 
 
 <br>
@@ -289,6 +294,16 @@ First we will run an R script designed to pull all the genomes accession number 
     source("./13_ANI_plots.R")
     ```
   
+  
+# Assessing similarity of genomes in repsect to MAMP diversification
+
+One concern is despite trying to sample for a semi-large data set of genomes in a semi-random manner, if all the genomes are clonal in nature, it's difficult to make any claims in MAMP diveristy. To assess this, we are going to take two different appraoches which should bring us to similar conclusions. One includes building a core gene phylogency (see above) and another is running an ANI analysis. Since I've already built a script to do the same thing for another project, we are going to repurpose that script to do the same in this dataset as well as some downstream analyses. FastANI, software repo seen here, can be used to make these calculations in an automated manner. 
+
+
+  ```
+  ls > MAMP_diversification_ANI_file.txt
+  fastANI --rl /path/to/Contig_paths_for_ANI.txt --ql /path/to/Contig_paths_for_ANI.txt -o Clavibacter_ANI_comparison
+  ```
 
 ## Assessing MAMP Abundance across diverse bacteria 
 
@@ -392,8 +407,9 @@ The outputs for both elf18 and csp22 variants were saved in the Analyses/ROS Scr
 
 These output trees are used to build Figure 2A and Figure 3A. The tips are colored manually as well as adding the of the data using Inkscape. This script will also import the immunogenicity conclusions which will be mapped onto the phylogenetic trees in #9: Evolution of CSP variants (Analyses/ROS_Screen/ROS_Screen_data.xlsx).
 
+## Evolution of the Gene MAMPs are Encoded on
 
-### 8. Assessing immunogenicity outcomes follow diversifcation of a common ancestor
+### 9. Assessing immunogenicity outcomes following diversifcation of a common ancestor
 
 Looking at the cladograms, there seems to be a trend of which epitopes are related and how that impacts immune perception. But keep in mind, the tree were only built off the epitope sequence not the whole protein. To assesss if the MAMP-derived variants which have different immunological outcomes have diverved from a common ancestor or potentially via convergent evolution, we will built a whole protein evolutionary tree (rather than just the epitope). With EF-Tu being so conserved as a housekeeping gene, this will relatively trival. However, with CSPs being so different in sequence, yet conserved in structure, this will be a little trickier. For the latter, we will try a similar approach to what Ksenia's lab has done with NLR work ([link](https://github.com/krasileva-group/hvNLR)) where we will build the tree based on a conserved domain and plot additional informaiton onto the tree.
 
@@ -472,10 +488,21 @@ For CSPs, we first need to obtain the conserved CSP domain model and use HMMER t
   
 This tree may take awhlie o build as it is quite large. Once it is completed, we will build our phylogenetic trees using genera, MAMP epitopes, and immunogenicity outcome data to better understand the evolution of these proteins.  
 
+```
+  # for full length proteins, 
+  mafft --reorder --thread 12 --maxiterate 1000 --localpair csp22_full_length.fasta > "csp22_full_length_alignment"
+  # --localpair, slowest but most accurate method of alignment
+  # --reorder, reorder entries in fasta file to improve alignment
+  
+  iqtree -s csp22_full_length_alignment -st AA -bb 1000 -mtree -nt 12 -keep-ident	-safe
+  # -s, input alignment file
+  # -st, file type (in this case amino acids, hence AA)
+  # -bb 1000, number of ultrafast bootstrapping ran on the tree
+  # -mtree, iterate thorugh all models to find the best one
+  # -nt 12, number of threads used to run analysis (I have max 16)
+```
 
-
-
-### 9. Evolution of CSP variants 
+### 10. Evolution of CSPs
 
 Considering each MAMP has a different evolutionary trajectory, we then wanted to better understand the diversity and evolution of the genes/proteins of which the MAMPs are encoded. This is of particular interest for CSPs as they are so diverse and so many copies are present. To do so, we will use a variety of techniques including the phylogenetic tree built in #8 as well as mmseqs2 and MEME suite. First, we will use mmseq2 to cluster
 
@@ -487,7 +514,8 @@ Details for catagotizing
     # Re-pull whole protein sequences for MAMP hits and write to fasta file
     source("./23_by_genera_csps_to_fasta.R")
     
-    # for each outputed genera specific fasta file, we will first catagorize using mmseq 2 and the outputs will go into directories labeled by each genera
+    # for each outputed genera specific fasta file, we will first catagorize using mmseq 2 and the 
+    # outputs will go into directories labeled by each genera
     ❯ mmseqs easy-cluster Rathayibacter_CSPs.fasta clusterRes tmp --min-seq-id 0.5 -c 0.8 --cov-mode 1
     
     ```
@@ -503,6 +531,8 @@ We will then build phylogenetic trees from the csp domain. To do this, we need t
     esl-reformat fasta CSD_alignment.stk > reformat_CSD_hits.fasta
     
     ```
+    
+When we combine these data together, it reveals a clear strategy of which CSPs are related to each other. We can then cross-reference these groups by using all-by-all blastp search.
 
 
 ## Determining Core genes to assess selection of MAMP-endcoded genes compared to other conserved genes
@@ -510,7 +540,7 @@ We will then build phylogenetic trees from the csp domain. To do this, we need t
 In MAMP-focused resarch, there is an idea that MAMPs undergo co-evolution with their cognant PRR receptors. Therefore, in order to evade perception, MAMPs are thought to be under positive selection compared to other gene counterparts (which are typically under negative selection). In order to assess this on an epitope and overall gene basis, we need to first determine which genes are considered 'core' accross all the genomes. However, determining which genes are considered 'core' accross genera so diverse may be difficult and computationally rigorus. Therefore, we aim to find intra-genus core genes and calculate a variety of pop. gene stats.
   
 
-### 10. Converting and binning files before core gene analysis
+### 11. Core gene analyses to assess selection (Tajma's D)
 
 We will use Pirate to determine which genes are considered 'core' for each genus of bacteria but, unforunately, it doesn't take gbff files (only gff3) and so we need to convert the files before running. First, we moved the list of accessions into new text files. We will then remove those that are redudant based on previous ANI analyses as similar to before. Then we will temperarily re-download the gbff files for each genus into dedicated folders (per genus) and convert them into gff3 files (thus removing the gbff files).
 
@@ -594,50 +624,6 @@ We can then create a folder to hold the gff files.
   
   
   
-
-
-### 3. Build Protein Trees of Full Length Sequences and their MAMPs
-
-We now can start building protein trees to understand their evolutionary history in respect to the MAMPs they encode for. We will run MAFFT to build our alignment and IQ-tree of make a maximum likelihood tree from the alignment. In each folder of which the fasta file was saved, the below commands were ran (names changed where needed).
-
-  ```
-  # for MAMP sequnece trees:
-  ❯ mafft --reorder --thread 12 --maxiterate 1000 csp22.fasta > "csp22_alignment"
-  
-  # for full length proteins, 
-  mafft --reorder --thread 12 --maxiterate 1000 --localpair csp22_full_length.fasta > "csp22_full_length_alignment"
-  # --localpair, slowest but most accurate method of alignment
-  # --reorder, reorder entries in fasta file to improve alignment
-  
-  iqtree -s csp22_full_length_alignment -st AA -bb 1000 -mtree -nt 12 -keep-ident	-safe
-  # -s, input alignment file
-  # -st, file type (in this case amino acids, hence AA)
-  # -bb 1000, number of ultrafast bootstrapping ran on the tree
-  # -mtree, iterate thorugh all models to find the best one
-  # -nt 12, number of threads used to run analysis (I have max 16)
-  
-  
-  # MAMP trees 
-  ❯ mafft --reorder --thread 12 --maxiterate 1000 --localpair --op 3 csp22_for_tree.fasta > "csp22_MAMP_alignment"
-  iqtree -s csp22_MAMP_alignemnt -bb 1000 -T AUTO -v -m TEST
-  ```
-
-  Run Tree_plotting.R to plot protein and main core gene trees. These trees will be outputed as pdf's at a preset size.
-
-# Assessing similarity of genomes in repsect to MAMP diversification
-
-One concern is despite trying to sample for a semi-large data set of genomes in a semi-random manner, if all the genomes are clonal in nature, it's difficult to make any claims in MAMP diveristy. To assess this, we are going to take two different appraoches which should bring us to similar conclusions. One includes building a core gene phylogency (see above) and another is running an ANI analysis. Since I've already built a script to do the same thing for another project, we are going to repurpose that script to do the same in this dataset as well as some downstream analyses. FastANI, software repo seen here, can be used to make these calculations in an automated manner. 
-
-
-  ```
-  ls > MAMP_diversification_ANI_file.txt
-  fastANI --rl /path/to/Contig_paths_for_ANI.txt --ql /path/to/Contig_paths_for_ANI.txt -o Clavibacter_ANI_comparison
-  ```
-
-  ```
-  ❯ trimal -in LYK5_alignment -out LYK5_alignment_trimmed -automated1
-  ```
-
 
 
  
