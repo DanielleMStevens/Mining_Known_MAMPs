@@ -6,9 +6,9 @@
     - [1. Download the genomes](#1-download-the-genomes)
 
 - [Setting up database and mining for MAMPs](#setting-up-database-and-mining-for-mamps)
-    - [2. Build the MAMP database](#2.-build-the-mamp-database)
-    - [3. Run all genomes against blast database](#3.-run-all-genomes-against-blast-database)
-    - [4. Processing Data to Form the MAMP database](#4.-processing-data-to-form-the-mamp-database)
+    - [2. Build the MAMP database](#2-build-the-mamp-database)
+    - [3. Run all genomes against blast database](#3-run-all-genomes-against-blast-database)
+    - [4. Processing Data to Form the MAMP database](#4-processing-data-to-form-the-mamp-database)
   
 - [Assessing genome diveristy and removing redudnacy/clonality](#assessing-genome-diveristy-and-removing-redudnacy/clonality)
   - [5. Prep genomes for fastANI and run fastANI](#5.-prep-genomes-for-fastani-and-run-fastani)
