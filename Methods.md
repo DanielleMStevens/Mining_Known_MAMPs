@@ -40,7 +40,7 @@ Before running all the downstream analyses, we can set up a conda environment wi
 | Agat | A tool which helps convert between various iterations of Gff file formats | [Github Link](https://github.com/NBISweden/AGAT) | N/A - Zenodo DOI - see Github Page |
 | Pirate | Determines Core genes based on a group of genomes | [Github Page](https://github.com/SionBayliss/PIRATE) | [Paper Link](https://academic.oup.com/gigascience/article/8/10/giz119/5584409) |
 | FastTree | FastTree infers approximately-maximum-likelihood phylogenetic trees | [Github Page](tbd) | [Paper Link](TBD) |
-| HMMER | ddd | [Github Page](https://github.com/EddyRivasLab/hmmer) | ddd |
+| HMMER | Finds sequence homologs using profile hidden Markov models | [Github Page](https://github.com/EddyRivasLab/hmmer) | N/A |
 | MMseqs2 | ultra fast and sensitive sequence search and clustering suite | [Github Page](https://github.com/soedinglab/MMseqs2) | [Paper Link](https://academic.oup.com/bioinformatics/article/37/18/3029/6178277?login=true) |
 | TrimAL | Tool to trim alignments | [Github Page](https://github.com/inab/trimal) | [Paper Link](http://trimal.cgenomics.org/_media/trimal.2009.pdf) |
 

@@ -141,7 +141,33 @@ ggsave(abundance_zoomed_in, filename = "./../Figures/Supplemental_Figure_4/Plot_
 
 
 
+##############################################
+# percentage of genomes with more copies
+##############################################
 
+csp22_copy_count <- as.data.frame(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit == "csp22_consensus") %>% group_by(File_Name) %>% count(n = n()))
+csp22_copy_count <- as.data.frame(csp22_copy_count %>% group_by(nn) %>% count(copy_number = n()))
+csp22_copy_count$gene <- rep("CSP", nrow(csp22_copy_count))
+
+flg22_copy_count <- as.data.frame(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit == "flg22_consensus") %>% group_by(File_Name) %>% count(n = n()))
+flg22_copy_count <- as.data.frame(flg22_copy_count %>% group_by(nn) %>% count(copy_number = n()))
+flg22_copy_count$gene <- rep("filC", nrow(flg22_copy_count))
+
+
+elf18_copy_count <- as.data.frame(subset(filtered_hold_MAMP_seqs, filtered_hold_MAMP_seqs$MAMP_Hit == "elf18_consensus") %>% group_by(File_Name) %>% count(n = n()))
+elf18_copy_count <- as.data.frame(elf18_copy_count %>% group_by(nn) %>% count(copy_number = n()))
+elf18_copy_count$gene <- rep("EF-Tu", nrow(elf18_copy_count))
+
+
+copy_counts <- rbind(csp22_copy_count, flg22_copy_count, elf18_copy_count)
+
+ggplot(copy_counts, aes(x = nn, y = n, fill = gene)) +
+  geom_bar(position="dodge", stat = "identity", colour = "black", size = 0.35) +
+  my_ggplot_theme +
+  scale_fill_viridis(discrete = T) +
+  xlab("Copy Number per Genome") +
+  ylab("Nnumber of\n Genoomes")
+  #ylim(0,4228)
 
 
 
