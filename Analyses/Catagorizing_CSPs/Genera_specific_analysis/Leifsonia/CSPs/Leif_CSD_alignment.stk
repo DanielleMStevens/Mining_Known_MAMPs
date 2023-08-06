@@ -1,0 +1,384 @@
+# STOCKHOLM 1.0
+
+#=GS WP_179496868.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23526/3-66                     DE [subseq from] WP_179496868.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23526
+#=GS WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1976/3-66             DE [subseq from] WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1976
+#=GS WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23836/3-66             DE [subseq from] WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23836
+#=GS WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2268/3-66                 DE [subseq from] WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2268
+#=GS WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23512/3-66          DE [subseq from] WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23512
+#=GS WP_055814297.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23519/3-66           DE [subseq from] WP_055814297.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23519
+#=GS WP_055814297.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root112D2|5805/3-66                  DE [subseq from] WP_055814297.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root112D2|5805
+#=GS WP_009772173.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_rubra_CMS76R|1992/4-66                   DE [subseq from] WP_009772173.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_rubra_CMS76R|1992
+#=GS WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8036/3-65                       DE [subseq from] WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8036
+#=GS WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20359/3-65                    DE [subseq from] WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20359
+#=GS WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5926/3-65                    DE [subseq from] WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5926
+#=GS WP_185276742.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24113/3-66             DE [subseq from] WP_185276742.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24113
+#=GS WP_179605267.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23507/3-65         DE [subseq from] WP_179605267.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23507
+#=GS WP_055835239.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root4|5807/3-65                      DE [subseq from] WP_055835239.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root4|5807
+#=GS WP_021754290.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1989/3-66 DE [subseq from] WP_021754290.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1989
+#=GS WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23504/3-66         DE [subseq from] WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23504
+#=GS WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24109/3-66             DE [subseq from] WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24109
+#=GS WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5778/3-66                    DE [subseq from] WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5778
+#=GS WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27358/3-66                   DE [subseq from] WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27358
+#=GS WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8038/3-65                       DE [subseq from] WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8038
+#=GS WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20361/3-65                    DE [subseq from] WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20361
+#=GS WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5928/3-65                    DE [subseq from] WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5928
+#=GS WP_077054097.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7773/3-65                   DE [subseq from] WP_077054097.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7773
+#=GS WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18044/3-66               DE [subseq from] WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18044
+#=GS WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5729/3-66                    DE [subseq from] WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5729
+#=GS WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5764/3-66                    DE [subseq from] WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5764
+#=GS WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5814/3-66                   DE [subseq from] WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5814
+#=GS WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5908/3-66                     DE [subseq from] WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5908
+#=GS WP_090040274.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30413/3-65                     DE [subseq from] WP_090040274.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30413
+#=GS WP_090040274.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30377/3-65                     DE [subseq from] WP_090040274.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30377
+#=GS WP_208039866.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27363/3-67                   DE [subseq from] WP_208039866.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27363
+#=GS WP_055914717.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5780/3-67                    DE [subseq from] WP_055914717.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5780
+#=GS WP_175338330.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23260/3-65                      DE [subseq from] WP_175338330.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23260
+#=GS WP_021756058.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1991/4-66 DE [subseq from] WP_021756058.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1991
+#=GS WP_011187050.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|12/4-66                      DE [subseq from] WP_011187050.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|12
+#=GS WP_011187050.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7107/4-66                      DE [subseq from] WP_011187050.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7107
+#=GS WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23482/3-65                 DE [subseq from] WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23482
+#=GS WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1498/3-65                        DE [subseq from] WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1498
+#=GS WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17962/3-65              DE [subseq from] WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17962
+#=GS WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30238/3-65                     DE [subseq from] WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30238
+#=GS WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30369/3-65               DE [subseq from] WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30369
+#=GS WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30231/3-65                     DE [subseq from] WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30231
+#=GS WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30379/3-65                     DE [subseq from] WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30379
+#=GS WP_025158444.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2272/3-65                 DE [subseq from] WP_025158444.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2272
+#=GS WP_179700025.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23841/4-65             DE [subseq from] WP_179700025.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23841
+#=GS WP_179700025.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23515/4-65          DE [subseq from] WP_179700025.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23515
+#=GS WP_025159156.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2274/3-66                 DE [subseq from] WP_025159156.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2274
+#=GS WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1981/3-66             DE [subseq from] WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1981
+#=GS WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23840/3-66             DE [subseq from] WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23840
+#=GS WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23514/3-66          DE [subseq from] WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23514
+#=GS WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1977/3-65             DE [subseq from] WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1977
+#=GS WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23837/3-65             DE [subseq from] WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23837
+#=GS WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23513/3-65          DE [subseq from] WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23513
+#=GS WP_025158096.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2271/4-65                 DE [subseq from] WP_025158096.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2271
+#=GS WP_158865307.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19456/3-65                      DE [subseq from] WP_158865307.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19456
+#=GS WP_179604383.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23505/3-67         DE [subseq from] WP_179604383.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23505
+#=GS WP_179604383.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27360/3-67                   DE [subseq from] WP_179604383.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27360
+#=GS WP_185275280.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24110/3-66             DE [subseq from] WP_185275280.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24110
+#=GS WP_048683237.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_356_LXYL|4771/3-66                  DE [subseq from] WP_048683237.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_356_LXYL|4771
+#=GS WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18043/3-65               DE [subseq from] WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18043
+#=GS WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5728/3-65                    DE [subseq from] WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5728
+#=GS WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5763/3-65                    DE [subseq from] WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5763
+#=GS WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5812/3-65                   DE [subseq from] WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5812
+#=GS WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5906/3-65                     DE [subseq from] WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5906
+#=GS WP_179577182.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23520/3-65           DE [subseq from] WP_179577182.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23520
+#=GS WP_055922908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5783/3-67                    DE [subseq from] WP_055922908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5783
+#=GS WP_179495549.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23524/3-65                     DE [subseq from] WP_179495549.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23524
+#=GS WP_090038990.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30412/3-66                     DE [subseq from] WP_090038990.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30412
+#=GS WP_090038990.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30376/3-66                     DE [subseq from] WP_090038990.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30376
+#=GS WP_175338802.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23262/3-66                      DE [subseq from] WP_175338802.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23262
+#=GS WP_011186894.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|11/8-71                      DE [subseq from] WP_011186894.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|11
+#=GS WP_011186894.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7106/8-71                      DE [subseq from] WP_011186894.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7106
+#=GS WP_077053721.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7772/3-65                   DE [subseq from] WP_077053721.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7772
+#=GS WP_158865758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19458/3-67                      DE [subseq from] WP_158865758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19458
+#=GS WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23483/3-67                 DE [subseq from] WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23483
+#=GS WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1500/3-67                        DE [subseq from] WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1500
+#=GS WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17964/3-67              DE [subseq from] WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17964
+#=GS WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30240/3-67                     DE [subseq from] WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30240
+#=GS WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30371/3-67               DE [subseq from] WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30371
+#=GS WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30233/3-67                     DE [subseq from] WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30233
+#=GS WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30381/3-67                     DE [subseq from] WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30381
+#=GS WP_085368377.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8039/3-68                       DE [subseq from] WP_085368377.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8039
+#=GS WP_085368377.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20362/3-68                    DE [subseq from] WP_085368377.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20362
+#=GS WP_055897570.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5932/3-68                    DE [subseq from] WP_055897570.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5932
+#=GS WP_041767664.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|13/3-75                      DE [subseq from] WP_041767664.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|13
+#=GS WP_041767664.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7108/3-75                      DE [subseq from] WP_041767664.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7108
+#=GS WP_021764465.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1980/4-55             DE [subseq from] WP_021764465.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1980
+#=GS WP_179495566.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23525/3-62                     DE [subseq from] WP_179495566.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23525
+#=GS WP_179577198.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23521/3-62           DE [subseq from] WP_179577198.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23521
+#=GS WP_055837102.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root4|5808/3-62                      DE [subseq from] WP_055837102.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root4|5808
+#=GS WP_025158455.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2273/3-62                 DE [subseq from] WP_025158455.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2273
+#=GS WP_055914617.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5779/3-62                    DE [subseq from] WP_055914617.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5779
+#=GS WP_055914617.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27359/3-62                   DE [subseq from] WP_055914617.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27359
+#=GS WP_179605217.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23506/3-62         DE [subseq from] WP_179605217.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23506
+#=GS WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1974/3-62             DE [subseq from] WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1974
+#=GS WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23835/3-62             DE [subseq from] WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23835
+#=GS WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23511/3-62          DE [subseq from] WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23511
+#=GS WP_021754299.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1990/3-62 DE [subseq from] WP_021754299.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1990
+#=GS WP_085370734.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8040/3-62                       DE [subseq from] WP_085370734.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8040
+#=GS WP_085370734.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20363/3-62                    DE [subseq from] WP_085370734.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20363
+#=GS WP_055895229.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5929/3-62                    DE [subseq from] WP_055895229.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5929
+#=GS WP_055811931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root112D2|5802/3-62                  DE [subseq from] WP_055811931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root112D2|5802
+#=GS WP_185276707.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24112/3-62             DE [subseq from] WP_185276707.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24112
+#=GS WP_090040500.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30414/3-62                     DE [subseq from] WP_090040500.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30414
+#=GS WP_090040500.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30378/3-62                     DE [subseq from] WP_090040500.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30378
+#=GS WP_011186523.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|9/3-62                       DE [subseq from] WP_011186523.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|9
+#=GS WP_011186523.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7104/3-62                      DE [subseq from] WP_011186523.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7104
+#=GS WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23481/3-62                 DE [subseq from] WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23481
+#=GS WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1497/3-62                        DE [subseq from] WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1497
+#=GS WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17961/3-62              DE [subseq from] WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17961
+#=GS WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30368/3-62               DE [subseq from] WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30368
+#=GS WP_021809442.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_rubra_CMS76R|1994/3-63                   DE [subseq from] WP_021809442.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_rubra_CMS76R|1994
+#=GS WP_077053714.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7771/3-63                   DE [subseq from] WP_077053714.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7771
+#=GS WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30241/3-62                     DE [subseq from] WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30241
+#=GS WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30234/3-62                     DE [subseq from] WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30234
+#=GS WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30382/3-62                     DE [subseq from] WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30382
+#=GS WP_175338344.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23261/3-62                      DE [subseq from] WP_175338344.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23261
+#=GS WP_158865286.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19455/3-62                      DE [subseq from] WP_158865286.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19455
+#=GS WP_048679698.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_356_LXYL|4769/3-60                  DE [subseq from] WP_048679698.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_356_LXYL|4769
+#=GS WP_055902249.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5730/3-62                    DE [subseq from] WP_055902249.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5730
+#=GS WP_055820895.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5811/3-62                   DE [subseq from] WP_055820895.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5811
+#=GS WP_055820895.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5905/3-62                     DE [subseq from] WP_055820895.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5905
+#=GS WP_056166128.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18046/3-62               DE [subseq from] WP_056166128.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18046
+#=GS WP_056166128.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5766/3-62                    DE [subseq from] WP_056166128.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5766
+#=GS WP_055819805.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|31563/9-71                  DE [subseq from] WP_055819805.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|31563
+#=GS WP_055819805.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|31569/9-71                    DE [subseq from] WP_055819805.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|31569
+
+WP_179496868.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23526/3-66                             -QGTVKWFNAEKGFGFIAPEDG..........SPDVFAHYSAIQSNG..YRSLDENQKVEFDITQ.GPKGPQAENIRP-
+#=GR WP_179496868.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23526/3-66                     PP .8********************..........***************..****************.*********985.
+WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1976/3-66                     -TGTVKWFNSEKGFGFIAPDDG..........SADVFAHYSEITGNG..FRNLEENQKVEFEVTQ.GNKGPQASNIRA-
+#=GR WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1976/3-66             PP .8********************..........***************..****************.*********975.
+WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23836/3-66                     -TGTVKWFNSEKGFGFIAPDDG..........SADVFAHYSEITGNG..FRNLEENQKVEFEVTQ.GNKGPQASNIRA-
+#=GR WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23836/3-66             PP .8********************..........***************..****************.*********975.
+WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2268/3-66                         -TGTVKWFNSEKGFGFIAPDDG..........SADVFAHYSEITGNG..FRNLEENQKVEFEVTQ.GNKGPQASNIRA-
+#=GR WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2268/3-66                 PP .8********************..........***************..****************.*********975.
+WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23512/3-66                  -TGTVKWFNSEKGFGFIAPDDG..........SADVFAHYSEITGNG..FRNLEENQKVEFEVTQ.GNKGPQASNIRA-
+#=GR WP_021760779.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23512/3-66          PP .8********************..........***************..****************.*********975.
+WP_055814297.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23519/3-66                   -TGTVKWFNAEKGFGFIAPDDG..........SADVFAHYSAIASSG..YKSLDENQKVEFEVTQ.GPKGPQAENIRA-
+#=GR WP_055814297.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23519/3-66           PP .8********************..........***************..****************.*********975.
+WP_055814297.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root112D2|5805/3-66                          -TGTVKWFNAEKGFGFIAPDDG..........SADVFAHYSAIASSG..YKSLDENQKVEFEVTQ.GPKGPQAENIRA-
+#=GR WP_055814297.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root112D2|5805/3-66                  PP .8********************..........***************..****************.*********975.
+WP_009772173.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_rubra_CMS76R|1992/4-66                           --GTVKWFNAEKGFGFIAPEDG..........SPDVFAHYSAIATNG..YKSLDENQKVEFDITQ.GPKGPQAENIRP-
+#=GR WP_009772173.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_rubra_CMS76R|1992/4-66                   PP ..9*******************..........***************..****************.*********985.
+WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8036/3-65                               -TGTVKWFNAEKGFGFIAPDDG..........GADVFAHYSAIASSG..YRSLEENQKVEFEVTQ.GPKGLQAENIR--
+#=GR WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8036/3-65                       PP .8********************..........***************..****************.*********97..
+WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20359/3-65                            -TGTVKWFNAEKGFGFIAPDDG..........GADVFAHYSAIASSG..YRSLEENQKVEFEVTQ.GPKGLQAENIR--
+#=GR WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20359/3-65                    PP .8********************..........***************..****************.*********97..
+WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5926/3-65                            -TGTVKWFNAEKGFGFIAPDDG..........GADVFAHYSAIASSG..YRSLEENQKVEFEVTQ.GPKGLQAENIR--
+#=GR WP_055893908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5926/3-65                    PP .8********************..........***************..****************.*********97..
+WP_185276742.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24113/3-66                     -TGTVKWFNAEKGYGFIAPDDG..........SADVFAHFSEISSQG..YRTLEENQKVEYDLTQ.GPKGMQASNIRA-
+#=GR WP_185276742.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24113/3-66             PP .8********************..........***************..****************.*********975.
+WP_179605267.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23507/3-65                 -TGTVKWFNAEKGYGFIAPDDG..........SADVFAHFSEISSQG..YRTLEENQKVEYDLTQ.GPKGMQASNIR--
+#=GR WP_179605267.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23507/3-65         PP .8********************..........***************..****************.*********97..
+WP_055835239.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root4|5807/3-65                              -TGTVKWFNAEKGFGFITPDDG..........SADVFAHFSAIASDG..YRSLDENQKVEFETAR.GPKGLQAENIR--
+#=GR WP_055835239.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root4|5807/3-65                      PP .8********************..........***************..****************.*********97..
+WP_021754290.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1989/3-66         -NGTVKWFNAEKGYGFITLEDV..........EQDVFVHYSAIEMSG..YKVLEEGQQVEFEVGT.GNKGPQAESVRP-
+#=GR WP_021754290.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1989/3-66 PP .7********************..........***************..****************.*********985.
+WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23504/3-66                 -NGTVKWFNAEKGYGFITVEGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVQFEVGS.GNKGPQAESVRP-
+#=GR WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23504/3-66         PP .7********************..........***************..****************.*********985.
+WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24109/3-66                     -NGTVKWFNAEKGYGFITVEGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVQFEVGS.GNKGPQAESVRP-
+#=GR WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24109/3-66             PP .7********************..........***************..****************.*********985.
+WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5778/3-66                            -NGTVKWFNAEKGYGFITVEGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVQFEVGS.GNKGPQAESVRP-
+#=GR WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5778/3-66                    PP .7********************..........***************..****************.*********985.
+WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27358/3-66                           -NGTVKWFNAEKGYGFITVEGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVQFEVGS.GNKGPQAESVRP-
+#=GR WP_055914585.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27358/3-66                   PP .7********************..........***************..****************.*********985.
+WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8038/3-65                               -NGTVKWFNAEKGYGFITVDDG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGS.GQKGPQAESVR--
+#=GR WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8038/3-65                       PP .7********************..........***************..****************.*********97..
+WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20361/3-65                            -NGTVKWFNAEKGYGFITVDDG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGS.GQKGPQAESVR--
+#=GR WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20361/3-65                    PP .7********************..........***************..****************.*********97..
+WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5928/3-65                            -NGTVKWFNAEKGYGFITVDDG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGS.GQKGPQAESVR--
+#=GR WP_055895205.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5928/3-65                    PP .7********************..........***************..****************.*********97..
+WP_077054097.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7773/3-65                           -TGTVKWFNAEKGFGFIAPDDG..........SADVFAHYSAIASSG..YRSLEENQKVEFDTAQ.GPKGLQAENIR--
+#=GR WP_077054097.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7773/3-65                   PP .8********************..........***************..****************.*********97..
+WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18044/3-66                       -TGTVKWFNAEKGFGFIAPDDG..........SADVFAHYSAIASSG..FRSLEENQRVEFETAR.GPKGLQAENIRP-
+#=GR WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18044/3-66               PP .8********************..........***************..****************.*********985.
+WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5729/3-66                            -TGTVKWFNAEKGFGFIAPDDG..........SADVFAHYSAIASSG..FRSLEENQRVEFETAR.GPKGLQAENIRP-
+#=GR WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5729/3-66                    PP .8********************..........***************..****************.*********985.
+WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5764/3-66                            -TGTVKWFNAEKGFGFIAPDDG..........SADVFAHYSAIASSG..FRSLEENQRVEFETAR.GPKGLQAENIRP-
+#=GR WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5764/3-66                    PP .8********************..........***************..****************.*********985.
+WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5814/3-66                           -TGTVKWFNAEKGFGFIAPDDG..........SADVFAHYSAIASSG..FRSLEENQRVEFETAR.GPKGLQAENIRP-
+#=GR WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5814/3-66                   PP .8********************..........***************..****************.*********985.
+WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5908/3-66                             -TGTVKWFNAEKGFGFIAPDDG..........SADVFAHYSAIASSG..FRSLEENQRVEFETAR.GPKGLQAENIRP-
+#=GR WP_055821513.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5908/3-66                     PP .8********************..........***************..****************.*********985.
+WP_090040274.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30413/3-65                             -TGTVKWFNAEKGYGFITVEDG..........GQDVFVHYSAIDMAG..YKVLEEGQQVVFEVGS.GQKGPQAESVR--
+#=GR WP_090040274.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30413/3-65                     PP .8********************..........***************..****************.*********97..
+WP_090040274.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30377/3-65                             -TGTVKWFNAEKGYGFITVEDG..........GQDVFVHYSAIDMAG..YKVLEEGQQVVFEVGS.GQKGPQAESVR--
+#=GR WP_090040274.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30377/3-65                     PP .8********************..........***************..****************.*********97..
+WP_208039866.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27363/3-67                           -TGTVKWFNAEKGYGFIAPDDG..........SADVFAHFSEIQSQG.gYRSLDENQKVEYDLTQ.GPKGMQASNIRT-
+#=GR WP_208039866.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27363/3-67                   PP .8********************..........*************99.9****************.*********975.
+WP_055914717.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5780/3-67                            -TGTVKWFNAEKGYGFIAPDDG..........SADVFAHFSEIQSQG.gYRSLDENQKVEYDLTQ.GPKGMQASNIRA-
+#=GR WP_055914717.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5780/3-67                    PP .8********************..........*************99.9****************.*********975.
+WP_175338330.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23260/3-65                              -NGTVKWFNAEKGYGFITVEGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGS.GQKGPQAESVR--
+#=GR WP_175338330.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23260/3-65                      PP .7********************..........***************..****************.*********97..
+WP_021756058.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1991/4-66         --GTVKWFNAEKGYGFIAPDDG..........SVDVFAHFREIQTQG..FRTLEENQKVEYELTQ.GPKGMQASNIRT-
+#=GR WP_021756058.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1991/4-66 PP ..9*******************..........***************..****************.*********986.
+WP_011187050.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|12/4-66                              --GTVKWFNAEKGYGFIAPDDG..........SVDVFAHFREIQTQG..FRTLEENQKVEYELTQ.GPKGMQASNIRA-
+#=GR WP_011187050.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|12/4-66                      PP ..9*******************..........***************..****************.*********985.
+WP_011187050.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7107/4-66                              --GTVKWFNAEKGYGFIAPDDG..........SVDVFAHFREIQTQG..FRTLEENQKVEYELTQ.GPKGMQASNIRA-
+#=GR WP_011187050.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7107/4-66                      PP ..9*******************..........***************..****************.*********985.
+WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23482/3-65                         -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGT.GQKGPQAESVR--
+#=GR WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23482/3-65                 PP .7********************..........***************..****************.*********97..
+WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1498/3-65                                -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGT.GQKGPQAESVR--
+#=GR WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1498/3-65                        PP .7********************..........***************..****************.*********97..
+WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17962/3-65                      -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGT.GQKGPQAESVR--
+#=GR WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17962/3-65              PP .7********************..........***************..****************.*********97..
+WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30238/3-65                             -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGT.GQKGPQAESVR--
+#=GR WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30238/3-65                     PP .7********************..........***************..****************.*********97..
+WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30369/3-65                       -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGT.GQKGPQAESVR--
+#=GR WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30369/3-65               PP .7********************..........***************..****************.*********97..
+WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30231/3-65                             -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGT.GQKGPQAESVR--
+#=GR WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30231/3-65                     PP .7********************..........***************..****************.*********97..
+WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30379/3-65                             -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMNG..YKVLEEGQQVVFEVGT.GQKGPQAESVR--
+#=GR WP_018191758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30379/3-65                     PP .7********************..........***************..****************.*********97..
+WP_025158444.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2272/3-65                         -NGTVKWFNAEKGYGFITVDEG..........GQDVFVHYSAIDMSG..YKVLEEGQQVVFEVGS.GNKGPQAESVR--
+#=GR WP_025158444.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2272/3-65                 PP .7********************..........***************..****************.*********97..
+WP_179700025.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23841/4-65                     --GTVKWFNSEKGFGFIAPDDG..........SPDVFAHFSEISGDG..YRNLTENQRVEYEVTQ.GPKGLQASNIR--
+#=GR WP_179700025.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23841/4-65             PP ..9*******************..........***************..****************.*********97..
+WP_179700025.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23515/4-65                  --GTVKWFNSEKGFGFIAPDDG..........SPDVFAHFSEISGDG..YRNLTENQRVEYEVTQ.GPKGLQASNIR--
+#=GR WP_179700025.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23515/4-65          PP ..9*******************..........***************..****************.*********97..
+WP_025159156.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2274/3-66                         -TGTVKWFNSEKGYGFIAPDDG..........SADVFAHYSAIAATG.gYRNLDENQKVEYDVEQ.GAKGPQASNIR--
+#=GR WP_025159156.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2274/3-66                 PP .8********************..........***********9988.8****************.*********97..
+WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1981/3-66                     -TGTVKWFNSEKGFGFIAPDDG..........SADVFAHYSAIAATG.gYRNLDENQKVEYDVEQ.GAKGPQASNIR--
+#=GR WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1981/3-66             PP .8********************..........***********9988.8****************.*********97..
+WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23840/3-66                     -TGTVKWFNSEKGFGFIAPDDG..........SADVFAHYSAIAATG.gYRNLDENQKVEYDVEQ.GAKGPQASNIR--
+#=GR WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23840/3-66             PP .8********************..........***********9988.8****************.*********97..
+WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23514/3-66                  -TGTVKWFNSEKGFGFIAPDDG..........SADVFAHYSAIAATG.gYRNLDENQKVEYDVEQ.GAKGPQASNIR--
+#=GR WP_039923385.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23514/3-66          PP .8********************..........***********9988.8****************.*********97..
+WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1977/3-65                     -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMSG..YKVLEEGQQVVFEVGS.GNKGPQAESVR--
+#=GR WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1977/3-65             PP .7********************..........***************..****************.*********97..
+WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23837/3-65                     -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMSG..YKVLEEGQQVVFEVGS.GNKGPQAESVR--
+#=GR WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23837/3-65             PP .7********************..........***************..****************.*********97..
+WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23513/3-65                  -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMSG..YKVLEEGQQVVFEVGS.GNKGPQAESVR--
+#=GR WP_021761178.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23513/3-65          PP .7********************..........***************..****************.*********97..
+WP_025158096.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2271/4-65                         --GTVKWFNSEKGFGFIAPDDG..........SPDVFAHFSEIAGDG..YRNLTENQRVEYEVTQ.GPKGLQASNIR--
+#=GR WP_025158096.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2271/4-65                 PP ..9*******************..........***************..****************.*********97..
+WP_158865307.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19456/3-65                              -NGTVKWFNAEKGYGFITVEGG..........GQDVFVHYSAIDMAG..YKVLEEGQQVVFEVGT.GQKGPQAESVR--
+#=GR WP_158865307.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19456/3-65                      PP .7********************..........***************..****************.*********97..
+WP_179604383.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23505/3-67                 -TGTVKWFNSEKGYGFIAPDDG..........SADVFAHYSEIASTG.gYRNLDENQKVEYDLAQ.GPKGPQAANIRQ-
+#=GR WP_179604383.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23505/3-67         PP .8********************..........***********9998.8****************.*********985.
+WP_179604383.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27360/3-67                           -TGTVKWFNSEKGYGFIAPDDG..........SADVFAHYSEIASTG.gYRNLDENQKVEYDLAQ.GPKGPQAANIRQ-
+#=GR WP_179604383.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27360/3-67                   PP .8********************..........***********9998.8****************.*********985.
+WP_185275280.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24110/3-66                     -TGTVKWFNSEKGYGFIAPDDG..........SADVFAHYSEIASTG.gYRNLDENQKVEYDLAQ.GPKGPQAANIR--
+#=GR WP_185275280.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24110/3-66             PP .8********************..........***********9998.8****************.*********97..
+WP_048683237.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_356_LXYL|4771/3-66                          -KGTVKWFNSEKGYGFIAPDDQ..........SDDLFAHYSAIEGTG..FRGLEEGQTVEFQAEQ.GPKGLQATNIRV-
+#=GR WP_048683237.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_356_LXYL|4771/3-66                  PP .8********************..........***************..****************.*********975.
+WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18043/3-65                       -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMAG..YKVLEEGQQVVFEVGT.GNKGPQAESVR--
+#=GR WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18043/3-65               PP .7********************..........***************..****************.*********97..
+WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5728/3-65                            -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMAG..YKVLEEGQQVVFEVGT.GNKGPQAESVR--
+#=GR WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5728/3-65                    PP .7********************..........***************..****************.*********97..
+WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5763/3-65                            -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMAG..YKVLEEGQQVVFEVGT.GNKGPQAESVR--
+#=GR WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5763/3-65                    PP .7********************..........***************..****************.*********97..
+WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5812/3-65                           -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMAG..YKVLEEGQQVVFEVGT.GNKGPQAESVR--
+#=GR WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5812/3-65                   PP .7********************..........***************..****************.*********97..
+WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5906/3-65                             -NGTVKWFNAEKGYGFITVDGG..........GQDVFVHYSAIDMAG..YKVLEEGQQVVFEVGT.GNKGPQAESVR--
+#=GR WP_055820931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5906/3-65                     PP .7********************..........***************..****************.*********97..
+WP_179577182.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23520/3-65                   -NGTVKWFNAEKGFGFITVDGG..........DQDVFVHFSAIEMSG..YKVLEEGQQVVFEVGV.GAKGPQAESVR--
+#=GR WP_179577182.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23520/3-65           PP .7********************..........***************..****************.*********97..
+WP_055922908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5783/3-67                            -TGTVKWFNSEKGYGFIAPDDG..........SADVFAHYSEIAATG.gYRNLDENQKVEYDLAQ.GPKGPQAANIRQ-
+#=GR WP_055922908.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5783/3-67                    PP .8********************..........***********9988.8****************.*********985.
+WP_179495549.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23524/3-65                             -NGTVKWFNAEKGYGFITMDEG..........GQDVFVHYSAIDMAG..YKVLEEGQAVVFEVGT.GSKGPQAESVK--
+#=GR WP_179495549.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23524/3-65                     PP .7********************..........***************..****************.*********97..
+WP_090038990.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30412/3-66                             -TGTVKWFNTEKGYGFIAPDDG..........TADVFAHYSEIQSEG.gFRNLTENQKVEYEVTR.GPKGLQASDIR--
+#=GR WP_090038990.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30412/3-66                     PP .8********************..........*************99.9****************.*******9987..
+WP_090038990.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30376/3-66                             -TGTVKWFNTEKGYGFIAPDDG..........TADVFAHYSEIQSEG.gFRNLTENQKVEYEVTR.GPKGLQASDIR--
+#=GR WP_090038990.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30376/3-66                     PP .8********************..........*************99.9****************.*******9987..
+WP_175338802.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23262/3-66                              -TGTVKWFNTEKGYGFIAPDDG..........SADVFAHYSEIQSTG.gFRNLEENQKVEYETTR.GPKGLQASDIR--
+#=GR WP_175338802.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23262/3-66                      PP .8********************..........************998.8****************.********987..
+WP_011186894.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|11/8-71                              -TSTVKWFNSKKGFGFIAPDDG..........STDVFVHYSEIAATG.gYRNLDENQKVEYDLAQ.GPKGPQAANIR--
+#=GR WP_011186894.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|11/8-71                      PP .579******************..........***********9988.8****************.*********97..
+WP_011186894.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7106/8-71                              -TSTVKWFNSKKGFGFIAPDDG..........STDVFVHYSEIAATG.gYRNLDENQKVEYDLAQ.GPKGPQAANIR--
+#=GR WP_011186894.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7106/8-71                      PP .579******************..........***********9988.8****************.*********97..
+WP_077053721.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7772/3-65                           -NGTVKWFNAEKGFGFITVDGE..........GQDVFVHYSAIDMSG..YKVLEEGQAVVFEVGT.GAKGPQAESVR--
+#=GR WP_077053721.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7772/3-65                   PP .7********************..........***************..****************.*********97..
+WP_158865758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19458/3-67                              -SGTVKWFNTEKGYGFIAPDDG..........TADVFAHFSEIAADKgeFRNLAENQKVEYEITR.GPKGLQAANIR--
+#=GR WP_158865758.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19458/3-67                      PP .6********************..........************99999****************.*********97..
+WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23483/3-67                         -TGTVKWFSTEKGYGFIAPDDG..........TADVFAHFSEIASQG.eFRNLAENQKVEYEVTR.GPKGLQASNIRP-
+#=GR WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23483/3-67                 PP .8********************..........*************99.9****************.*********985.
+WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1500/3-67                                -TGTVKWFSTEKGYGFIAPDDG..........TADVFAHFSEIASQG.eFRNLAENQKVEYEVTR.GPKGLQASNIRP-
+#=GR WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1500/3-67                        PP .8********************..........*************99.9****************.*********985.
+WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17964/3-67                      -TGTVKWFSTEKGYGFIAPDDG..........TADVFAHFSEIASQG.eFRNLAENQKVEYEVTR.GPKGLQASNIRP-
+#=GR WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17964/3-67              PP .8********************..........*************99.9****************.*********985.
+WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30240/3-67                             -TGTVKWFSTEKGYGFIAPDDG..........TADVFAHFSEIASQG.eFRNLAENQKVEYEVTR.GPKGLQASNIRP-
+#=GR WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30240/3-67                     PP .8********************..........*************99.9****************.*********985.
+WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30371/3-67                       -TGTVKWFSTEKGYGFIAPDDG..........TADVFAHFSEIASQG.eFRNLAENQKVEYEVTR.GPKGLQASNIRP-
+#=GR WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30371/3-67               PP .8********************..........*************99.9****************.*********985.
+WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30233/3-67                             -TGTVKWFSTEKGYGFIAPDDG..........TADVFAHFSEIASQG.eFRNLAENQKVEYEVTR.GPKGLQASNIRP-
+#=GR WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30233/3-67                     PP .8********************..........*************99.9****************.*********985.
+WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30381/3-67                             -TGTVKWFSTEKGYGFIAPDDG..........TADVFAHFSEIASQG.eFRNLAENQKVEYEVTR.GPKGLQASNIRP-
+#=GR WP_018192289.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30381/3-67                     PP .8********************..........*************99.9****************.*********985.
+WP_085368377.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8039/3-68                               -TGTVKWFNSEKGFGFIAPDDG..........TKDVFAHHSAIVGGNagHRNLEENQKVEFDTAN.GPKGPQAENIRA-
+#=GR WP_085368377.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8039/3-68                       PP .8********************..........************998779***************.*********975.
+WP_085368377.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20362/3-68                            -TGTVKWFNSEKGFGFIAPDDG..........TKDVFAHHSAIVGGNagHRNLEENQKVEFDTAN.GPKGPQAENIRA-
+#=GR WP_085368377.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20362/3-68                    PP .8********************..........************998779***************.*********975.
+WP_055897570.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5932/3-68                            -TGTVKWFNSEKGFGFIAPDDG..........TKDVFAHHSAIVGGDagHRNLEENQKVEFDTAN.GPKGPQAENIRA-
+#=GR WP_055897570.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5932/3-68                    PP .8********************..........************998779***************.*********975.
+WP_041767664.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|13/3-75                              -NGTVKWFNAEKGYGFITVDSNvdggeqnvtvHQDVFVHYSAIDMNG..YKVLEEGQQVEFEVGT.GSKGPQAESVR--
+#=GR WP_041767664.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|13/3-75                      PP .7***************97753222222222257*************..****************.*********98..
+WP_041767664.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7108/3-75                              -NGTVKWFNAEKGYGFITVDSNvdggeqnvtvHQDVFVHYSAIDMNG..YKVLEEGQQVEFEVGT.GSKGPQAESVR--
+#=GR WP_041767664.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7108/3-75                      PP .7***************97753222222222257*************..****************.*********98..
+WP_021764465.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1980/4-55                     --GTVKWFNSEKGFGFIAPDDG..........SPDVFAHFSEISGDG..YRNLTENQRVEYEVTQ.G------------
+#=GR WP_021764465.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1980/4-55             PP ..9*******************..........***************..**************99.7............
+WP_179495566.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23525/3-62                             -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGV..--TIKAGARLEFGIAD.GKKGAQALSVR--
+#=GR WP_179495566.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AK011|23525/3-62                     PP .8********************..........*.*************....**************.********997..
+WP_179577198.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23521/3-62                   -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGV..--TVKAGSKLEFGIAD.GKRGAQALSVR--
+#=GR WP_179577198.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_psychrotolerans_LI1|23521/3-62           PP .8********************..........*.*************....**************.********997..
+WP_055837102.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root4|5808/3-62                              -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALPAGT..--TVKPGMRLEFGIAD.GKRGAQALSVR--
+#=GR WP_055837102.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root4|5808/3-62                      PP .8********************..........*.***********99....**************.********997..
+WP_025158455.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2273/3-62                         -TGKVKFYDDEKGFGFISADDG..........Q-EVFLHASALPDGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_025158455.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_H1aii|2273/3-62                 PP .8********************..........*.*********9999....9*************.********997..
+WP_055914617.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5779/3-62                            -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_055914617.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf336|5779/3-62                    PP .8********************..........*.**********999....9*************.********997..
+WP_055914617.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27359/3-62                           -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_055914617.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_TF02-11|27359/3-62                   PP .8********************..........*.**********999....9*************.********997..
+WP_179605217.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23506/3-62                 -TGKVKFYDEEKGFGFISTDDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_179605217.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_DSM15165|23506/3-62         PP .8********************..........*.**********999....9*************.********997..
+WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1974/3-62                     -TGKVKFYDDEKGFGFISADDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_ATCC14665|1974/3-62             PP .8********************..........*.**********999....9*************.********997..
+WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23835/3-62                     -TGKVKFYDDEKGFGFISADDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_aquatica_DSM20146|23835/3-62             PP .8********************..........*.**********999....9*************.********997..
+WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23511/3-62                  -TGKVKFYDDEKGFGFISADDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_021754477.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_naganoensis_DSM15166|23511/3-62          PP .8********************..........*.**********999....9*************.********997..
+WP_021754299.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1990/3-62         -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_021754299.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_subsp_Cynodontis_DSM46306|1990/3-62 PP .8********************..........*.**********999....9*************.********997..
+WP_085370734.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8040/3-62                               -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_085370734.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_NCR5|8040/3-62                       PP .8********************..........*.**********999....9*************.********997..
+WP_085370734.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20363/3-62                            -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_085370734.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_PS1209|20363/3-62                    PP .8********************..........*.**********999....9*************.********997..
+WP_055895229.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5929/3-62                            -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_055895229.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root227|5929/3-62                    PP .8********************..........*.**********999....9*************.********997..
+WP_055811931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root112D2|5802/3-62                          -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_055811931.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root112D2|5802/3-62                  PP .8********************..........*.**********999....9*************.*******9997..
+WP_185276707.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24112/3-62                     -TGKVKFYDEEKGFGFIATDDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_185276707.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_shinshuensis_INR9|24112/3-62             PP .8********************..........*.**********999....9*************.********997..
+WP_090040500.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30414/3-62                             -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_090040500.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL147|30414/3-62                     PP .8********************..........*.**********999....9*************.********997..
+WP_090040500.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30378/3-62                             -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_090040500.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_CL154|30378/3-62                     PP .8********************..........*.**********999....9*************.********997..
+WP_011186523.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|9/3-62                               -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALLAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_011186523.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_CTCB07|9/3-62                       PP .8********************..........*.*********9999....9*************.********997..
+WP_011186523.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7104/3-62                              -TGKVKFYDDEKGFGFISSDDG..........Q-EVFLHASALLAGA..--VVKAGSRLEFGIAD.GKRGAQALSVR--
+#=GR WP_011186523.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_gdw1|7104/3-62                      PP .8********************..........*.*********9999....9*************.********997..
+WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23481/3-62                         -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_soli_DSM23871|23481/3-62                 PP .8********************..........*.**********999....9*************.********997..
+WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1497/3-62                                -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_109|1497/3-62                        PP .8********************..........*.**********999....9*************.********997..
+WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17961/3-62                      -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_115AMFTsu3.1|17961/3-62              PP .8********************..........*.**********999....9*************.********997..
+WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30368/3-62                       -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKAGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_018191747.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_21MFCrub1.1|30368/3-62               PP .8********************..........*.**********999....9*************.********997..
+WP_021809442.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_rubra_CMS76R|1994/3-63                           -TGKVKFYDDEKGFGFIMSDEG..........Q-EVFLHASALPAGT..-TGVKAGTRLEFGIAD.GKKGAQALSVR--
+#=GR WP_021809442.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_rubra_CMS76R|1994/3-63                   PP .8*******************9..........9.*********9998...9**************.********997..
+WP_077053714.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7771/3-63                           -TGKVKFYDEEKGFGFIASDDG..........Q-EVFLHASALPAGV..-TQVKAGTRLDFGVAD.GKRGAQALSVR--
+#=GR WP_077053714.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_ALI-44-B|7771/3-63                   PP .8********************..........*.*********9988...9**************.*******9997..
+WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30241/3-62                             -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKSGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_157MF|30241/3-62                     PP .8********************..........*.**********999....9*************.********997..
+WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30234/3-62                             -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKSGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_466MF|30234/3-62                     PP .8********************..........*.**********999....9*************.********997..
+WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30382/3-62                             -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKSGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_020077081.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_467MF|30382/3-62                     PP .8********************..........*.**********999....9*************.********997..
+WP_175338344.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23261/3-62                              -TGKVKFYDEEKGFGFISSDDG..........Q-EVFLHASALPAGA..--VVKSGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_175338344.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_C5G2|23261/3-62                      PP .8********************..........*.**********999....9*************.********997..
+WP_158865286.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19455/3-62                              -TGKVKFYDEEKGFGFISADDG..........Q-EVFLHASALPAGA..--VVKSGTRLEFGIAD.GKRGAQALSVR--
+#=GR WP_158865286.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_AG29|19455/3-62                      PP .8********************..........*.**********999....9*************.********997..
+WP_048679698.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_356_LXYL|4769/3-60                          -TGKVKWYDETKGFGFVTVEDG..........Q-EVFLPSSALPSGV..-TSVKAGTRLEFGIAE.GRRGAQAL-----
+#=GR WP_048679698.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_xyli_356_LXYL|4769/3-60                  PP .8********************..........*.*********9888...***************.******96.....
+WP_055902249.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5730/3-62                            -TGKVKFYDDDKGFGFISADDG..........Q---QVHLPASALPA..GAVVKAGSRLEFGIAE.GKRGPQALSVR--
+#=GR WP_055902249.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf264|5730/3-62                    PP .8********************..........*...77776666666..66**************.********997..
+WP_055820895.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5811/3-62                           -TGKVKFYDEDKGFGFISADDG..........Q---QVHLPASALPA..GTVVKAGSRLEFGIAE.GKRGPQALSVR--
+#=GR WP_055820895.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|5811/3-62                   PP .8********************..........*...77776666666..56**************.********997..
+WP_055820895.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5905/3-62                             -TGKVKFYDEDKGFGFISADDG..........Q---QVHLPASALPA..GTVVKAGSRLEFGIAE.GKRGPQALSVR--
+#=GR WP_055820895.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|5905/3-62                     PP .8********************..........*...77776666666..56**************.********997..
+WP_056166128.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18046/3-62                       -TGKVKFYDEDKGFGFISADDG..........Q---QVHLPASALPA..GAVVKAGSRLEFGIAE.GKRGPQALSVR--
+#=GR WP_056166128.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_flava_SYP-B2174|18046/3-62               PP .8********************..........*...77776666666..66**************.********997..
+WP_056166128.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5766/3-62                            -TGKVKFYDEDKGFGFISADDG..........Q---QVHLPASALPA..GAVVKAGSRLEFGIAE.GKRGPQALSVR--
+#=GR WP_056166128.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Leaf325|5766/3-62                    PP .8********************..........*...77776666666..66**************.********997..
+WP_055819805.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|31563/9-71                          -TGILSSWNDGKGYGFVDLRDG..........SRPLFVHINAFTDRS..VRPV-TGDGIRFSIEAaPDGRSRAAGVQ--
+#=GR WP_055819805.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root1293|31563/9-71                  PP .7888899**************..........***************..9998.69********9777888899887..
+WP_055819805.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|31569/9-71                            -TGILSSWNDGKGYGFVDLRDG..........SRPLFVHINAFTDRS..VRPV-TGDGIRFSIEAaPDGRSRAAGVQ--
+#=GR WP_055819805.1|csp22_consensus|Full_Seq|Leifsonia|Leifsonia_spp_Root60|31569/9-71                    PP .7888899**************..........***************..9998.69********9777888899887..
+#=GC PP_cons                                                                                                 .8********************..........************999..****************.*********975.
+#=GC RF                                                                                                      xxxxxxxxxxxxxxxxxxxxxx..........xxxxxxxxxxxxxxx..xxxxxxxxxxxxxxxx.xxxxxxxxxxxxx
+//
