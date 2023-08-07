@@ -3,8 +3,8 @@
 # Author: Danielle M. Stevens
 # Last Updated: 6/30/2020
 # Script Purpose: Hold information of colors for all plots/figures 
-# Inputs Necessary: n/a
-# Outputs: n/a
+# Inputs Necessary: N/A
+# Outputs: N/A
 #-----------------------------------------------------------------------------------------------
 
 

@@ -1,10 +1,10 @@
 #-----------------------------------------------------------------------------------------------
 # Coaker Lab - Plant Pathology Department UC Davis
 # Author: Danielle M. Stevens
-# Last Updated: 07/06/2020
-# Script Purpose: 
-# Inputs: 
-# Outputs: 
+# Last Updated: 08/08/2023
+# Script Purpose: Load packages for MAMP Evolution paper
+# Inputs: N/A
+# Outputs: N/A
 #-----------------------------------------------------------------------------------------------
 
 
@@ -61,7 +61,7 @@ library(circlize)
 library(ggseqlogo)
 #download via devtools
 library(devtools)
-#library(ggmsa)
+library(ggmsa)
 
 #---------Package for html file---------
 library(DT)
@@ -81,13 +81,7 @@ library(ggmotif)
 library(XVector)
 library(stringr)
 library(readr)
-#library(plotly)
-#library(ggpubr)
-#library(rstatix)
 library(phylotools)
-#library(mat)
-#library(rJava)
-#library(ggfortify)
 library(see)
 library(cluster)
 
@@ -97,6 +91,12 @@ library(orthologr)
 library(ggbeeswarm)
 
 
+#--------otheer packages ------
+#library(ggpubr)
+#library(rstatix)
+#library(mat)
+#library(rJava)
+#library(ggfortify)
 
 
 

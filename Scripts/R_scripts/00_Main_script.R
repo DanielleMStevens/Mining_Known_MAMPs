@@ -1,10 +1,10 @@
 #-----------------------------------------------------------------------------------------------
 # Coaker Lab - Plant Pathology Department UC Davis
 # Author: Danielle M. Stevens
-# Last Updated: 07/06/2020
-# Script Purpose: 
-# Inputs: 
-# Outputs: 
+# Last Updated: 08/08/2023
+# Script Purpose: Run the R scripts for MAMP Evolution Paper
+# Inputs: N/A
+# Outputs: N/A
 #-----------------------------------------------------------------------------------------------
 
 ######################################################################

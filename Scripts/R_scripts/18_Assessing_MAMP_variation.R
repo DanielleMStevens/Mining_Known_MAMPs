@@ -217,7 +217,7 @@ draw(elf18_heatmap, show_heatmap_legend = FALSE, padding = unit(c(7, 7, 7, 7), "
 draw(csp22_heatmap, show_heatmap_legend = FALSE, padding = unit(c(7, 7, 7, 7), "mm"))
 draw(flg22_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5), "mm"))
 draw(flgII_28_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5), "mm"))
-draw(nlp20_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5), "mm"))
+draw(nlp20_heatmap, show_heatmap_legend = FALSE, padding = unit(c(5, 5, 5, 5), "mm"), lgd = Legend(col_fun = col_fun, title = "foo", legend_height = unit(6, "cm")))
 
 
 
