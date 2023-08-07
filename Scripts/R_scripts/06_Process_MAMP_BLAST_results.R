@@ -1,12 +1,11 @@
 #-----------------------------------------------------------------------------------------------
 # Coaker Lab - Plant Pathology Department UC Davis
 # Author: Danielle M. Stevens
-# Last Updated: 07/06/2020
-# Script Purpose: 
-# Inputs: 
-# Outputs: 
+# Last Updated: 08/08/2023
+# Script Purpose: Process blastp results accross all genomes sampled
+# Inputs: Tab-deliminated blast files
+# Outputs: N/A, data is loaded into a temporary database
 #-----------------------------------------------------------------------------------------------
-
 
 
 ######################################################################
@@ -37,6 +36,7 @@
     All_target_seqs <- rbind(All_target_seqs, grab_right_protein_seq_blast_results)
   
     # fix MAMP extension error from blast results
+    # essentially, MAMP was found but polymorphic ends get dropped off, this local alignment fixes this error
     for (j in 1:nrow(read_blast_results)){
       if (read_blast_results$Hit_Length[j] == read_blast_results$MAMP_length[j]){
         next

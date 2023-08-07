@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------
 # Coaker Lab - Plant Pathology Department UC Davis
 # Author: Danielle M. Stevens
-# Last Updated: 09/18/2022
+# Last Updated: 08/08/2023
 # Script Purpose: 
 # Inputs: 
 # Outputs: 

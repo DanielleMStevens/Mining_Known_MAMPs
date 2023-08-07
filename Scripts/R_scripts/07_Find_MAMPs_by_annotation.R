@@ -1,10 +1,10 @@
 #-----------------------------------------------------------------------------------------------
 # Coaker Lab - Plant Pathology Department UC Davis
 # Author: Danielle M. Stevens
-# Last Updated: 07/06/2020
-# Script Purpose: 
-# Inputs: 
-# Outputs: 
+# Last Updated: 08/08/2023
+# Script Purpose: Finds all MAMPs by local alignment to annotated genes
+# Inputs: Protein Fasta files
+# Outputs: N/A, temporary data table which holds all the MAMP sequence (plus additonal info)
 #-----------------------------------------------------------------------------------------------
 
 
@@ -13,7 +13,7 @@
 # load all protein sequences with protein annotations of common MAMPs
 ######################################################################
 
-
+  # empty table to fill in regarding the MAMP, the Gene, sequence and information on the genome their dervied from
   All_target_by_annotation <- data.frame("width" = numeric(0), "names" = character(0), "seq" = character(0), 
                                          "Genera" = character(0), "Strain_Name" = character(0), "Filename" = character(0), "Gram" = character(0))
   
@@ -39,6 +39,7 @@
                                 rep(get_strain_info$Filename, nrow(grab_right_protein_seq_blast_results)),
                                 rep(get_strain_info$Gram, nrow(grab_right_protein_seq_blast_results)))
     
+    # add all data into empty table declared above
     All_target_by_annotation <- rbind(All_target_by_annotation, get_accession_info)
   }
 
@@ -48,18 +49,17 @@
   
 ######################################################################
 # Pull out WP tag to filter out proteins which have already been found by blast search
+# This allows us to pull MAMP seqs not found by blastp
 ######################################################################
-
-
   
   # split All_target_by_annotation to seperate WP tag from rest of protein name
-  
   hold_WP_tag <- list()
+  
   for (i in 1:nrow(All_target_by_annotation)){
     hold_WP_tag[[i]] <- Biostrings::strsplit(All_target_by_annotation$names[i], " ", fixed = T)[[1]][1]
     length_of_tag <- length(strsplit(All_target_by_annotation$names[1], " ", fixed = T)[[1]])
     protein_new_name <- paste(strsplit(All_target_by_annotation$names[1], " ", fixed = T)[[1]][2:length_of_tag], collapse = " ")
-    #All_target_by_annotation$names[i] <- protein_new_name
+    # All_target_by_annotation$names[i] <- protein_new_name
   }
   
   hold_WP_tag <- as.data.frame(unlist(hold_WP_tag))
@@ -80,29 +80,35 @@
   
   for (j in 1:nrow(All_target_by_annotation)){
     
-    # cold shock protein
+    # -----------------------cold shock protein-----------------------
     if (grepl(paste(c("cold-shock","cold shock","RNA chaperone/antiterminator","transcription antiterminator/RNA stability"), collapse = "|"), All_target_by_annotation$names[j]) == TRUE){
       
       # if csp protein is less than 50 AA long, it's very likely a partial CDS and will be removed
       if (All_target_by_annotation$width[j] < 50){
         next
       }
+      
+      # if csp protein is longer than 50 AA long, its more likely to be a full length sequence
       if (All_target_by_annotation$width[j] > 50){
         pull_ref_MAMP <- subset(load_reference_MAMPs_fasta, names == 'csp22_consensus')
         Alignment_between_MAMP_and_Ref <- Biostrings::pairwiseAlignment("KGFGF", 
                                                                         All_target_by_annotation$seq[j], type = "global-local", 
                                                                         gapOpening = 300, substitutionMatrix = BLOSUM80, scoreOnly = T)
+        
+        # ignore if score is low (i.e. doesn't carry crtical motif)
         if (Alignment_between_MAMP_and_Ref < 20){
           next
         }
+        
+        # if score high enough, find mamp via local alignment to consensus
         if (Alignment_between_MAMP_and_Ref > 20){
         
           Alignment_between_MAMP_and_Ref <- Biostrings::pairwiseAlignment(pull_ref_MAMP$seq, 
                                                                           All_target_by_annotation$seq[j], type = "global-local", 
                                                                           gapOpening = 300, substitutionMatrix = BLOSUM45)
           # ignore - for degugging purposes
-          #print(Alignment_between_MAMP_and_Ref)
-          #print(paste(All_target_by_annotation$`unlist(hold_WP_tag)`[j], All_target_by_annotation$seq[j], sep = "|"))
+          # print(Alignment_between_MAMP_and_Ref)
+          # print(paste(All_target_by_annotation$`unlist(hold_WP_tag)`[j], All_target_by_annotation$seq[j], sep = "|"))
           correct_blast_df$Sequence[j] <- as.character(Alignment_between_MAMP_and_Ref@subject)
           correct_blast_df$Percent_Identity[j] <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
           correct_blast_df$MAMP_Hit[j] <- 'csp22_consensus'
@@ -110,7 +116,7 @@
       }
     }
     
-    # elongation factor
+    # -----------------------elongation factor-----------------------
     if (grepl("elongation factor Tu", All_target_by_annotation$names[j]) == TRUE){
       
       if (grepl("partial", All_target_by_annotation$names[j]) == TRUE){
@@ -128,8 +134,8 @@
         if (Alignment_between_MAMP_and_Ref@score > 50){
           
           # ignore - for degugging purposes
-          #print(Alignment_between_MAMP_and_Ref)
-          #print(All_target_by_annotation$`unlist(hold_WP_tag)`[j])
+          # print(Alignment_between_MAMP_and_Ref)
+          # print(All_target_by_annotation$`unlist(hold_WP_tag)`[j])
           correct_blast_df$Sequence[j] <- as.character(Alignment_between_MAMP_and_Ref@subject)
           correct_blast_df$Percent_Identity[j] <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
           correct_blast_df$MAMP_Hit[j] <- 'elf18_consensus'
@@ -137,7 +143,7 @@
       }
     }
     
-    #flagellin
+    # -----------------------flagellin-----------------------
     if (grepl("flagellin",All_target_by_annotation$names[j]) == TRUE){
       
       if (grepl("partial", All_target_by_annotation$names[j]) == TRUE){
@@ -153,8 +159,8 @@
         if (Alignment_between_MAMP_and_Ref@score > 40){
 
         
-          #print(Alignment_between_MAMP_and_Ref)
-          #print(All_target_by_annotation$`unlist(hold_WP_tag)`[j])
+          # print(Alignment_between_MAMP_and_Ref)
+          # print(All_target_by_annotation$`unlist(hold_WP_tag)`[j])
           correct_blast_df$Sequence[j] <- as.character(Alignment_between_MAMP_and_Ref@subject)
           correct_blast_df$Percent_Identity[j] <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
           correct_blast_df$MAMP_Hit[j] <- 'flg22_consensus'
@@ -165,8 +171,8 @@
                                                                         All_target_by_annotation$seq[j], type = "global-local", 
                                                                         gapOpening = 100, gapExtension = 100, substitutionMatrix = BLOSUM62)
         if (Alignment_between_MAMP_and_Ref@score > 40){
-          #print(Alignment_between_MAMP_and_Ref)
-          #print(All_target_by_annotation$`unlist(hold_WP_tag)`[j])
+          # print(Alignment_between_MAMP_and_Ref)
+          # print(All_target_by_annotation$`unlist(hold_WP_tag)`[j])
           
           if (identical(as.character(Alignment_between_MAMP_and_Ref@subject), character(0)) == FALSE){
             temp_df <- data.frame(All_target_by_annotation[j,],
@@ -180,16 +186,15 @@
       }
     }
     
-    # NPP1 - from necrosis
+    # -----------------------NPP1 -  necrosis-----------------------
     if (grepl("NPP1", All_target_by_annotation$names[j]) == TRUE){
       pull_ref_MAMP <- subset(load_reference_MAMPs_fasta, names == 'nlp20_consensus')
-      #"AIMYSWYFPKDSPVTGLGHR
       Alignment_between_MAMP_and_Ref <- Biostrings::pairwiseAlignment(pull_ref_MAMP$seq, 
                                                                       All_target_by_annotation$seq[j], type = "global-local", 
                                                                       gapOpening = 100, gapExtension = 100, substitutionMatrix = BLOSUM62)
       
-      #print(Alignment_between_MAMP_and_Ref)
-      #print(All_target_by_annotation$`unlist(hold_WP_tag)`[j])
+      # print(Alignment_between_MAMP_and_Ref)
+      # print(All_target_by_annotation$`unlist(hold_WP_tag)`[j])
       correct_blast_df$Sequence[j] <- as.character(Alignment_between_MAMP_and_Ref@subject)
       correct_blast_df$Percent_Identity[j] <- Biostrings::pid(Alignment_between_MAMP_and_Ref, type = "PID1")
       correct_blast_df$MAMP_Hit[j] <- 'nlp20_consensus'
@@ -227,4 +232,9 @@
   
   All_target_by_annotation <- All_target_by_annotation[unlist(filter_list),]
   rm(filter_list)
+  
+  
+  
+  
+  
 

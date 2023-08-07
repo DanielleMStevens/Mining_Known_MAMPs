@@ -1,10 +1,10 @@
 #-----------------------------------------------------------------------------------------------
 # Coaker Lab - Plant Pathology Department UC Davis
 # Author: Danielle M. Stevens
-# Last Updated: 07/06/2020
-# Script Purpose: 
-# Inputs: 
-# Outputs: 
+# Last Updated: 08/08/2023
+# Script Purpose: Combine MAMP hits from two search approaches
+# Inputs: N/A
+# Outputs: N/A
 #-----------------------------------------------------------------------------------------------
 
 
@@ -48,8 +48,6 @@ hold_MAMP_seqs <- rbind(hold_MAMP_seqs, filter_list)
 
 rm(filter_list)
 
-#hold_MAMP_seqs <- subset(hold_MAMP_seqs, hold_MAMP_seqs$MAMP_Hit != "nlp20_consensus")
-
     
 
 ######################################################################
@@ -57,7 +55,7 @@ rm(filter_list)
 ######################################################################
 
 
-# readjust hit sequence if value seems off
+# readjust hit sequence if value seems off and remove super low hits (dependent on MAMP)
 filter_list_2 <- list()
 for (i in 1:nrow(hold_MAMP_seqs)){
       

@@ -3,14 +3,13 @@
 # Author: Danielle M. Stevens
 # Last Updated: 4/20/2020
 # Script Purpose: Hold information of style of ggplots 
-# Inputs Necessary: n/a
-# Outputs: n/a
+# Inputs Necessary: N/A
+# Outputs: N/A
 #-----------------------------------------------------------------------------------------------
 
 
-
 ######################################################################
-#library packages need to load
+# library packages need to load
 ######################################################################
 
 my_ggplot_theme <- theme_classic() +

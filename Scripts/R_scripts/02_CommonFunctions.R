@@ -11,6 +11,7 @@
 ######################################################################
 #function to adjust size 
 ######################################################################
+
 # adjust size in plot plane 
 plot_adjust_size <- function(desired_dpi){
   orginal_width <- dev.size('px')[1]
@@ -44,7 +45,6 @@ aa2df <- function(dss){
 #   into a fasta file - version 2
 ######################################################################
 
-
 formate2fasta <- function(WP_locus_names, sequence_type, Genera_names, File_names, sequences) {
   hold_sequences <- data.frame("Locus_Tag_Name" = character(0), "Sequence" = character(0))
   pb <- txtProgressBar(min = 0, max = length(WP_locus_names), style = 3)
@@ -66,7 +66,6 @@ formate2fasta <- function(WP_locus_names, sequence_type, Genera_names, File_name
 #   into a fasta file
 ######################################################################
 
-
 writeFasta <- function(data, filename){
   fastaLines = c()
   for (rowNum in 1:nrow(data)){
@@ -85,7 +84,6 @@ writeFasta <- function(data, filename){
 # from the name of each strain such that it can be plotted with just its strain name
 #########################################################################
 
-
 filter_title <- function(which_table, which_phrase){
   for (i in 1:nrow(which_table)){
     which_table[i,1] <- stringr::str_replace(which_table[i,1], which_phrase, "")
@@ -99,7 +97,6 @@ filter_title <- function(which_table, which_phrase){
 # create a weblogo plotting function, where take a list of imput strings of the 
 # same length and use ggseqlogo to create a weblogo
 #########################################################################
-
 
 make_me_a_weblogo <- function(file_in){
   logo <- ggseqlogo::ggseqlogo(file_in, seq_type='aa', method = 'prob') +
