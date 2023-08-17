@@ -1,21 +1,21 @@
 #-----------------------------------------------------------------------------------------------
 # Coaker Lab - Plant Pathology Department UC Davis
 # Author: Danielle M. Stevens
-# Last Updated: 12/11/2022
+# Last Updated: 08/08/2023
 # Script Purpose: Plotting MAMP hits onto phylogenetic tree
-# Inputs: 
-# Outputs: 
+# Inputs: GToTree tre file output
+# Outputs: phylogenetic tree 
 #-----------------------------------------------------------------------------------------------
 
 
 ##############################################
-# 'core' gene phylogeny
+# phylogenetic tree based on 74 housekeeping genes
 ##############################################
 
 # import number of copies of each mamp on a per genome basis
 map_data <- datasettable[,c(6,1:5,7)]
 
-#filter genomes based on ANI analysis
+# filter genomes based on ANI analysis
 map_data <- map_data[!map_data$Filename %in% Genomes_to_check$Genome1,]
 
 
@@ -53,11 +53,11 @@ for (i in 1:length(core_gene_phylo$tip.label)){
 }
 
 
-#plot full tree -> basic
+# plot full tree -> basic
 full_tree <- ggtree::ggtree(core_gene_phylo,  ladderize = T, size = 0.09, linetype = 1) 
 
 
-#add details to main tree regarding genome generas and MAMP abundance 
+# add details to main tree regarding genome generas and MAMP abundance 
 full_tree <- full_tree %<+% map_data +
   geom_fruit(geom = geom_tile, mapping = aes(color = Genera, fill = Genera), width = 0.04,
              offset = -1.02, axis.params = list(line.color = "black"), show.legend = FALSE) +
@@ -76,53 +76,46 @@ full_tree <- full_tree %<+% map_data +
              offset = -8.92) +
   geom_fruit(geom = geom_tile, mapping = aes(fill = nlp20_consensus), width = 0.04,
              offset = -17.88) +
- 
+  
+  # ignore - other ways to gradient fill in mamp abundance 
   #scale_fill_stepsn(colours = c("#ffffff","#e5e5e5","#c7c7c7","#999999","black"),
   #                  values = scales::rescale(c(0,1,2,4,8), from = c(0,8)),
   #                  breaks = c(0,1,2,4,8),
   #                limits = c(0,8),
   #                guide = "legend", name = "MAMP Abundance") +
-    
-  scale_fill_gradient(low = "white", high = "black", breaks = c(0,1,2,4,8), limits = c(0,15), 
-                      guide = "legend", name = "MAMP Abundance") +
   
   #scale_fill_stepsn(
   #  colours=c("#ffffff","#e5e5e5","#c7c7c7","#999999","black"),
   #  values=c(  0,       1,  2,    4,      8)/8) +
+
+  scale_fill_gradient(low = "white", high = "black", breaks = c(0,1,2,4,8), limits = c(0,15), 
+                      guide = "legend", name = "MAMP Abundance") +
   
   theme(legend.direction = "horizontal", 
         legend.position = "bottom")
 
-full_tree
-
-  
-
-  ggsave(full_tree, filename = "./../../Figures/Figure_1/Full_phylogenomic_tree_with_MAMPs_v2.pdf", device = cairo_pdf, width = 7, height = 3.2, units = "in")
 
 
-
-library(ggplot2)
-
-colour_breaks <- c(10, 20, 30)
-colours <- c("darkblue", "lightblue", "yellow")
-
-ggplot(mpg, aes(displ, hwy, colour = cty)) +
-  geom_point() +
-  scale_colour_gradientn(
-    limits  = range(mpg$cty),
-    colours = colours[c(1, seq_along(colours), length(colours))],
-    values  = c(0, scales::rescale(colour_breaks, from = range(mpg$cty)), 1),
-  )
+#ggsave(full_tree, filename = "./../../Figures/Figure_1/Full_phylogenomic_tree_with_MAMPs_v2.pdf", device = cairo_pdf, width = 7, height = 3.2, units = "in")
 
 
-#### for MPMI Presentation
-full_tree <- ggtree(core_gene_phylo, layout="daylight", branch.length = 'none',  ladderize = T, size = 0.12, linetype = 1)
-full_tree <- ggtree::ggtree(core_gene_phylo, layout = 'fan', open.angle = 110, ladderize = T, size = 0.15, linetype = 1) 
+#---------------------------------Notes for Figure 1--------------------------------
+# The PDF of the plotted tree was exported and imported (via cairo pockage) in insckape
+# The following asthetic modificaitons were made: added black outline around each mamp
+# abundance plot. Also added an outline around the bar for genera coloring. Finally added
+# a 
 
-full_tree %<+% map_data +
-  geom_fruit(geom = geom_tile, mapping = aes(color = Genera, fill = Genera), width = 0.04,
-             axis.params = list(line.color = "black"), show.legend = FALSE) +
-  scale_color_manual("Genera", values = Genera_colors) +
+
+
+
+#### ---------------------------------for MPMI Presentation---------------------------------
+#full_tree <- ggtree(core_gene_phylo, layout="daylight", branch.length = 'none',  ladderize = T, size = 0.12, linetype = 1)
+#full_tree <- ggtree::ggtree(core_gene_phylo, layout = 'fan', open.angle = 110, ladderize = T, size = 0.15, linetype = 1) 
+
+#full_tree %<+% map_data +
+#  geom_fruit(geom = geom_tile, mapping = aes(color = Genera, fill = Genera), width = 0.04,
+#             axis.params = list(line.color = "black"), show.legend = FALSE) +
+#  scale_color_manual("Genera", values = Genera_colors) +
   scale_fill_manual("Genera", values = Genera_colors) 
 
 

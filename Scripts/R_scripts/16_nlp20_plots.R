@@ -8,37 +8,6 @@
 #-----------------------------------------------------------------------------------------------
 
 
-#-----------------------Supplemental Figure 1A Plots------------------------------------------------------------------------------
-
-
-# plots all MAMPs grouped by whether it's a gram-positive or gram-negative bacteria
-n_number <- as.data.frame(filtered_hold_MAMP_seqs %>% group_by(MAMP_Hit) %>% summarise(n=n()))
-
-
-nlp_MAMP_sim <- ggplot(filtered_hold_MAMP_seqs, aes(x = MAMP_Hit, y = Percent_Identity)) +
-  my_ggplot_theme +
-  geom_violin(aes(fill = MAMP_Hit), alpha = 0.9,scale = "width", trim = T) +
-  geom_boxplot(color = "black", fill = "white", outlier.alpha = 0, width = 0.15) +
-  ylab("Percent AA Similarity") +
-  scale_fill_manual("MAMP", values = MAMP_colors) +
-  scale_x_discrete(name ="MAMP", 
-                   labels=c("csp22_consensus" = "csp22", 
-                            "elf18_consensus" = "elf18",
-                            "flg22_consensus" = "flg22",
-                            "flgII-28" = "flgII-28",
-                            "nlp20_consensus" = "nlp20")) +
-  theme(legend.position = "none",
-        axis.text.x = element_text(color = "black", size = 14),
-        axis.text.y = element_text(color = "black", size = 14),
-        axis.title = element_text(color = "black", face = "bold", size = 14),
-        axis.line = element_line(colour = "black", 
-                                 size = 0.4, linetype = "solid")) +
-  #scale_y_continuous(breaks = c(0,25,50,75,100), limits = c(0,110)) +
-  scale_y_continuous(breaks = c(0,20,40,60,80,100), limits = c(0,110)) +
-  geom_text(data = n_number, 
-            aes(x = MAMP_Hit, y = 110, label = n), size = 4)
-
-
 
 
 #-----------------------Supplemental Figure 1B Plots------------------------------------------------------------------------------

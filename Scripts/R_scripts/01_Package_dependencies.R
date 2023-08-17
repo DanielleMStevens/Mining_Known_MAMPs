@@ -45,6 +45,7 @@ library(scales)
 library(viridis)
 library(see)
 library(patchwork)
+library(ggsci)
 
 #---------Packages for text/dataframe loading and manipulation---------
 

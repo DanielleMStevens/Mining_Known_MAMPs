@@ -109,9 +109,9 @@ abundace_figure <- ggplot(hold_abundance_data_df) +
                      limits = c(0,24000)) +
   ylab("\nNumber of Epitopes") +
   coord_flip() +
-  theme(axis.text.x = element_text(size = 10), axis.text.y = element_text(size = 10),
+  theme(axis.text.x = element_text(size = 11), axis.text.y = element_text(size = 11),
         axis.title.x = element_text(size = 12), axis.title.y = element_text(size = 12),
-        legend.position = "bottom", legend.direction = "vertical",
+        legend.position = "none", legend.direction = "vertical",
         legend.title = element_blank(), legend.text = element_text(color = "black", size = 10, family = 'Arial')) +
   scale_x_discrete(name ="MAMP", 
                    labels=c("csp22_consensus" = "csp22", 
@@ -119,23 +119,24 @@ abundace_figure <- ggplot(hold_abundance_data_df) +
                             "flg22_consensus" = "flg22",
                             "flgII-28" = "flgII-28",
                             "nlp20_consensus" = "nlp20")) +
+  scale_color_jama() +
   geom_text(aes(x = MAMP_Hit, y = value, label = value),
-            position = position_dodge(width = 1), vjust = -1, color = "black", family = 'Arial', size = 3.5) 
+            position = position_dodge(width = 1), vjust = -1, color = "black", family = 'Arial', size = 3.7) 
 
 
 
 
 
 #  Zoom in plot of abundance for common combinations
-abundance_zoomed_in <- abundace_figure + ylim(0,626) + theme(axis.title.y = element_blank(),
-                                                             axis.text.y = element_blank(),
+abundance_zoomed_in <- abundace_figure + ylim(0,626) + theme(axis.title.y = element_blank(), axis.title.x = element_blank(), 
+                                                             axis.text.y = element_blank(), axis.text.x = element_text(size = 11),
                                                              axis.line = element_line(colour = "black", size = 0.4, linetype = "solid"),
                                                              legend.position = "none",
                                                              plot.margin = margin(0.8,0.8,0.8,0.8, "cm"))
 
 
-ggsave(abundace_figure, filename = "./../Figures/Plot_MAMP_abundance.pdf", device = cairo_pdf, width = 5.4, height = 4.2, units = "in")
 
+ggsave(abundace_figure, filename = "./../Figures/Plot_MAMP_abundance.pdf", device = cairo_pdf, width = 5.4, height = 4.2, units = "in")
 
 ggsave(abundance_zoomed_in, filename = "./../Figures/Supplemental_Figure_4/Plot_MAMP_abundance_Zoom_in.pdf", device = cairo_pdf, width = 5.5, height = 2.5, units = "in")
 

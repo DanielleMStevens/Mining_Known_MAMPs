@@ -105,15 +105,13 @@
   # ggplot figure for nlp20 - Supplemental Figure 1
   source("./16_nlp20_plots.R")
   
-  
-  # A deeper dive on eptiope variation at the genera level
-  source("./17_Compare_mamps_to_consensus_by_genera_figures.R")
-  
-  
   # Assessing variation within each MAMP epitope and in a positional manner 
   ### this takes a long time to complete -1-1.5 hours
-  source("./18_Assessing_MAMP_variation.R")
+  source("./17_Assessing_MAMP_variation.R")
   
+  
+  # A deeper dive on eptiope variation at the genera level
+  source("./18_Compare_mamps_to_consensus_by_genera_figures.R")
   
   # how many MAMPs are there, the variation that extists, and how many/offen plot
   # includes Supplemental Figure 4
