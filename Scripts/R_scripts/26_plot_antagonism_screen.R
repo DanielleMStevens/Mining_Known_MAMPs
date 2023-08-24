@@ -29,6 +29,7 @@ rownames(test2) <- unlist(as.list(subset(import_antagonist_ros_data, import_anta
 pheatmap(test2,cluster_rows=FALSE, cluster_cols=FALSE, border_color = "white")
 
 
+
 # Export Individual Replicates -------------- Figure6E ------------------
 
 Cm_csp22_3_ros_data <- xlsx:::read.xlsx("./../../Analyses/MAMP_antagonism/Figure6BD_Antagonism_Screen.xlsx", sheetName = "Cm csp22-3 | Cm csp22-1")
@@ -103,5 +104,28 @@ ggplot(subset(Cm_csp22_3_ros_data,Replicate == "11_03_2022_scram_anti_Cm1_rep1")
   geom_point()
 
 
+
+##############################################
+# Import ROS data for antagonism screen - elf18
+##############################################
+
+import_antagonist_ros_data_elf18 <- xlsx:::read.xlsx("./../../Analyses/MAMP_antagonism/elf18_antagonism.xlsx", sheetName = "Summary_elf18")
+colnames(import_antagonist_ros_data_elf18) <- c("Candidate Antagonist","Agonist","Water","Control","100 nM","200 nM","500 nM","1 uM")
+
+
+# plot those screened via elf18 -------------- Supl. Figure6B ------------------
+test3 <- as.matrix(subset(import_antagonist_ros_data_elf18, import_antagonist_ros_data_elf18$Agonist == "elf18")[c(3:8)])
+rownames(test3) <- unlist(as.list(subset(import_antagonist_ros_data_elf18, import_antagonist_ros_data_elf18$Agonist == "elf18")[1]))
+
+
+pheatmap(test3, cluster_rows=FALSE, cluster_cols=FALSE, border_color = "white")
+
+
+# plot those screened via EF-77 -------------- Supl. Figure6B ------------------
+test4 <- as.matrix(subset(import_antagonist_ros_data_elf18, import_antagonist_ros_data_elf18$Agonist == "EF-77")[c(3:8)])
+rownames(test4) <- unlist(as.list(subset(import_antagonist_ros_data_elf18, import_antagonist_ros_data_elf18$Agonist == "EF-77")[1]))
+
+
+pheatmap(test4, cluster_rows=FALSE, cluster_cols=FALSE, border_color = "white")
 
 

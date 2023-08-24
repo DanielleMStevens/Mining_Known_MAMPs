@@ -1,10 +1,10 @@
 #-----------------------------------------------------------------------------------------------
 # Coaker Lab - Plant Pathology Department UC Davis
 # Author: Danielle M. Stevens
-# Last Updated: 07/06/2020
-# Script Purpose: 
-# Inputs: 
-# Outputs: 
+# Last Updated: 08/08/2023
+# Script Purpose: Plot the number of combinations found in naturally occuring populations
+# Inputs: N/A
+# Outputs: Plots on eptiope variation combinations
 #-----------------------------------------------------------------------------------------------
 
 #-----------------------Figure 2 Plot------------------------------------------------------------------------------
