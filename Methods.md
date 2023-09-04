@@ -69,6 +69,7 @@ conda install -c bioconda hmmer
 conda install -c conda-forge -c bioconda mmseqs2
 conda install -c bioconda mafft
 conda install -c bioconda iqtree
+conda install -c bioconda meme
 
 
 # Activate environment with loaded packages

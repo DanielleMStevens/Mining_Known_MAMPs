@@ -167,6 +167,36 @@ CSP_tree <- ggtree(CSP_full_protein_tree, layout = "rectangular", ladderize = T,
   geom_text2(aes(subset = !isTip, label = node), hjust = -.3, size = 0.4)
 
 
+# actino clade 1
+actino_clade1 <- tidytree::offspring(CSP_tree, 32977)
+actino_clade1 <- as.data.frame(subset(actino_clade1, actino_clade1$isTip == TRUE))
+actino_clade1 <- actino_clade1[actino_clade1$Genera %in% c("Clavibacter","Leifsonia","Rhodococcus",
+                                                           "Streptomyces","Rathyibacter","Curtobacterium"),]
+
+actino_clade1 <- actino_clade1 %>% separate(label, c("WP_Tag", "Strain_Name"), "\\|")
+
+number_of_strains <- filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$Genera %in% c("Clavibacter","Leifsonia","Rhodococcus",
+                                                                                   "Streptomyces","Rathyibacter","Curtobacterium"),]
+number_of_strains <- unique(number_of_strains$Strain_Name)
+
+# erwinia/pecto clade 2
+erwin_clade2 <- tidytree::offspring(CSP_tree, 37345)
+erwin_clade2 <- as.data.frame(subset(erwin_clade2, erwin_clade2$isTip == TRUE))
+erwin_clade2 <- erwin_clade2 %>% separate(label, c("WP_Tag", "Strain_Name"), "\\|")
+
+number_of_strains <- filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$Genera %in% c("Erwinia","Pectobacterium"),]
+number_of_strains <- unique(number_of_strains$Strain_Name)
+
+# xanthomonas clade 3
+xanth_clade3 <- tidytree::offspring(CSP_tree, 35650)
+xanth_clade3 <- as.data.frame(subset(xanth_clade3, xanth_clade3$isTip == TRUE))
+xanth_clade3 <- xanth_clade3 %>% separate(label, c("WP_Tag", "Strain_Name"), "\\|")
+
+number_of_strains <- filtered_hold_MAMP_seqs[filtered_hold_MAMP_seqs$Genera %in% c("Xanthomonas"),]
+number_of_strains <- unique(number_of_strains$Strain_Name)
+
+
+
 
 CSP_tree %>% ggtree::collapse(29123, 'max') %>% 
   #maybe this one

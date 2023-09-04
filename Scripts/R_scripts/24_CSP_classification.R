@@ -139,7 +139,7 @@ Erwinia_CSP_protein_tree <- read.tree(file = "./../../Analyses/Catagorizing_CSPs
 import_erwin_csp_types <- xlsx:::read.xlsx("./../../Analyses/Catagorizing_CSPs/Genera_specific_analysis/MAMP_Catagorization.xlsx", sheetName = "Erwinia")
 csp_catagorization_tree(Erwinia_CSP_protein_tree, import_erwin_csp_types, -0.8, 0.2, 10)
 
-motif_extract <- getMotifFromMEME(data = "./../../Analyses/Catagorizing_CSPs/Genera_specific_analysis/Erwinia/Leif_meme_results.xml", format="xml")
+motif_extract <- getMotifFromMEME(data = "./../../Analyses/Catagorizing_CSPs/Genera_specific_analysis/Erwinia/Erwin_meme_results.xml", format="xml")
 
 
 motif_test <- motif_extract
@@ -158,6 +158,36 @@ motif_test +
         axis.text.y = element_text(size = 8, color = "black"), 
         axis.title.x = element_text(color = "black"),
         axis.title.y = element_text(color = "black"))
+
+
+
+
+# -----------------------------Xanthomonas CSP--------------------------------------------------------
+Xanthomonas_CSP_protein_tree <- read.tree(file = "./../../Analyses/Catagorizing_CSPs/Genera_specific_analysis/Xanthomonas/reformat_xanth_domain.tre")
+import_xanth_csp_types <- xlsx:::read.xlsx("./../../Analyses/Catagorizing_CSPs/Genera_specific_analysis/MAMP_Catagorization.xlsx", sheetName = "Xanthomonas")
+csp_catagorization_tree(Xanthomonas_CSP_protein_tree, import_xanth_csp_types, -0.4, 0.2, 10)
+
+
+motif_extract <- getMotifFromMEME(data = "./../../Analyses/Catagorizing_CSPs/Genera_specific_analysis/Xanthomonas/Xanth_meme_results.xml", format="xml")
+
+
+motif_test <- motif_extract
+motif_test$input.seq.id <- as.character(motif_test$input.seq.id)
+for (i in 1:nrow(motif_test)){
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "csp22_consensus\\|Full_Seq\\|Xanthomonas\\|","")
+  motif_test$input.seq.id[i] <- str_replace(motif_test$input.seq.id[i], "\\|[0-9]","")
+}
+motif_test <- motifLocation(motif_test[!duplicated(motif_test[c(2,3,5,6,7,8,9)]),])
+
+# csp meme results
+motif_test +
+  ggsci::scale_fill_aaas() +
+  ylab("") +
+  theme(axis.text.x = element_text(size = 8, color = "black"), 
+        axis.text.y = element_text(size = 8, color = "black"), 
+        axis.title.x = element_text(color = "black"),
+        axis.title.y = element_text(color = "black"))
+
 
 
 
