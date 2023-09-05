@@ -18,7 +18,7 @@
 - [Characterizing Diversity of MAMPs and their MAMP-Encoded Proteins](#characterizing-diversity-of-mamps-and-their-mamp-encoded-proteins)
     - [8. Displaying the relatedness of epitope variants in respect to immmunogenicity](#8-displaying-the-relatedness-of-epitope-variants-in-respect-to-immmunogenicity)
     
-- [Evolution of the Gene MAMPs are Encoded on](#evolution-of-the-gene-mamps-are-encoded-on)
+- [Evolution of MAMP Encoded Genes](#evolution-of-mamp-encoded-genes)
     - [9. Assessing immunogenicity outcomes following diversifcation of a common ancestor](#9-assessing-immunogenicity-outcomes-following-diversifcation-of-a-common-ancestor)
     - [10. Evolution of CSPs](10-evolution-of-csps)
     - [11. Core gene analyses to assess selection (Tajma's D)](#11-core-gene-analyses-to-assess-selection-(tajma's-d))
@@ -408,7 +408,7 @@ The outputs for both elf18 and csp22 variants were saved in the Analyses/ROS Scr
 
 These output trees are used to build Figure 2A and Figure 3A. The tips are colored manually as well as adding the of the data using Inkscape. This script will also import the immunogenicity conclusions which will be mapped onto the phylogenetic trees in #9: Evolution of CSP variants (Analyses/ROS_Screen/ROS_Screen_data.xlsx).
 
-## Evolution of the Gene MAMPs are Encoded on
+## Evolution of MAMP Encoded Genes
 
 ### 9. Assessing immunogenicity outcomes following diversifcation of a common ancestor
 
