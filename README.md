@@ -1,5 +1,8 @@
 # Mining_Known_MAMPs
 
+[![DOI](https://img.shields.io/badge/DOI-10.1073%2Fpnas.2319499121-blue.svg)](https://doi.org/10.1073/pnas.2319499121)
+
+
 * __Danielle M. Stevens__ <a itemprop="sameAs" content="https://orcid.org/0000-0001-5630-137X" href="https://orcid.org/0000-0001-5630-137X" target="orcid.widget" rel="me noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon"></a>   </br>
 _Dept. of Plant Pathology, University of California, Davis_, </br>
 _Integrative Genetics and Genomics Graduate Group, University of California, Davis_
