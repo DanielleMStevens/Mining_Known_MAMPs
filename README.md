@@ -10,7 +10,7 @@ _Dept. of Plant Pathology, University of California, Davis_
 </br>
 
 __Purpose:__ This repo hold the scripts to run analysis on well-characterized MAMPs found accross bacterial genera of plant pathogens.
-Documentation for this repo can be found in the following markdown file: (Methods)[/Methods.md]
+Documentation for this repo can be found in the following markdown file: [Methods](https://github.com/DanielleMStevens/Mining_Known_MAMPs/blob/main/Methods.md)
 
 ## Abstract
 
